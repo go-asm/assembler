@@ -9,8 +9,8 @@
 package arch
 
 import (
-	"github.com/go-asm/assembler/obj"
-	"github.com/go-asm/assembler/obj/ppc64"
+	"github.com/go-asm/assembler/cmd/obj"
+	"github.com/go-asm/assembler/cmd/obj/ppc64"
 )
 
 func jumpPPC64(word string) bool {

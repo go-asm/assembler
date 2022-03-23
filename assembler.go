@@ -8,8 +8,8 @@ import (
 	"fmt"
 
 	"github.com/go-asm/assembler/asm/arch"
-	"github.com/go-asm/assembler/obj"
-	"github.com/go-asm/assembler/objabi"
+	"github.com/go-asm/assembler/cmd/obj"
+	"github.com/go-asm/assembler/cmd/objabi"
 )
 
 // Builder allows you to assemble a series of instructions.
@@ -75,7 +75,7 @@ func (b *Builder) Assemble() []byte {
 
 // NewBuilder constructs an assembler for the given architecture.
 func NewBuilder(archStr string, cacheSize int) (*Builder, error) {
-	a := arch.Set(archStr)
+	a := arch.Set(archStr, false)
 	ctxt := obj.Linknew(a.LinkArch)
 	ctxt.Headtype = objabi.Hlinux
 	ctxt.DiagFunc = func(in string, args ...interface{}) {

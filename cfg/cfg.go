@@ -4,7 +4,7 @@
 
 // Package cfg holds configuration shared by the Go command and github.com/go-asm/assembler/testenv.
 // Definitions that don't need to be exposed outside of cmd/go should be in
-// github.com/go-asm/assembler/gocfg instead of this package.
+// cmd/go/github.com/go-asm/assembler/cfg instead of this package.
 package cfg
 
 // KnownEnv is a list of environment variables that affect the operation
@@ -33,6 +33,7 @@ const KnownEnv = `
 	GCCGO
 	GO111MODULE
 	GO386
+	GOAMD64
 	GOARCH
 	GOARM
 	GOBIN
@@ -61,6 +62,7 @@ const KnownEnv = `
 	GOTOOLDIR
 	GOVCS
 	GOWASM
+	GOWORK
 	GO_EXTLINK_ENABLED
 	PKG_CONFIG
 `

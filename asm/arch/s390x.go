@@ -9,7 +9,7 @@
 package arch
 
 import (
-	"github.com/go-asm/assembler/obj/s390x"
+	"github.com/go-asm/assembler/cmd/obj/s390x"
 )
 
 func jumpS390x(word string) bool {

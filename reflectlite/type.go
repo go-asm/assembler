@@ -69,7 +69,7 @@ type Type interface {
 }
 
 /*
- * These data structures are known to the compiler (../../github.com/go-asm/go/cmd/reflectdata/reflect.go).
+ * These data structures are known to the compiler (src/cmd/reflectdata/reflect.go).
  * A few are known to ../runtime/type.go to convey to debuggers.
  * They are also known to ../runtime/type.go.
  */
@@ -114,6 +114,7 @@ const Ptr = Pointer
 // available in the memory directly following the rtype value.
 //
 // tflag values must be kept in sync with copies in:
+//
 //	cmd/compile/github.com/go-asm/go/reflectdata/reflect.go
 //	cmd/link/github.com/go-asm/go/ld/decodesym.go
 //	runtime/type.go
@@ -299,7 +300,7 @@ type structType struct {
 //
 // The next two bytes are the data length:
 //
-//	 l := uint16(data[1])<<8 | uint16(data[2])
+//	l := uint16(data[1])<<8 | uint16(data[2])
 //
 // Bytes [3:3+l] are the string data.
 //
@@ -448,15 +449,11 @@ func (t *uncommonType) exportedMethods() []method {
 // resolveNameOff resolves a name offset from a base pointer.
 // The (*rtype).nameOff method is a convenience wrapper for this function.
 // Implemented in the runtime package.
-//
-//go:linkname resolveNameOff reflect.resolveNameOff
 func resolveNameOff(ptrInModule unsafe.Pointer, off int32) unsafe.Pointer
 
 // resolveTypeOff resolves an *rtype offset from a base type.
 // The (*rtype).typeOff method is a convenience wrapper for this function.
 // Implemented in the runtime package.
-//
-//go:linkname resolveTypeOff reflect.resolveTypeOff
 func resolveTypeOff(rtype unsafe.Pointer, off int32) unsafe.Pointer
 
 type nameOff int32 // offset to a name
@@ -712,7 +709,7 @@ func (t *interfaceType) NumMethod() int { return len(t.methods) }
 
 // TypeOf returns the reflection Type that represents the dynamic type of i.
 // If i is a nil interface value, TypeOf returns nil.
-func TypeOf(i interface{}) Type {
+func TypeOf(i any) Type {
 	eface := *(*emptyInterface)(unsafe.Pointer(&i))
 	return toType(eface.typ)
 }

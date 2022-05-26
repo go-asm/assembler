@@ -266,13 +266,15 @@ func (p *ImportedPkg) Write(w *Writer) {
 //
 // Serialized format:
 // Sym struct {
-//    Name  string
-//    ABI   uint16
-//    Type  uint8
-//    Flag  uint8
-//    Flag2 uint8
-//    Siz   uint32
-//    Align uint32
+//
+//	Name  string
+//	ABI   uint16
+//	Type  uint8
+//	Flag  uint8
+//	Flag2 uint8
+//	Siz   uint32
+//	Align uint32
+//
 // }
 type Sym [SymSize]byte
 
@@ -372,11 +374,13 @@ const HashSize = sha1.Size
 //
 // Serialized format:
 // Reloc struct {
-//    Off  int32
-//    Siz  uint8
-//    Type uint16
-//    Add  int64
-//    Sym  SymRef
+//
+//	Off  int32
+//	Siz  uint8
+//	Type uint16
+//	Add  int64
+//	Sym  SymRef
+//
 // }
 type Reloc [RelocSize]byte
 
@@ -416,8 +420,10 @@ func (r *Reloc) fromBytes(b []byte) { copy(r[:], b) }
 //
 // Serialized format:
 // Aux struct {
-//    Type uint8
-//    Sym  SymRef
+//
+//	Type uint8
+//	Sym  SymRef
+//
 // }
 type Aux [AuxSize]byte
 
@@ -459,9 +465,11 @@ func (a *Aux) fromBytes(b []byte) { copy(a[:], b) }
 //
 // Serialized format:
 // RefFlags struct {
-//    Sym   symRef
-//    Flag  uint8
-//    Flag2 uint8
+//
+//	Sym   symRef
+//	Flag  uint8
+//	Flag2 uint8
+//
 // }
 type RefFlags [RefFlagsSize]byte
 
@@ -491,8 +499,10 @@ const huge = (1<<31 - 1) / RelocSize
 //
 // Serialized format:
 // RefName struct {
-//    Sym  symRef
-//    Name string
+//
+//	Sym  symRef
+//	Name string
+//
 // }
 type RefName [RefNameSize]byte
 

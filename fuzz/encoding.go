@@ -20,7 +20,7 @@ var encVersion1 = "go test fuzz v1"
 
 // marshalCorpusFile encodes an arbitrary number of arguments into the file format for the
 // corpus.
-func marshalCorpusFile(vals ...interface{}) []byte {
+func marshalCorpusFile(vals ...any) []byte {
 	if len(vals) == 0 {
 		panic("must have at least one value to marshal")
 	}
@@ -98,7 +98,7 @@ func marshalCorpusFile(vals ...interface{}) []byte {
 }
 
 // unmarshalCorpusFile decodes corpus bytes into their respective values.
-func unmarshalCorpusFile(b []byte) ([]interface{}, error) {
+func unmarshalCorpusFile(b []byte) ([]any, error) {
 	if len(b) == 0 {
 		return nil, fmt.Errorf("cannot unmarshal empty string")
 	}
@@ -109,7 +109,7 @@ func unmarshalCorpusFile(b []byte) ([]interface{}, error) {
 	if string(lines[0]) != encVersion1 {
 		return nil, fmt.Errorf("unknown encoding version: %s", lines[0])
 	}
-	var vals []interface{}
+	var vals []any
 	for _, line := range lines[1:] {
 		line = bytes.TrimSpace(line)
 		if len(line) == 0 {
@@ -124,7 +124,7 @@ func unmarshalCorpusFile(b []byte) ([]interface{}, error) {
 	return vals, nil
 }
 
-func parseCorpusValue(line []byte) (interface{}, error) {
+func parseCorpusValue(line []byte) (any, error) {
 	fs := token.NewFileSet()
 	expr, err := parser.ParseExprFrom(fs, "(test)", line, 0)
 	if err != nil {
@@ -310,7 +310,7 @@ func parseCorpusValue(line []byte) (interface{}, error) {
 }
 
 // parseInt returns an integer of value val and type typ.
-func parseInt(val, typ string) (interface{}, error) {
+func parseInt(val, typ string) (any, error) {
 	switch typ {
 	case "int":
 		// The int type may be either 32 or 64 bits. If 32, the fuzz tests in the
@@ -337,7 +337,7 @@ func parseInt(val, typ string) (interface{}, error) {
 }
 
 // parseInt returns an unsigned integer of value val and type typ.
-func parseUint(val, typ string) (interface{}, error) {
+func parseUint(val, typ string) (any, error) {
 	switch typ {
 	case "uint":
 		i, err := strconv.ParseUint(val, 0, 64)

@@ -1010,6 +1010,7 @@ func preprocess(ctxt *obj.Link, cursym *obj.LSym, newprog obj.ProgAlloc) {
 
 /*
 // instruction scheduling
+
 	if(debug['Q'] == 0)
 		return;
 

@@ -5,14 +5,14 @@ package buildcfg
 import "runtime"
 
 const defaultGO386 = `sse2`
-const defaultGOAMD64 = `v4`
+const defaultGOAMD64 = `v1`
 const defaultGOARM = `5`
 const defaultGOMIPS = `hardfloat`
 const defaultGOMIPS64 = `hardfloat`
 const defaultGOPPC64 = `power8`
-const defaultGOEXPERIMENT = `regabiwrappers,regabiargs,heapminimum512kib,pacerredesign,staticlockranking,unified`
+const defaultGOEXPERIMENT = ``
 const defaultGO_EXTLINK_ENABLED = ``
 const defaultGO_LDSO = ``
-const version = `devel go1.19-fd1b5904ae Tue Mar 22 21:38:10 2022 +0000`
+const version = `go1.18.2`
 const defaultGOOS = runtime.GOOS
 const defaultGOARCH = runtime.GOARCH

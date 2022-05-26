@@ -195,6 +195,8 @@ func (mu *fdMutex) rwunlock(read bool) bool {
 	}
 }
 
+// Implemented in runtime package.
+
 //go:linkname runtime_Semacquire runtime.semacquire
 func runtime_Semacquire(sema *uint32)
 

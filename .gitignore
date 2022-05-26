@@ -51,4 +51,6 @@ bench.txt
 *.pprof
 
 # coverage
-coverage.*
+coverage.out
+
+!**/testdata/*.test

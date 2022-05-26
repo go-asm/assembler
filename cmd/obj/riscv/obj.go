@@ -317,8 +317,7 @@ func setPCs(p *obj.Prog, pc int64) int64 {
 // A nicer version of this diagram can be found on slide 21 of the presentation
 // attached to:
 //
-//   https://golang.org/issue/16922#issuecomment-243748180
-//
+//	https://golang.org/issue/16922#issuecomment-243748180
 func stackOffset(a *obj.Addr, stacksize int64) {
 	switch a.Name {
 	case obj.NAME_AUTO:

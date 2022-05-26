@@ -9,6 +9,7 @@ package bytealg
 import _ "unsafe" // For go:linkname
 
 //go:noescape
+//go:linkname Compare internal/bytealg.Compare
 func Compare(a, b []byte) int
 
 // The declaration below generates ABI wrappers for functions

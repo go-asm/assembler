@@ -2,7 +2,7 @@
 
 package arm
 
-import "github.com/go-asm/assembler/cmd/obj"
+import "github.com/go-asm/go/cmd/obj"
 
 var Anames = []string{
 	obj.A_ARCHSPECIFIC: "AND",

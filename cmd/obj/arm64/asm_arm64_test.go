@@ -14,7 +14,7 @@ import (
 	"regexp"
 	"testing"
 
-	"github.com/go-asm/assembler/testenv"
+	"github.com/go-asm/go/testenv"
 )
 
 // TestLarge generates a very large file to verify that large

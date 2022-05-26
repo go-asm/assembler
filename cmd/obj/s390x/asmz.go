@@ -1,4 +1,4 @@
-// Based on github.com/go-asm/assembler/cmd/obj/ppc64/asm9.go.
+// Based on github.com/go-asm/go/cmd/obj/ppc64/asm9.go.
 //
 //    Copyright © 1994-1999 Lucent Technologies Inc.  All rights reserved.
 //    Portions Copyright © 1995-1997 C H Forsyth (forsyth@terzarima.net)
@@ -35,8 +35,8 @@ import (
 	"math"
 	"sort"
 
-	"github.com/go-asm/assembler/cmd/obj"
-	"github.com/go-asm/assembler/cmd/objabi"
+	"github.com/go-asm/go/cmd/obj"
+	"github.com/go-asm/go/cmd/objabi"
 )
 
 // ctxtz holds state while assembling a single function.

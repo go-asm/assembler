@@ -6,7 +6,7 @@
 // the instrumentation is OS specific, but only amd64 and arm64 are
 // supported in the runtime. See src/runtime/libfuzzer*.
 //
-// If you update this constraint, also update github.com/go-asm/assembler/cmd/sys.FuzzInstrumeted.
+// If you update this constraint, also update github.com/go-asm/go/cmd/sys.FuzzInstrumeted.
 //
 //go:build !((darwin || linux || windows || freebsd) && (amd64 || arm64))
 

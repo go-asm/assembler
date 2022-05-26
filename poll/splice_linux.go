@@ -11,7 +11,7 @@ import (
 	"syscall"
 	"unsafe"
 
-	"github.com/go-asm/assembler/syscall/unix"
+	"github.com/go-asm/go/syscall/unix"
 )
 
 const (

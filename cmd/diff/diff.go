@@ -12,7 +12,7 @@ import (
 	"os"
 	"runtime"
 
-	exec "github.com/go-asm/assembler/execabs"
+	exec "github.com/go-asm/go/execabs"
 )
 
 // Returns diff of two arrays of bytes in diff tool format.

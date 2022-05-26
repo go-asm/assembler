@@ -35,7 +35,7 @@ import (
 	"log"
 	"math"
 
-	"github.com/go-asm/assembler/cmd/objabi"
+	"github.com/go-asm/go/cmd/objabi"
 )
 
 // Grow increases the length of s.P to lsiz.

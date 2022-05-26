@@ -9,7 +9,7 @@ package fuzz
 import (
 	"unsafe"
 
-	"github.com/go-asm/assembler/unsafeheader"
+	"github.com/go-asm/go/unsafeheader"
 )
 
 // coverage returns a []byte containing unique 8-bit counters for each edge of

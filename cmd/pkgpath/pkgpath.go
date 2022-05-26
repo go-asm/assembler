@@ -14,7 +14,7 @@ import (
 	"os"
 	"strings"
 
-	exec "github.com/go-asm/assembler/execabs"
+	exec "github.com/go-asm/go/execabs"
 )
 
 // ToSymbolFunc returns a function that may be used to convert a

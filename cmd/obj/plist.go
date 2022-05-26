@@ -8,7 +8,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/go-asm/assembler/cmd/objabi"
+	"github.com/go-asm/go/cmd/objabi"
 )
 
 type Plist struct {

@@ -11,8 +11,8 @@ package arch
 import (
 	"errors"
 
-	"github.com/go-asm/assembler/cmd/obj"
-	"github.com/go-asm/assembler/cmd/obj/arm64"
+	"github.com/go-asm/go/cmd/obj"
+	"github.com/go-asm/go/cmd/obj/arm64"
 )
 
 var arm64LS = map[string]uint8{

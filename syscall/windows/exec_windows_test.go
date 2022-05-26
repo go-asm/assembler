@@ -14,7 +14,7 @@ import (
 	"testing"
 	"unsafe"
 
-	"github.com/go-asm/assembler/syscall/windows"
+	"github.com/go-asm/go/syscall/windows"
 )
 
 func TestRunAtLowIntegrity(t *testing.T) {

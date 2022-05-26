@@ -32,10 +32,10 @@ package ppc64
 import (
 	"log"
 
-	"github.com/go-asm/assembler/cmd/obj"
-	"github.com/go-asm/assembler/cmd/objabi"
-	"github.com/go-asm/assembler/cmd/src"
-	"github.com/go-asm/assembler/cmd/sys"
+	"github.com/go-asm/go/cmd/obj"
+	"github.com/go-asm/go/cmd/objabi"
+	"github.com/go-asm/go/cmd/src"
+	"github.com/go-asm/go/cmd/sys"
 )
 
 func progedit(ctxt *obj.Link, p *obj.Prog, newprog obj.ProgAlloc) {
@@ -647,7 +647,7 @@ func preprocess(ctxt *obj.Link, cursym *obj.LSym, newprog obj.ProgAlloc) {
 				// way to use r12 as the source.
 				//
 				// Note that the same condition is tested in
-				// putelfsym in cmd/link/github.com/go-asm/assembler/ld/symtab.go
+				// putelfsym in cmd/link/github.com/go-asm/go/ld/symtab.go
 				// where we set the st_other field to indicate
 				// the presence of these instructions.
 				q = obj.Appendp(q, c.newprog)

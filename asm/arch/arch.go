@@ -9,15 +9,15 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/go-asm/assembler/cmd/obj"
-	"github.com/go-asm/assembler/cmd/obj/arm"
-	"github.com/go-asm/assembler/cmd/obj/arm64"
-	"github.com/go-asm/assembler/cmd/obj/mips"
-	"github.com/go-asm/assembler/cmd/obj/ppc64"
-	"github.com/go-asm/assembler/cmd/obj/riscv"
-	"github.com/go-asm/assembler/cmd/obj/s390x"
-	"github.com/go-asm/assembler/cmd/obj/wasm"
-	"github.com/go-asm/assembler/cmd/obj/x86"
+	"github.com/go-asm/go/cmd/obj"
+	"github.com/go-asm/go/cmd/obj/arm"
+	"github.com/go-asm/go/cmd/obj/arm64"
+	"github.com/go-asm/go/cmd/obj/mips"
+	"github.com/go-asm/go/cmd/obj/ppc64"
+	"github.com/go-asm/go/cmd/obj/riscv"
+	"github.com/go-asm/go/cmd/obj/s390x"
+	"github.com/go-asm/go/cmd/obj/wasm"
+	"github.com/go-asm/go/cmd/obj/x86"
 )
 
 // Pseudo-registers whose names are the constant name without the leading R.

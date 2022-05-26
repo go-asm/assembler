@@ -13,7 +13,7 @@ import (
 	"testing"
 	"unsafe"
 
-	"github.com/go-asm/assembler/fmtsort"
+	"github.com/go-asm/go/fmtsort"
 )
 
 var compareTests = [][]reflect.Value{

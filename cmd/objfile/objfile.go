@@ -13,7 +13,7 @@ import (
 	"os"
 	"sort"
 
-	"github.com/go-asm/assembler/cmd/archive"
+	"github.com/go-asm/go/cmd/archive"
 )
 
 type rawFile interface {

@@ -7,9 +7,9 @@ package assembler
 import (
 	"fmt"
 
-	"github.com/go-asm/assembler/asm/arch"
-	"github.com/go-asm/assembler/cmd/obj"
-	"github.com/go-asm/assembler/cmd/objabi"
+	"github.com/go-asm/go/asm/arch"
+	"github.com/go-asm/go/cmd/obj"
+	"github.com/go-asm/go/cmd/objabi"
 )
 
 // Builder allows you to assemble a series of instructions.

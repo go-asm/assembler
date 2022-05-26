@@ -23,7 +23,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/go-asm/assembler/godebug"
+	"github.com/go-asm/go/godebug"
 )
 
 // CoordinateFuzzingOpts is a set of arguments for CoordinateFuzzing.
@@ -453,7 +453,7 @@ func (c *coordinator) addCorpusEntries(addToCache bool, entries ...CorpusEntry) 
 
 // CorpusEntry represents an individual input for fuzzing.
 //
-// We must use an equivalent type in the testing and testing/github.com/go-asm/assembler/testdeps
+// We must use an equivalent type in the testing and testing/github.com/go-asm/go/testdeps
 // packages, but testing can't import this package directly, and we don't want
 // to export this type from testing. Instead, we use the same struct type and
 // use a type alias (not a defined type) for convenience.

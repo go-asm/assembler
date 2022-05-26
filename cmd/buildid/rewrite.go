@@ -11,7 +11,7 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/go-asm/assembler/cmd/codesign"
+	"github.com/go-asm/go/cmd/codesign"
 )
 
 // FindAndHash reads all of r and returns the offsets of occurrences of id.

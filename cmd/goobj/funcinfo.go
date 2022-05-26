@@ -8,7 +8,7 @@ import (
 	"bytes"
 	"encoding/binary"
 
-	"github.com/go-asm/assembler/cmd/objabi"
+	"github.com/go-asm/go/cmd/objabi"
 )
 
 // CUFileIndex is used to index the filenames that are stored in the

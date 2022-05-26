@@ -13,9 +13,9 @@ import (
 	"testing"
 	"unsafe"
 
-	"github.com/go-asm/assembler/cmd/goobj"
-	"github.com/go-asm/assembler/cmd/sys"
-	"github.com/go-asm/assembler/testenv"
+	"github.com/go-asm/go/cmd/goobj"
+	"github.com/go-asm/go/cmd/sys"
+	"github.com/go-asm/go/testenv"
 )
 
 var dummyArch = LinkArch{Arch: sys.ArchAMD64}

@@ -9,7 +9,7 @@ package poll
 import (
 	"syscall"
 
-	"github.com/go-asm/assembler/syscall/unix"
+	"github.com/go-asm/go/syscall/unix"
 )
 
 func writev(fd int, iovecs []syscall.Iovec) (uintptr, error) {

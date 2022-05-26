@@ -19,8 +19,8 @@ import (
 	"testing"
 	"unicode/utf8"
 
-	"github.com/go-asm/assembler/testenv"
-	"github.com/go-asm/assembler/xcoff"
+	"github.com/go-asm/go/testenv"
+	"github.com/go-asm/go/xcoff"
 )
 
 var (

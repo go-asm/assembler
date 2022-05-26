@@ -30,7 +30,7 @@
 
 package x86
 
-import "github.com/go-asm/assembler/cmd/obj"
+import "github.com/go-asm/go/cmd/obj"
 
 const (
 	REG_NONE = 0

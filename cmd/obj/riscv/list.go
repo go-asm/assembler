@@ -7,7 +7,7 @@ package riscv
 import (
 	"fmt"
 
-	"github.com/go-asm/assembler/cmd/obj"
+	"github.com/go-asm/go/cmd/obj"
 )
 
 func init() {

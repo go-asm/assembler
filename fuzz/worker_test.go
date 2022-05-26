@@ -17,7 +17,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/go-asm/assembler/race"
+	"github.com/go-asm/go/race"
 )
 
 var benchmarkWorkerFlag = flag.Bool("benchmarkworker", false, "")

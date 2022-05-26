@@ -8,7 +8,7 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/go-asm/assembler/cmd/src"
+	"github.com/go-asm/go/cmd/src"
 )
 
 func TestLinkgetlineFromPos(t *testing.T) {

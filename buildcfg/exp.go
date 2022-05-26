@@ -9,7 +9,7 @@ import (
 	"reflect"
 	"strings"
 
-	"github.com/go-asm/assembler/goexperiment"
+	"github.com/go-asm/go/goexperiment"
 )
 
 // Experiment contains the toolchain experiments enabled for the
@@ -44,7 +44,7 @@ var FramePointerEnabled = GOARCH == "amd64" || GOARCH == "arm64"
 // configuration tuple and returns the enabled and baseline experiment
 // flag sets.
 //
-// TODO(mdempsky): Move to github.com/go-asm/assembler/goexperiment.
+// TODO(mdempsky): Move to github.com/go-asm/go/goexperiment.
 func ParseGOEXPERIMENT(goos, goarch, goexp string) (flags, baseline goexperiment.Flags, err error) {
 	regabiSupported := false
 	switch goarch {

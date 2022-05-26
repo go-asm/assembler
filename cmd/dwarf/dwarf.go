@@ -15,10 +15,10 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/go-asm/assembler/buildcfg"
-	exec "github.com/go-asm/assembler/execabs"
+	"github.com/go-asm/go/buildcfg"
+	exec "github.com/go-asm/go/execabs"
 
-	"github.com/go-asm/assembler/cmd/objabi"
+	"github.com/go-asm/go/cmd/objabi"
 )
 
 // InfoPrefix is the prefix for all the symbols containing DWARF info entries.

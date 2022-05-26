@@ -5,8 +5,8 @@
 //go:build aix || darwin || dragonfly || freebsd || linux || netbsd || openbsd || solaris || windows
 
 // Export guts for testing on posix.
-// Since testing imports os and os imports github.com/go-asm/assembler/poll,
-// the github.com/go-asm/assembler/poll tests can not be in package poll.
+// Since testing imports os and os imports github.com/go-asm/go/poll,
+// the github.com/go-asm/go/poll tests can not be in package poll.
 
 package poll
 

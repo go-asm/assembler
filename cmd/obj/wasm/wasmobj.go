@@ -11,9 +11,9 @@ import (
 	"io"
 	"math"
 
-	"github.com/go-asm/assembler/cmd/obj"
-	"github.com/go-asm/assembler/cmd/objabi"
-	"github.com/go-asm/assembler/cmd/sys"
+	"github.com/go-asm/go/cmd/obj"
+	"github.com/go-asm/go/cmd/objabi"
+	"github.com/go-asm/go/cmd/sys"
 )
 
 var Register = map[string]int16{

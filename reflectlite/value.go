@@ -8,8 +8,8 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/go-asm/assembler/goarch"
-	"github.com/go-asm/assembler/unsafeheader"
+	"github.com/go-asm/go/goarch"
+	"github.com/go-asm/go/unsafeheader"
 )
 
 // Value is the reflection interface to a Go value.

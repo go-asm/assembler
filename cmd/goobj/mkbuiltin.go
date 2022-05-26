@@ -5,7 +5,7 @@
 //go:build ignore
 // +build ignore
 
-// Generate builtinlist.go from cmd/compile/github.com/go-asm/assembler/typecheck/builtin/runtime.go.
+// Generate builtinlist.go from cmd/compile/github.com/go-asm/go/typecheck/builtin/runtime.go.
 
 package main
 

@@ -8,7 +8,7 @@ import (
 	"runtime"
 	"testing"
 
-	"github.com/go-asm/assembler/testenv"
+	"github.com/go-asm/go/testenv"
 )
 
 func TestMustLinkExternalMatchesTestenv(t *testing.T) {

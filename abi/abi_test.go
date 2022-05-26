@@ -10,8 +10,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/go-asm/assembler/abi"
-	"github.com/go-asm/assembler/testenv"
+	"github.com/go-asm/go/abi"
+	"github.com/go-asm/go/testenv"
 )
 
 func TestFuncPC(t *testing.T) {

@@ -13,8 +13,8 @@ import (
 	"unicode/utf8"
 	"unsafe"
 
-	"github.com/go-asm/assembler/race"
-	"github.com/go-asm/assembler/syscall/windows"
+	"github.com/go-asm/go/race"
+	"github.com/go-asm/go/syscall/windows"
 )
 
 var (

@@ -10,7 +10,7 @@ import (
 	"syscall"
 	"unsafe"
 
-	"github.com/go-asm/assembler/abi"
+	"github.com/go-asm/go/abi"
 )
 
 //go:cgo_import_dynamic libc_getentropy getentropy "/usr/lib/libSystem.B.dylib"

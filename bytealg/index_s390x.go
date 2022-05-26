@@ -4,7 +4,7 @@
 
 package bytealg
 
-import "github.com/go-asm/assembler/cpu"
+import "github.com/go-asm/go/cpu"
 
 const MaxBruteForce = 64
 
@@ -13,7 +13,7 @@ func init() {
 	// The runtime sets HasVX when processing auxv records, and that happens
 	// to happen *before* running the init functions of packages that
 	// the runtime depends on.
-	// TODO: it would really be nicer for github.com/go-asm/assembler/cpu to figure out this
+	// TODO: it would really be nicer for github.com/go-asm/go/cpu to figure out this
 	// flag by itself. Then we wouldn't need to depend on quirks of
 	// early startup initialization order.
 	if cpu.S390X.HasVX {

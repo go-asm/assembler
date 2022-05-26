@@ -19,7 +19,7 @@ import (
 	"sync"
 	"testing"
 
-	"github.com/go-asm/assembler/testenv"
+	"github.com/go-asm/go/testenv"
 
 	"golang.org/x/mod/module"
 )
@@ -120,7 +120,7 @@ func TestAllDependencies(t *testing.T) {
 	}(); !haveDiff {
 		// For now, the diff command is a mandatory dependency of this test.
 		// This test will primarily run on longtest builders, since few people
-		// would test the github.com/go-asm/assembler/cmd/moddeps package directly, and all.bash
+		// would test the github.com/go-asm/go/cmd/moddeps package directly, and all.bash
 		// runs tests in short mode. It's fine to skip if diff is unavailable.
 		t.Skip("skipping because a diff command with support for --recursive and --unified flags is unavailable")
 	}
@@ -212,8 +212,8 @@ func TestAllDependencies(t *testing.T) {
 				"$ go mod vendor                             # to vendor dependencies\n" +
 				"$ go generate -run=bundle " + pkgs + "               # to regenerate bundled packages\n"
 			if m.Path == "std" {
-				r.run(t, goBinCopy, "generate", "syscall", "github.com/go-asm/assembler/syscall/...") // See issue 43440.
-				advice += "$ go generate syscall github.com/go-asm/assembler/syscall/...  # to regenerate syscall packages\n"
+				r.run(t, goBinCopy, "generate", "syscall", "github.com/go-asm/go/syscall/...") // See issue 43440.
+				advice += "$ go generate syscall github.com/go-asm/go/syscall/...  # to regenerate syscall packages\n"
 			}
 			// TODO(golang.org/issue/43440): Check anything else influenced by dependency versions.
 

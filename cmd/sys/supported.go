@@ -70,7 +70,7 @@ func FuzzInstrumented(goos, goarch string) bool {
 }
 
 // MustLinkExternal reports whether goos/goarch requires external linking.
-// (This is the opposite of github.com/go-asm/assembler/testenv.CanInternalLink. Keep them in sync.)
+// (This is the opposite of github.com/go-asm/go/testenv.CanInternalLink. Keep them in sync.)
 func MustLinkExternal(goos, goarch string) bool {
 	switch goos {
 	case "android":

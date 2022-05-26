@@ -4,7 +4,7 @@
 
 package objabi
 
-import "github.com/go-asm/assembler/buildcfg"
+import "github.com/go-asm/go/buildcfg"
 
 // For the linkers. Must match Go definitions.
 

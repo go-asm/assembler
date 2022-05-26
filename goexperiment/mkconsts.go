@@ -16,7 +16,7 @@ import (
 	"reflect"
 	"strings"
 
-	"github.com/go-asm/assembler/goexperiment"
+	"github.com/go-asm/go/goexperiment"
 )
 
 func main() {

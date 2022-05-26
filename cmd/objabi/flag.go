@@ -17,7 +17,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/go-asm/assembler/buildcfg"
+	"github.com/go-asm/go/buildcfg"
 )
 
 func Flagcount(name, usage string, val *int) {

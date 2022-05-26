@@ -36,11 +36,11 @@ import (
 	"sync"
 	"sync/atomic"
 
-	"github.com/go-asm/assembler/cmd/dwarf"
-	"github.com/go-asm/assembler/cmd/goobj"
-	"github.com/go-asm/assembler/cmd/objabi"
-	"github.com/go-asm/assembler/cmd/src"
-	"github.com/go-asm/assembler/cmd/sys"
+	"github.com/go-asm/go/cmd/dwarf"
+	"github.com/go-asm/go/cmd/goobj"
+	"github.com/go-asm/go/cmd/objabi"
+	"github.com/go-asm/go/cmd/src"
+	"github.com/go-asm/go/cmd/sys"
 )
 
 // An Addr is an argument to an instruction.
@@ -827,7 +827,7 @@ func (s *LSym) String() string {
 	return s.Name
 }
 
-// The compiler needs *LSym to be assignable to cmd/compile/github.com/go-asm/assembler/ssa.Sym.
+// The compiler needs *LSym to be assignable to cmd/compile/github.com/go-asm/go/ssa.Sym.
 func (*LSym) CanBeAnSSASym() {}
 func (*LSym) CanBeAnSSAAux() {}
 

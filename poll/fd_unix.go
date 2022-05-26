@@ -11,7 +11,7 @@ import (
 	"sync/atomic"
 	"syscall"
 
-	"github.com/go-asm/assembler/syscall/unix"
+	"github.com/go-asm/go/syscall/unix"
 )
 
 // FD is a file descriptor. The net and os packages use this type as a

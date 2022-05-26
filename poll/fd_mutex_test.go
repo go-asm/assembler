@@ -11,7 +11,7 @@ import (
 	"testing"
 	"time"
 
-	. "github.com/go-asm/assembler/poll"
+	. "github.com/go-asm/go/poll"
 )
 
 func TestMutexLock(t *testing.T) {

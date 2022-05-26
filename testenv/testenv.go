@@ -24,7 +24,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/go-asm/assembler/cfg"
+	"github.com/go-asm/go/cfg"
 )
 
 // Builder reports the name of the builder running this test
@@ -197,7 +197,7 @@ func MustHaveCGO(t testing.TB) {
 
 // CanInternalLink reports whether the current system can link programs with
 // internal linking.
-// (This is the opposite of github.com/go-asm/assembler/cmd/sys.MustLinkExternal. Keep them in sync.)
+// (This is the opposite of github.com/go-asm/go/cmd/sys.MustLinkExternal. Keep them in sync.)
 func CanInternalLink() bool {
 	switch runtime.GOOS {
 	case "android":

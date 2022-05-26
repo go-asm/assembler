@@ -20,7 +20,7 @@ import (
 	"strings"
 	"text/tabwriter"
 
-	"github.com/go-asm/assembler/cmd/src"
+	"github.com/go-asm/go/cmd/src"
 
 	"golang.org/x/arch/arm/armasm"
 	"golang.org/x/arch/arm64/arm64asm"

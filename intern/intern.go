@@ -15,7 +15,7 @@ import (
 	"sync"
 	"unsafe"
 
-	"github.com/go-asm/assembler/godebug"
+	"github.com/go-asm/go/godebug"
 )
 
 // A Value pointer is the handle to an underlying comparable value.

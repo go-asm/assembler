@@ -10,9 +10,9 @@ import (
 	"io"
 	"strings"
 
-	"github.com/go-asm/assembler/buildcfg"
-	"github.com/go-asm/assembler/cmd/objabi"
-	"github.com/go-asm/assembler/cmd/src"
+	"github.com/go-asm/go/buildcfg"
+	"github.com/go-asm/go/cmd/objabi"
+	"github.com/go-asm/go/cmd/src"
 )
 
 const REG_NONE = 0

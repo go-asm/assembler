@@ -13,7 +13,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/go-asm/assembler/obscuretestdata"
+	"github.com/go-asm/go/obscuretestdata"
 )
 
 const (

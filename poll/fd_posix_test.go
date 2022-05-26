@@ -10,7 +10,7 @@ import (
 	"io"
 	"testing"
 
-	. "github.com/go-asm/assembler/poll"
+	. "github.com/go-asm/go/poll"
 )
 
 var eofErrorTests = []struct {

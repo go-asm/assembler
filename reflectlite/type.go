@@ -9,7 +9,7 @@ package reflectlite
 import (
 	"unsafe"
 
-	"github.com/go-asm/assembler/unsafeheader"
+	"github.com/go-asm/go/unsafeheader"
 )
 
 // Type is the representation of a Go type.
@@ -69,7 +69,7 @@ type Type interface {
 }
 
 /*
- * These data structures are known to the compiler (../../github.com/go-asm/assembler/cmd/reflectdata/reflect.go).
+ * These data structures are known to the compiler (../../github.com/go-asm/go/cmd/reflectdata/reflect.go).
  * A few are known to ../runtime/type.go to convey to debuggers.
  * They are also known to ../runtime/type.go.
  */
@@ -114,8 +114,8 @@ const Ptr = Pointer
 // available in the memory directly following the rtype value.
 //
 // tflag values must be kept in sync with copies in:
-//	cmd/compile/github.com/go-asm/assembler/reflectdata/reflect.go
-//	cmd/link/github.com/go-asm/assembler/ld/decodesym.go
+//	cmd/compile/github.com/go-asm/go/reflectdata/reflect.go
+//	cmd/link/github.com/go-asm/go/ld/decodesym.go
 //	runtime/type.go
 type tflag uint8
 

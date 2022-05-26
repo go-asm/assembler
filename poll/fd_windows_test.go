@@ -11,7 +11,7 @@ import (
 	"syscall"
 	"testing"
 
-	"github.com/go-asm/assembler/poll"
+	"github.com/go-asm/go/poll"
 )
 
 type loggedFD struct {

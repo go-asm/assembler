@@ -11,7 +11,7 @@ import (
 	"unicode/utf16"
 	"unsafe"
 
-	"github.com/go-asm/assembler/syscall/windows"
+	"github.com/go-asm/go/syscall/windows"
 )
 
 // Default will return the default environment

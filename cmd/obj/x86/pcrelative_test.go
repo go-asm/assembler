@@ -13,7 +13,7 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/go-asm/assembler/testenv"
+	"github.com/go-asm/go/testenv"
 )
 
 const asmData = `

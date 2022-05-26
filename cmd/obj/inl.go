@@ -4,7 +4,7 @@
 
 package obj
 
-import "github.com/go-asm/assembler/cmd/src"
+import "github.com/go-asm/go/cmd/src"
 
 // InlTree is a collection of inlined calls. The Parent field of an
 // InlinedCall is the index of another InlinedCall in InlTree.

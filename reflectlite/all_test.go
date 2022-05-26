@@ -13,7 +13,7 @@ import (
 	"testing"
 	"unsafe"
 
-	. "github.com/go-asm/assembler/reflectlite"
+	. "github.com/go-asm/go/reflectlite"
 )
 
 func ToValue(v Value) reflect.Value {
@@ -778,7 +778,7 @@ func TestImportPath(t *testing.T) {
 		{TypeOf(map[string]int{}), ""},
 		{TypeOf((*error)(nil)).Elem(), ""},
 		{TypeOf((*Point)(nil)), ""},
-		{TypeOf((*Point)(nil)).Elem(), "github.com/go-asm/assembler/reflectlite_test"},
+		{TypeOf((*Point)(nil)).Elem(), "github.com/go-asm/go/reflectlite_test"},
 	}
 	for _, test := range tests {
 		if path := test.t.PkgPath(); path != test.path {

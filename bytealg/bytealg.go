@@ -7,10 +7,10 @@ package bytealg
 import (
 	"unsafe"
 
-	"github.com/go-asm/assembler/cpu"
+	"github.com/go-asm/go/cpu"
 )
 
-// Offsets into github.com/go-asm/assembler/cpu records for use in assembly.
+// Offsets into github.com/go-asm/go/cpu records for use in assembly.
 const (
 	offsetX86HasSSE42  = unsafe.Offsetof(cpu.X86.HasSSE42)
 	offsetX86HasAVX2   = unsafe.Offsetof(cpu.X86.HasAVX2)

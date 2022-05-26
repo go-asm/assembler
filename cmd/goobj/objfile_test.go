@@ -13,10 +13,10 @@ import (
 	"os/exec"
 	"testing"
 
-	"github.com/go-asm/assembler/buildcfg"
-	"github.com/go-asm/assembler/cmd/bio"
-	"github.com/go-asm/assembler/cmd/objabi"
-	"github.com/go-asm/assembler/testenv"
+	"github.com/go-asm/go/buildcfg"
+	"github.com/go-asm/go/cmd/bio"
+	"github.com/go-asm/go/cmd/objabi"
+	"github.com/go-asm/go/testenv"
 )
 
 func dummyWriter(buf *bytes.Buffer) *Writer {

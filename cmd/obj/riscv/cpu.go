@@ -28,7 +28,7 @@
 
 package riscv
 
-import "github.com/go-asm/assembler/cmd/obj"
+import "github.com/go-asm/go/cmd/obj"
 
 //go:generate go run ../stringer.go -i $GOFILE -o anames.go -p riscv
 

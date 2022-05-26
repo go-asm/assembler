@@ -11,9 +11,9 @@ import (
 	"sort"
 	"sync"
 
-	"github.com/go-asm/assembler/cmd/dwarf"
-	"github.com/go-asm/assembler/cmd/objabi"
-	"github.com/go-asm/assembler/cmd/src"
+	"github.com/go-asm/go/cmd/dwarf"
+	"github.com/go-asm/go/cmd/objabi"
+	"github.com/go-asm/go/cmd/src"
 )
 
 // Generate a sequence of opcodes that is as short as possible.

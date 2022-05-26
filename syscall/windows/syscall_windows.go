@@ -10,7 +10,7 @@ import (
 	"unicode/utf16"
 	"unsafe"
 
-	"github.com/go-asm/assembler/unsafeheader"
+	"github.com/go-asm/go/unsafeheader"
 )
 
 // UTF16PtrToString is like UTF16ToString, but takes *uint16

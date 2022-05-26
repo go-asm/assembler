@@ -96,7 +96,7 @@ const (
 	// Similar to R_USEIFACEMETHOD, except instead of indicating a type +
 	// method offset with Sym+Add, Sym points to a symbol containing the name
 	// of the method being called. See the description in
-	// cmd/compile/github.com/go-asm/assembler/reflectdata/reflect.go:MarkUsedIfaceMethod for details.
+	// cmd/compile/github.com/go-asm/go/reflectdata/reflect.go:MarkUsedIfaceMethod for details.
 	R_USEGENERICIFACEMETHOD
 	// R_METHODOFF resolves to a 32-bit offset from the beginning of the section
 	// holding the data being relocated to the referenced symbol.

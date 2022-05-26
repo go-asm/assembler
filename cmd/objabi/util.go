@@ -8,7 +8,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/go-asm/assembler/buildcfg"
+	"github.com/go-asm/go/buildcfg"
 )
 
 const (

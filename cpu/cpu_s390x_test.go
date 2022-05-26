@@ -10,7 +10,7 @@ import (
 	"regexp"
 	"testing"
 
-	. "github.com/go-asm/assembler/cpu"
+	. "github.com/go-asm/go/cpu"
 )
 
 func getFeatureList() ([]string, error) {

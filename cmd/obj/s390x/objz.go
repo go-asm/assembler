@@ -1,4 +1,4 @@
-// Based on github.com/go-asm/assembler/cmd/obj/ppc64/obj9.go.
+// Based on github.com/go-asm/go/cmd/obj/ppc64/obj9.go.
 //
 //	Copyright © 1994-1999 Lucent Technologies Inc.  All rights reserved.
 //	Portions Copyright © 1995-1997 C H Forsyth (forsyth@terzarima.net)
@@ -33,9 +33,9 @@ import (
 	"log"
 	"math"
 
-	"github.com/go-asm/assembler/cmd/obj"
-	"github.com/go-asm/assembler/cmd/objabi"
-	"github.com/go-asm/assembler/cmd/sys"
+	"github.com/go-asm/go/cmd/obj"
+	"github.com/go-asm/go/cmd/objabi"
+	"github.com/go-asm/go/cmd/sys"
 )
 
 func progedit(ctxt *obj.Link, p *obj.Prog, newprog obj.ProgAlloc) {

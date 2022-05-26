@@ -16,9 +16,9 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/go-asm/assembler/cmd/obj"
-	"github.com/go-asm/assembler/cmd/objabi"
-	"github.com/go-asm/assembler/testenv"
+	"github.com/go-asm/go/cmd/obj"
+	"github.com/go-asm/go/cmd/objabi"
+	"github.com/go-asm/go/testenv"
 )
 
 var platformEnvs = [][]string{

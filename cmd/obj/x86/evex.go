@@ -9,7 +9,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/go-asm/assembler/cmd/obj"
+	"github.com/go-asm/go/cmd/obj"
 )
 
 // evexBits stores EVEX prefix info that is used during instruction encoding.

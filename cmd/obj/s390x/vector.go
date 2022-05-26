@@ -5,7 +5,7 @@
 package s390x
 
 import (
-	"github.com/go-asm/assembler/cmd/obj"
+	"github.com/go-asm/go/cmd/obj"
 )
 
 // This file contains utility functions for use when

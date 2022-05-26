@@ -14,10 +14,10 @@ import (
 	"io"
 	"os"
 
-	"github.com/go-asm/assembler/cmd/archive"
-	"github.com/go-asm/assembler/cmd/goobj"
-	"github.com/go-asm/assembler/cmd/objabi"
-	"github.com/go-asm/assembler/cmd/sys"
+	"github.com/go-asm/go/cmd/archive"
+	"github.com/go-asm/go/cmd/goobj"
+	"github.com/go-asm/go/cmd/objabi"
+	"github.com/go-asm/go/cmd/sys"
 )
 
 type goobjFile struct {

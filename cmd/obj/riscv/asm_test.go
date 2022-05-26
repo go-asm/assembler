@@ -14,7 +14,7 @@ import (
 	"runtime"
 	"testing"
 
-	"github.com/go-asm/assembler/testenv"
+	"github.com/go-asm/go/testenv"
 )
 
 // TestLargeBranch generates a large function with a very far conditional

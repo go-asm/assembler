@@ -4,7 +4,7 @@
 
 package x
 
-import "github.com/go-asm/assembler/abi"
+import "github.com/go-asm/go/abi"
 
 func Fn0() // defined in assembly
 

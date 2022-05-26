@@ -9,8 +9,8 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/go-asm/assembler/cmd/goobj"
-	"github.com/go-asm/assembler/cmd/objabi"
+	"github.com/go-asm/go/cmd/goobj"
+	"github.com/go-asm/go/cmd/objabi"
 )
 
 // funcpctab writes to dst a pc-value table mapping the code in func to the values

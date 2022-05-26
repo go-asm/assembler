@@ -9,7 +9,7 @@ package poll
 import (
 	"syscall"
 
-	"github.com/go-asm/assembler/syscall/unix"
+	"github.com/go-asm/go/syscall/unix"
 )
 
 func fcntl(fd int, cmd int, arg int) (int, error) {

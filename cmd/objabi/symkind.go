@@ -34,7 +34,7 @@ package objabi
 type SymKind uint8
 
 // Defined SymKind values.
-// These are used to index into cmd/link/github.com/go-asm/assembler/sym/AbiSymKindToSymKind
+// These are used to index into cmd/link/github.com/go-asm/go/sym/AbiSymKindToSymKind
 //
 // TODO(rsc): Give idiomatic Go names.
 //go:generate stringer -type=SymKind
@@ -67,6 +67,6 @@ const (
 	SDWARFLINES
 	// Coverage instrumentation counter for libfuzzer.
 	SLIBFUZZER_EXTRA_COUNTER
-	// Update cmd/link/github.com/go-asm/assembler/sym/AbiSymKindToSymKind for new SymKind values.
+	// Update cmd/link/github.com/go-asm/go/sym/AbiSymKindToSymKind for new SymKind values.
 
 )

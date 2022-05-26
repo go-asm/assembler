@@ -12,7 +12,7 @@ import (
 	"io"
 	"unicode"
 
-	"github.com/go-asm/assembler/xcoff"
+	"github.com/go-asm/go/xcoff"
 )
 
 type xcoffFile struct {

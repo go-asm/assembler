@@ -10,7 +10,7 @@ import (
 	"testing"
 	"unsafe"
 
-	"github.com/go-asm/assembler/unsafeheader"
+	"github.com/go-asm/go/unsafeheader"
 )
 
 // TestTypeMatchesReflectType ensures that the name and layout of the

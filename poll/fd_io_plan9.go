@@ -9,7 +9,7 @@ import (
 	"sync"
 	"syscall"
 
-	"github.com/go-asm/assembler/itoa"
+	"github.com/go-asm/go/itoa"
 )
 
 // asyncIO implements asynchronous cancelable I/O.

@@ -11,7 +11,7 @@ import (
 	"io"
 	"testing"
 
-	. "github.com/go-asm/assembler/reflectlite"
+	. "github.com/go-asm/go/reflectlite"
 )
 
 func TestImplicitSetConversion(t *testing.T) {

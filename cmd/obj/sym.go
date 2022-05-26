@@ -38,9 +38,9 @@ import (
 	"math"
 	"sort"
 
-	"github.com/go-asm/assembler/buildcfg"
-	"github.com/go-asm/assembler/cmd/goobj"
-	"github.com/go-asm/assembler/cmd/objabi"
+	"github.com/go-asm/go/buildcfg"
+	"github.com/go-asm/go/cmd/goobj"
+	"github.com/go-asm/go/cmd/objabi"
 )
 
 func Linknew(arch *LinkArch) *Link {

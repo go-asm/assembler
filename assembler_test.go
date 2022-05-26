@@ -8,9 +8,9 @@ import (
 	"bytes"
 	"testing"
 
-	"github.com/go-asm/assembler"
-	"github.com/go-asm/assembler/cmd/obj"
-	"github.com/go-asm/assembler/cmd/obj/x86"
+	"github.com/go-asm/go"
+	"github.com/go-asm/go/cmd/obj"
+	"github.com/go-asm/go/cmd/obj/x86"
 )
 
 func noop(builder *assembler.Builder) *obj.Prog {

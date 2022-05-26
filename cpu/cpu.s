@@ -2,5 +2,5 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// This assembly file exists to allow github.com/go-asm/assembler/cpu to call
+// This assembly file exists to allow github.com/go-asm/go/cpu to call
 // non-exported runtime functions that use "go:linkname".

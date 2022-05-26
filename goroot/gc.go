@@ -12,7 +12,7 @@ import (
 	"strings"
 	"sync"
 
-	exec "github.com/go-asm/assembler/execabs"
+	exec "github.com/go-asm/go/execabs"
 )
 
 // IsStandardPackage reports whether path is a standard package,

@@ -7,7 +7,7 @@ package abi
 import (
 	"unsafe"
 
-	"github.com/go-asm/assembler/goarch"
+	"github.com/go-asm/go/goarch"
 )
 
 // RegArgs is a struct that has space for each argument

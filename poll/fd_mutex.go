@@ -195,10 +195,10 @@ func (mu *fdMutex) rwunlock(read bool) bool {
 	}
 }
 
-//go:linkname runtime_Semacquire runtime.Semacquire
+//go:linkname runtime_Semacquire runtime.semacquire
 func runtime_Semacquire(sema *uint32)
 
-//go:linkname runtime_Semrelease runtime.Semrelease
+//go:linkname runtime_Semrelease runtime.semrelease
 func runtime_Semrelease(sema *uint32)
 
 // incref adds a reference to fd.

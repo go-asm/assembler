@@ -388,6 +388,9 @@ func (v Value) Type() Type {
  */
 
 // implemented in package runtime
+//
+//go:nosplit
+//go:linkname unsafe_New reflect.unsafe_New
 func unsafe_New(*rtype) unsafe.Pointer
 
 // ValueOf returns a new Value initialized to the concrete value
@@ -456,10 +459,15 @@ func arrayAt(p unsafe.Pointer, i int, eltSize uintptr, whySafe string) unsafe.Po
 	return add(p, uintptr(i)*eltSize, "i < len")
 }
 
+//go:nosplit
+//go:linkname ifaceE2I reflect.ifaceE2I
 func ifaceE2I(t *rtype, src interface{}, dst unsafe.Pointer)
 
 // typedmemmove copies a value of type t to dst from src.
+//
 //go:noescape
+//go:nosplit
+//go:linkname typedmemmove runtime.typedmemmove
 func typedmemmove(t *rtype, dst, src unsafe.Pointer)
 
 // Dummy annotation marking that the value x escapes,

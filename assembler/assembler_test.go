@@ -8,7 +8,7 @@ import (
 	"bytes"
 	"testing"
 
-	"github.com/go-asm/go"
+	"github.com/go-asm/go/assembler"
 	"github.com/go-asm/go/cmd/obj"
 	"github.com/go-asm/go/cmd/obj/x86"
 )

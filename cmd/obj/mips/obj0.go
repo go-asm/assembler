@@ -141,7 +141,7 @@ func preprocess(ctxt *obj.Link, cursym *obj.LSym, newprog obj.ProgAlloc) {
 
 	p := c.cursym.Func().Text
 	textstksiz := p.To.Offset
-	if textstksiz == -ctxt.FixedFrameSize() {
+	if textstksiz == -ctxt.Arch.FixedFrameSize {
 		// Historical way to mark NOFRAME.
 		p.From.Sym.Set(obj.AttrNoFrame, true)
 		textstksiz = 0
@@ -283,7 +283,7 @@ func preprocess(ctxt *obj.Link, cursym *obj.LSym, newprog obj.ProgAlloc) {
 			if !p.From.Sym.NoFrame() {
 				// If there is a stack frame at all, it includes
 				// space to save the LR.
-				autosize += int32(c.ctxt.FixedFrameSize())
+				autosize += int32(c.ctxt.Arch.FixedFrameSize)
 			}
 
 			if autosize&4 != 0 && c.ctxt.Arch.Family == sys.MIPS64 {
@@ -300,7 +300,7 @@ func preprocess(ctxt *obj.Link, cursym *obj.LSym, newprog obj.ProgAlloc) {
 				}
 			}
 
-			p.To.Offset = int64(autosize) - ctxt.FixedFrameSize()
+			p.To.Offset = int64(autosize) - ctxt.Arch.FixedFrameSize
 
 			if c.cursym.Func().Text.Mark&LEAF != 0 {
 				c.cursym.Set(obj.AttrLeaf, true)
@@ -393,7 +393,7 @@ func preprocess(ctxt *obj.Link, cursym *obj.LSym, newprog obj.ProgAlloc) {
 				q = obj.Appendp(q, newprog)
 				q.As = add
 				q.From.Type = obj.TYPE_CONST
-				q.From.Offset = int64(autosize) + ctxt.FixedFrameSize()
+				q.From.Offset = int64(autosize) + ctxt.Arch.FixedFrameSize
 				q.Reg = REGSP
 				q.To.Type = obj.TYPE_REG
 				q.To.Reg = REG_R3
@@ -410,7 +410,7 @@ func preprocess(ctxt *obj.Link, cursym *obj.LSym, newprog obj.ProgAlloc) {
 				q = obj.Appendp(q, newprog)
 				q.As = add
 				q.From.Type = obj.TYPE_CONST
-				q.From.Offset = ctxt.FixedFrameSize()
+				q.From.Offset = ctxt.Arch.FixedFrameSize
 				q.Reg = REGSP
 				q.To.Type = obj.TYPE_REG
 				q.To.Reg = REG_R2

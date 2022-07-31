@@ -7,7 +7,6 @@ package cpu_test
 import (
 	"os"
 	"os/exec"
-	"strings"
 	"testing"
 
 	. "github.com/go-asm/go/cpu"
@@ -36,13 +35,9 @@ func runDebugOptionsTest(t *testing.T, test string, options string) {
 	cmd.Env = append(cmd.Env, env)
 
 	output, err := cmd.CombinedOutput()
-	lines := strings.Fields(string(output))
-	lastline := lines[len(lines)-1]
-
-	got := strings.TrimSpace(lastline)
-	want := "PASS"
-	if err != nil || got != want {
-		t.Fatalf("%s with %s: want %s, got %v", test, env, want, got)
+	if err != nil {
+		t.Fatalf("%s with %s: run failed: %v output:\n%s\n",
+			test, env, err, string(output))
 	}
 }
 

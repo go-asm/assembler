@@ -587,7 +587,7 @@ func (c *ctxtz) aclass(a *obj.Addr) int {
 				// a.Offset is still relative to pseudo-FP.
 				a.Reg = obj.REG_NONE
 			}
-			c.instoffset = int64(c.autosize) + a.Offset + c.ctxt.FixedFrameSize()
+			c.instoffset = int64(c.autosize) + a.Offset + c.ctxt.Arch.FixedFrameSize
 			if c.instoffset >= -BIG && c.instoffset < BIG {
 				return C_SAUTO
 			}
@@ -658,7 +658,7 @@ func (c *ctxtz) aclass(a *obj.Addr) int {
 				// a.Offset is still relative to pseudo-FP.
 				a.Reg = obj.REG_NONE
 			}
-			c.instoffset = int64(c.autosize) + a.Offset + c.ctxt.FixedFrameSize()
+			c.instoffset = int64(c.autosize) + a.Offset + c.ctxt.Arch.FixedFrameSize
 			if c.instoffset >= -BIG && c.instoffset < BIG {
 				return C_SACON
 			}

@@ -11,12 +11,12 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
+	"os/exec"
 	"sort"
 	"strconv"
 	"strings"
 
 	"github.com/go-asm/go/buildcfg"
-	exec "github.com/go-asm/go/execabs"
 
 	"github.com/go-asm/go/cmd/objabi"
 )

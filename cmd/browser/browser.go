@@ -7,10 +7,9 @@ package browser
 
 import (
 	"os"
+	"os/exec"
 	"runtime"
 	"time"
-
-	exec "github.com/go-asm/go/execabs"
 )
 
 // Commands returns a list of possible commands to use to open a url.

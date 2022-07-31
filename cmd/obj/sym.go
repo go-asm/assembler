@@ -32,7 +32,7 @@
 package obj
 
 import (
-	"crypto/md5"
+	"encoding/base64"
 	"fmt"
 	"log"
 	"math"
@@ -40,6 +40,7 @@ import (
 
 	"github.com/go-asm/go/buildcfg"
 	"github.com/go-asm/go/cmd/goobj"
+	"github.com/go-asm/go/cmd/notsha256"
 	"github.com/go-asm/go/cmd/objabi"
 )
 
@@ -176,7 +177,9 @@ func (ctxt *Link) Int64Sym(i int64) *LSym {
 
 // GCLocalsSym generates a content-addressable sym containing data.
 func (ctxt *Link) GCLocalsSym(data []byte) *LSym {
-	return ctxt.LookupInit(fmt.Sprintf("gclocals·%x", md5.Sum(data)), func(lsym *LSym) {
+	sum := notsha256.Sum256(data)
+	str := base64.StdEncoding.EncodeToString(sum[:16])
+	return ctxt.LookupInit(fmt.Sprintf("gclocals·%s", str), func(lsym *LSym) {
 		lsym.P = data
 		lsym.Set(AttrContentAddressable, true)
 	})

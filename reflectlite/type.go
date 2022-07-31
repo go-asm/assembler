@@ -270,17 +270,13 @@ type sliceType struct {
 
 // Struct field
 type structField struct {
-	name        name    // name is always non-empty
-	typ         *rtype  // type of field
-	offsetEmbed uintptr // byte offset of field<<1 | isEmbedded
-}
-
-func (f *structField) offset() uintptr {
-	return f.offsetEmbed >> 1
+	name   name    // name is always non-empty
+	typ    *rtype  // type of field
+	offset uintptr // byte offset of field
 }
 
 func (f *structField) embedded() bool {
-	return f.offsetEmbed&1 != 0
+	return f.name.embedded()
 }
 
 // structType represents a struct type.
@@ -327,6 +323,10 @@ func (n name) isExported() bool {
 
 func (n name) hasTag() bool {
 	return (*n.bytes)&(1<<1) != 0
+}
+
+func (n name) embedded() bool {
+	return (*n.bytes)&(1<<3) != 0
 }
 
 // readVarint parses a varint as encoded by encoding/binary.
@@ -948,7 +948,10 @@ func haveIdenticalUnderlyingType(T, V *rtype, cmpTags bool) bool {
 			if cmpTags && tf.name.tag() != vf.name.tag() {
 				return false
 			}
-			if tf.offsetEmbed != vf.offsetEmbed {
+			if tf.offset != vf.offset {
+				return false
+			}
+			if tf.embedded() != vf.embedded() {
 				return false
 			}
 		}

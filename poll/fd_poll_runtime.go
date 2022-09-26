@@ -19,31 +19,14 @@ import (
 //go:linkname runtimeNano runtime.nanotime
 func runtimeNano() int64
 
-//go:linkname runtime_pollServerInit runtime.pollServerInit
 func runtime_pollServerInit()
-
-//go:linkname runtime_pollOpen runtime.pollOpen
 func runtime_pollOpen(fd uintptr) (uintptr, int)
-
-//go:linkname runtime_pollClose runtime.pollClose
 func runtime_pollClose(ctx uintptr)
-
-//go:linkname runtime_pollWait runtime.pollWait
 func runtime_pollWait(ctx uintptr, mode int) int
-
-//go:linkname runtime_pollWaitCanceled runtime.pollWaitCanceled
 func runtime_pollWaitCanceled(ctx uintptr, mode int) int
-
-//go:linkname runtime_pollReset runtime.pollReset
 func runtime_pollReset(ctx uintptr, mode int) int
-
-//go:linkname runtime_pollSetDeadline runtime.pollSetDeadline
 func runtime_pollSetDeadline(ctx uintptr, d int64, mode int)
-
-//go:linkname runtime_pollUnblock runtime.pollUnblock
 func runtime_pollUnblock(ctx uintptr)
-
-//go:linkname runtime_isPollServerDescriptor runtime.isPollServerDescriptor
 func runtime_isPollServerDescriptor(fd uintptr) bool
 
 type pollDesc struct {

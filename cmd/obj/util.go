@@ -6,13 +6,12 @@ package obj
 
 import (
 	"bytes"
+	"cmd/internal/objabi"
+	"cmd/internal/src"
 	"fmt"
+	"internal/buildcfg"
 	"io"
 	"strings"
-
-	"github.com/go-asm/go/buildcfg"
-	"github.com/go-asm/go/cmd/objabi"
-	"github.com/go-asm/go/cmd/src"
 )
 
 const REG_NONE = 0

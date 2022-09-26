@@ -10,22 +10,21 @@
 // logics, and use this package for the actual reading and writing. Specifically, the
 // code below:
 //
-// - github.com/go-asm/go/cmd/obj/objfile.go (used by cmd/asm and cmd/compile)
-// - github.com/go-asm/go/cmd/objfile/goobj.go (used cmd/nm, cmd/objdump)
-// - cmd/link/github.com/go-asm/go/loader package (used by cmd/link)
+// - cmd/internal/obj/objfile.go (used by cmd/asm and cmd/compile)
+// - cmd/internal/objfile/goobj.go (used cmd/nm, cmd/objdump)
+// - cmd/link/internal/loader package (used by cmd/link)
 //
 // If the object file format changes, they may (or may not) need to change.
 
 package goobj
 
 import (
+	"cmd/internal/bio"
 	"encoding/binary"
 	"errors"
 	"fmt"
+	"internal/unsafeheader"
 	"unsafe"
-
-	"github.com/go-asm/go/cmd/bio"
-	"github.com/go-asm/go/unsafeheader"
 )
 
 // New object file format.

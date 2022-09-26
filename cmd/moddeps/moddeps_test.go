@@ -8,17 +8,15 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"internal/testenv"
 	"io"
 	"io/fs"
-	"io/ioutil"
 	"os"
 	"os/exec"
 	"path/filepath"
 	"strings"
 	"sync"
 	"testing"
-
-	"github.com/go-asm/go/testenv"
 
 	"golang.org/x/mod/module"
 )
@@ -34,8 +32,6 @@ import (
 // See issues 36852, 41409, and 43687.
 // (Also see golang.org/issue/27348.)
 func TestAllDependencies(t *testing.T) {
-	t.Skip("TODO(#54376): 1.19.1 contains unreleased changes from vendored modules")
-
 	goBin := testenv.GoToolPath(t)
 
 	// Ensure that all packages imported within GOROOT
@@ -121,7 +117,7 @@ func TestAllDependencies(t *testing.T) {
 	}(); !haveDiff {
 		// For now, the diff command is a mandatory dependency of this test.
 		// This test will primarily run on longtest builders, since few people
-		// would test the github.com/go-asm/go/cmd/moddeps package directly, and all.bash
+		// would test the cmd/internal/moddeps package directly, and all.bash
 		// runs tests in short mode. It's fine to skip if diff is unavailable.
 		t.Skip("skipping because a diff command with support for --recursive and --unified flags is unavailable")
 	}
@@ -214,8 +210,8 @@ func TestAllDependencies(t *testing.T) {
 				"$ go mod vendor                             # to vendor dependencies\n" +
 				"$ go generate -run=bundle " + pkgs + "               # to regenerate bundled packages\n"
 			if m.Path == "std" {
-				r.run(t, goBinCopy, "generate", "syscall", "github.com/go-asm/go/syscall/...") // See issue 43440.
-				advice += "$ go generate syscall github.com/go-asm/go/syscall/...  # to regenerate syscall packages\n"
+				r.run(t, goBinCopy, "generate", "syscall", "internal/syscall/...") // See issue 43440.
+				advice += "$ go generate syscall internal/syscall/...  # to regenerate syscall packages\n"
 			}
 			// TODO(golang.org/issue/43440): Check anything else influenced by dependency versions.
 
@@ -364,7 +360,7 @@ func TestDependencyVersionsConsistent(t *testing.T) {
 		// It's ok if there are undetected differences in modules that do not
 		// provide imported packages: we will not have to pull in any backports of
 		// fixes to those modules anyway.
-		vendor, err := ioutil.ReadFile(filepath.Join(m.Dir, "vendor", "modules.txt"))
+		vendor, err := os.ReadFile(filepath.Join(m.Dir, "vendor", "modules.txt"))
 		if err != nil {
 			t.Error(err)
 			continue

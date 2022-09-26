@@ -11,7 +11,7 @@ package cpu
 // If the CPU name can not be determined an empty string is returned.
 //
 // Implementations that use the Operating System (e.g. sysctl or /sys/)
-// to gather CPU information for display should be placed in github.com/go-asm/go/sysinfo.
+// to gather CPU information for display should be placed in internal/sysinfo.
 func Name() string {
 	// "A CPU has no name".
 	return ""

@@ -3,10 +3,9 @@
 package registry
 
 import (
+	"internal/syscall/windows/sysdll"
 	"syscall"
 	"unsafe"
-
-	"github.com/go-asm/go/syscall/windows/sysdll"
 )
 
 var _ unsafe.Pointer

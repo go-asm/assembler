@@ -15,7 +15,7 @@ import (
 	"encoding/binary"
 	"io"
 
-	"github.com/go-asm/go/cmd/notsha256"
+	"cmd/internal/notsha256"
 )
 
 // Code signature layout.

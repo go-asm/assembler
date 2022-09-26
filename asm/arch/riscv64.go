@@ -9,8 +9,8 @@
 package arch
 
 import (
-	"github.com/go-asm/go/cmd/obj"
-	"github.com/go-asm/go/cmd/obj/riscv"
+	"cmd/internal/obj"
+	"cmd/internal/obj/riscv"
 )
 
 // IsRISCV64AMO reports whether the op (as defined by a riscv.A*

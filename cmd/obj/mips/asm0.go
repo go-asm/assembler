@@ -30,13 +30,12 @@
 package mips
 
 import (
+	"cmd/internal/obj"
+	"cmd/internal/objabi"
+	"cmd/internal/sys"
 	"fmt"
 	"log"
 	"sort"
-
-	"github.com/go-asm/go/cmd/obj"
-	"github.com/go-asm/go/cmd/objabi"
-	"github.com/go-asm/go/cmd/sys"
 )
 
 // ctxt0 holds state while assembling a single function.

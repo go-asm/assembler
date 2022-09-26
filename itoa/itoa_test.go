@@ -6,10 +6,9 @@ package itoa_test
 
 import (
 	"fmt"
+	"internal/itoa"
 	"math"
 	"testing"
-
-	"github.com/go-asm/go/itoa"
 )
 
 var (

@@ -6,11 +6,10 @@ package cpu_test
 
 import (
 	"errors"
+	. "internal/cpu"
 	"os"
 	"regexp"
 	"testing"
-
-	. "github.com/go-asm/go/cpu"
 )
 
 func getFeatureList() ([]string, error) {

@@ -9,7 +9,7 @@ import (
 	"reflect"
 	"strings"
 
-	"github.com/go-asm/go/goexperiment"
+	"internal/goexperiment"
 )
 
 // ExperimentFlags represents a set of GOEXPERIMENT flags relative to a baseline
@@ -54,7 +54,7 @@ var FramePointerEnabled = GOARCH == "amd64" || GOARCH == "arm64"
 // configuration tuple and returns the enabled and baseline experiment
 // flag sets.
 //
-// TODO(mdempsky): Move to github.com/go-asm/go/goexperiment.
+// TODO(mdempsky): Move to internal/goexperiment.
 func ParseGOEXPERIMENT(goos, goarch, goexp string) (*ExperimentFlags, error) {
 	// regabiSupported is set to true on platforms where register ABI is
 	// supported and enabled by default.
@@ -72,6 +72,7 @@ func ParseGOEXPERIMENT(goos, goarch, goexp string) (*ExperimentFlags, error) {
 	baseline := goexperiment.Flags{
 		RegabiWrappers: regabiSupported,
 		RegabiArgs:     regabiSupported,
+		Unified:        true,
 	}
 
 	// Start with the statically enabled set of experiments.

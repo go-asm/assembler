@@ -21,12 +21,11 @@
 package riscv
 
 import (
+	"cmd/internal/obj"
+	"cmd/internal/objabi"
+	"cmd/internal/sys"
 	"fmt"
 	"log"
-
-	"github.com/go-asm/go/cmd/obj"
-	"github.com/go-asm/go/cmd/objabi"
-	"github.com/go-asm/go/cmd/sys"
 )
 
 func buildop(ctxt *obj.Link) {}
@@ -1716,7 +1715,7 @@ func instructionsForOpImmediate(p *obj.Prog, as obj.As, rs int16) []*instruction
 	}
 
 	// LUI $high, TMP
-	// ADDI $low, TMP, TMP
+	// ADDIW $low, TMP, TMP
 	// <op> TMP, REG, TO
 	insLUI := &instruction{as: ALUI, rd: REG_TMP, imm: high}
 	insADDIW := &instruction{as: AADDIW, rd: REG_TMP, rs1: REG_TMP, imm: low}

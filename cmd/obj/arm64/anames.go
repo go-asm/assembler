@@ -2,7 +2,7 @@
 
 package arm64
 
-import "github.com/go-asm/go/cmd/obj"
+import "cmd/internal/obj"
 
 var Anames = []string{
 	obj.A_ARCHSPECIFIC: "ADC",
@@ -530,6 +530,7 @@ var Anames = []string{
 	"VBSL",
 	"VBIT",
 	"VTBL",
+	"VTBX",
 	"VXAR",
 	"VZIP1",
 	"VZIP2",

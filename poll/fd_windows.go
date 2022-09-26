@@ -6,15 +6,14 @@ package poll
 
 import (
 	"errors"
+	"internal/race"
+	"internal/syscall/windows"
 	"io"
 	"sync"
 	"syscall"
 	"unicode/utf16"
 	"unicode/utf8"
 	"unsafe"
-
-	"github.com/go-asm/go/race"
-	"github.com/go-asm/go/syscall/windows"
 )
 
 var (
@@ -501,8 +500,7 @@ func (fd *FD) readConsole(b []byte) (int, error) {
 					}
 				}
 			}
-			n := utf8.EncodeRune(buf[len(buf):cap(buf)], r)
-			buf = buf[:len(buf)+n]
+			buf = utf8.AppendRune(buf, r)
 		}
 		fd.readbyte = buf
 		fd.readbyteOffset = 0

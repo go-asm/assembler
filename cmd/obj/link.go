@@ -32,15 +32,14 @@ package obj
 
 import (
 	"bufio"
+	"cmd/internal/dwarf"
+	"cmd/internal/goobj"
+	"cmd/internal/objabi"
+	"cmd/internal/src"
+	"cmd/internal/sys"
 	"fmt"
 	"sync"
 	"sync/atomic"
-
-	"github.com/go-asm/go/cmd/dwarf"
-	"github.com/go-asm/go/cmd/goobj"
-	"github.com/go-asm/go/cmd/objabi"
-	"github.com/go-asm/go/cmd/src"
-	"github.com/go-asm/go/cmd/sys"
 )
 
 // An Addr is an argument to an instruction.
@@ -845,7 +844,7 @@ func (s *LSym) String() string {
 	return s.Name
 }
 
-// The compiler needs *LSym to be assignable to cmd/compile/github.com/go-asm/go/ssa.Sym.
+// The compiler needs *LSym to be assignable to cmd/compile/internal/ssa.Sym.
 func (*LSym) CanBeAnSSASym() {}
 func (*LSym) CanBeAnSSAAux() {}
 

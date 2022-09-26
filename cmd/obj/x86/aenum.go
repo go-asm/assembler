@@ -2,7 +2,7 @@
 
 package x86
 
-import "github.com/go-asm/go/cmd/obj"
+import "cmd/internal/obj"
 
 //go:generate go run ../stringer.go -i $GOFILE -o anames.go -p x86
 

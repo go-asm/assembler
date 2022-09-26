@@ -4,10 +4,7 @@
 
 package poll
 
-import (
-	"sync/atomic"
-	_ "unsafe" // for go:linkname
-)
+import "sync/atomic"
 
 // fdMutex is a specialized synchronization primitive that manages
 // lifetime of an fd and serializes access to Read, Write and Close
@@ -196,11 +193,7 @@ func (mu *fdMutex) rwunlock(read bool) bool {
 }
 
 // Implemented in runtime package.
-
-//go:linkname runtime_Semacquire runtime.semacquire
 func runtime_Semacquire(sema *uint32)
-
-//go:linkname runtime_Semrelease runtime.semrelease
 func runtime_Semrelease(sema *uint32)
 
 // incref adds a reference to fd.

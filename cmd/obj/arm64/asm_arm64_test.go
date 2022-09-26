@@ -7,14 +7,12 @@ package arm64
 import (
 	"bytes"
 	"fmt"
-	"io/ioutil"
+	"internal/testenv"
 	"os"
 	"os/exec"
 	"path/filepath"
 	"regexp"
 	"testing"
-
-	"github.com/go-asm/go/testenv"
 )
 
 // TestLarge generates a very large file to verify that large
@@ -28,7 +26,7 @@ func TestLarge(t *testing.T) {
 	}
 	testenv.MustHaveGoBuild(t)
 
-	dir, err := ioutil.TempDir("", "testlarge")
+	dir, err := os.MkdirTemp("", "testlarge")
 	if err != nil {
 		t.Fatalf("could not create directory: %v", err)
 	}
@@ -39,7 +37,7 @@ func TestLarge(t *testing.T) {
 	gen(buf)
 
 	tmpfile := filepath.Join(dir, "x.s")
-	err = ioutil.WriteFile(tmpfile, buf.Bytes(), 0644)
+	err = os.WriteFile(tmpfile, buf.Bytes(), 0644)
 	if err != nil {
 		t.Fatalf("can't write output: %v\n", err)
 	}
@@ -87,13 +85,13 @@ func gen(buf *bytes.Buffer) {
 
 // Issue 20348.
 func TestNoRet(t *testing.T) {
-	dir, err := ioutil.TempDir("", "testnoret")
+	dir, err := os.MkdirTemp("", "testnoret")
 	if err != nil {
 		t.Fatal(err)
 	}
 	defer os.RemoveAll(dir)
 	tmpfile := filepath.Join(dir, "x.s")
-	if err := ioutil.WriteFile(tmpfile, []byte("TEXT ·stub(SB),$0-0\nNOP\n"), 0644); err != nil {
+	if err := os.WriteFile(tmpfile, []byte("TEXT ·stub(SB),$0-0\nNOP\n"), 0644); err != nil {
 		t.Fatal(err)
 	}
 	cmd := exec.Command(testenv.GoToolPath(t), "tool", "asm", "-o", filepath.Join(dir, "x.o"), tmpfile)
@@ -107,7 +105,7 @@ func TestNoRet(t *testing.T) {
 // code can be aligned to the alignment value.
 func TestPCALIGN(t *testing.T) {
 	testenv.MustHaveGoBuild(t)
-	dir, err := ioutil.TempDir("", "testpcalign")
+	dir, err := os.MkdirTemp("", "testpcalign")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -131,7 +129,7 @@ func TestPCALIGN(t *testing.T) {
 	}
 
 	for _, test := range testCases {
-		if err := ioutil.WriteFile(tmpfile, test.code, 0644); err != nil {
+		if err := os.WriteFile(tmpfile, test.code, 0644); err != nil {
 			t.Fatal(err)
 		}
 		cmd := exec.Command(testenv.GoToolPath(t), "tool", "asm", "-S", "-o", tmpout, tmpfile)

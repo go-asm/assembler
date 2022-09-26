@@ -9,6 +9,8 @@ package archive
 import (
 	"bufio"
 	"bytes"
+	"cmd/internal/bio"
+	"cmd/internal/goobj"
 	"errors"
 	"fmt"
 	"io"
@@ -18,9 +20,6 @@ import (
 	"strings"
 	"time"
 	"unicode/utf8"
-
-	"github.com/go-asm/go/cmd/bio"
-	"github.com/go-asm/go/cmd/goobj"
 )
 
 /*
@@ -125,9 +124,9 @@ type objReader struct {
 
 func (r *objReader) init(f *os.File) {
 	r.a = &Archive{f, nil}
-	r.offset, _ = f.Seek(0, os.SEEK_CUR)
-	r.limit, _ = f.Seek(0, os.SEEK_END)
-	f.Seek(r.offset, os.SEEK_SET)
+	r.offset, _ = f.Seek(0, io.SeekCurrent)
+	r.limit, _ = f.Seek(0, io.SeekEnd)
+	f.Seek(r.offset, io.SeekStart)
 	r.b = bio.NewReader(f)
 }
 
@@ -228,7 +227,7 @@ func (r *objReader) skip(n int64) {
 		r.readFull(r.tmp[:n])
 	} else {
 		// Seek, giving up buffered data.
-		r.b.MustSeek(r.offset+n, os.SEEK_SET)
+		r.b.MustSeek(r.offset+n, io.SeekStart)
 		r.offset += n
 	}
 }
@@ -396,7 +395,7 @@ func (r *objReader) parseArchive(verbose bool) error {
 // The object file consists of a textual header ending in "\n!\n"
 // and then the part we want to parse begins.
 // The format of that part is defined in a comment at the top
-// of github.com/go-asm/go/cmd/goobj/objfile.go.
+// of cmd/internal/goobj/objfile.go.
 func (r *objReader) parseObject(o *GoObj, size int64) error {
 	h := make([]byte, 0, 256)
 	var c1, c2, c3 byte
@@ -436,7 +435,7 @@ func (r *objReader) parseObject(o *GoObj, size int64) error {
 
 // AddEntry adds an entry to the end of a, with the content from r.
 func (a *Archive) AddEntry(typ EntryType, name string, mtime int64, uid, gid int, mode os.FileMode, size int64, r io.Reader) {
-	off, err := a.f.Seek(0, os.SEEK_END)
+	off, err := a.f.Seek(0, io.SeekEnd)
 	if err != nil {
 		log.Fatal(err)
 	}

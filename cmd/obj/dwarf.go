@@ -7,13 +7,12 @@
 package obj
 
 import (
+	"cmd/internal/dwarf"
+	"cmd/internal/objabi"
+	"cmd/internal/src"
 	"fmt"
 	"sort"
 	"sync"
-
-	"github.com/go-asm/go/cmd/dwarf"
-	"github.com/go-asm/go/cmd/objabi"
-	"github.com/go-asm/go/cmd/src"
 )
 
 // Generate a sequence of opcodes that is as short as possible.

@@ -5,9 +5,8 @@
 package loong64
 
 import (
+	"cmd/internal/obj"
 	"fmt"
-
-	"github.com/go-asm/go/cmd/obj"
 )
 
 func init() {

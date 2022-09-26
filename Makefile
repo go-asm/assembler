@@ -12,6 +12,19 @@ sync:
 	ditto ${HOME}/sdk/${GO_VERSION}/src/cmd/internal ./cmd
 	ditto ${HOME}/sdk/${GO_VERSION}/src/cmd/asm/internal/arch ./asm/arch
 
+
+GO_HASH ?= a0441c7ae3de
+
+.PHONY: sync/dev
+sync/dev:
+	-git clone https://go.googlesource.com/go /private/tmp/go-source
+	git -C /private/tmp/go-source checkout ${GO_HASH}
+	rm -rf $(shell find . -mindepth 1 -maxdepth 1 -type d -not -iwholename '**.git**' -not -iwholename '**_**' -not -iwholename '**assembler**' | sort)
+	ditto /private/tmp/go-source/src/internal .
+	ditto /private/tmp/go-source/src/cmd/internal ./cmd
+	ditto /private/tmp/go-source/src/cmd/asm/internal/arch ./asm/arch
+	rm -rf /private/tmp/go-source
+
 .PHONY: remove
 remove:
 	rm -rf abi

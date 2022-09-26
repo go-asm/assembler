@@ -6,14 +6,13 @@
 package objfile
 
 import (
+	"cmd/internal/archive"
 	"debug/dwarf"
 	"debug/gosym"
 	"fmt"
 	"io"
 	"os"
 	"sort"
-
-	"github.com/go-asm/go/cmd/archive"
 )
 
 type rawFile interface {

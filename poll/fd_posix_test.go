@@ -7,10 +7,9 @@
 package poll_test
 
 import (
+	. "internal/poll"
 	"io"
 	"testing"
-
-	. "github.com/go-asm/go/poll"
 )
 
 var eofErrorTests = []struct {

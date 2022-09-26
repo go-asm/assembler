@@ -7,13 +7,11 @@ package x86_test
 import (
 	"bytes"
 	"fmt"
-	"io/ioutil"
+	"internal/testenv"
 	"os"
 	"os/exec"
 	"path/filepath"
 	"testing"
-
-	"github.com/go-asm/go/testenv"
 )
 
 const asmData = `
@@ -34,12 +32,12 @@ func main() {
 `
 
 func objdumpOutput(t *testing.T, mname, source string) []byte {
-	tmpdir, err := ioutil.TempDir("", mname)
+	tmpdir, err := os.MkdirTemp("", mname)
 	if err != nil {
 		t.Fatal(err)
 	}
 	defer os.RemoveAll(tmpdir)
-	err = ioutil.WriteFile(filepath.Join(tmpdir, "go.mod"), []byte(fmt.Sprintf("module %s\n", mname)), 0666)
+	err = os.WriteFile(filepath.Join(tmpdir, "go.mod"), []byte(fmt.Sprintf("module %s\n", mname)), 0666)
 	if err != nil {
 		t.Fatal(err)
 	}

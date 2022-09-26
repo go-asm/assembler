@@ -40,7 +40,7 @@ func MSanSupported(goos, goarch string) bool {
 func ASanSupported(goos, goarch string) bool {
 	switch goos {
 	case "linux":
-		return goarch == "arm64" || goarch == "amd64" || goarch == "riscv64"
+		return goarch == "arm64" || goarch == "amd64" || goarch == "riscv64" || goarch == "ppc64le"
 	default:
 		return false
 	}
@@ -70,7 +70,7 @@ func FuzzInstrumented(goos, goarch string) bool {
 }
 
 // MustLinkExternal reports whether goos/goarch requires external linking.
-// (This is the opposite of github.com/go-asm/go/testenv.CanInternalLink. Keep them in sync.)
+// (This is the opposite of internal/testenv.CanInternalLink. Keep them in sync.)
 func MustLinkExternal(goos, goarch string) bool {
 	switch goos {
 	case "android":

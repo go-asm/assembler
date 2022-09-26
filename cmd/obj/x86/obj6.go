@@ -31,15 +31,14 @@
 package x86
 
 import (
+	"cmd/internal/obj"
+	"cmd/internal/objabi"
+	"cmd/internal/src"
+	"cmd/internal/sys"
 	"log"
 	"math"
 	"path"
 	"strings"
-
-	"github.com/go-asm/go/cmd/obj"
-	"github.com/go-asm/go/cmd/objabi"
-	"github.com/go-asm/go/cmd/src"
-	"github.com/go-asm/go/cmd/sys"
 )
 
 func CanUse1InsnTLS(ctxt *obj.Link) bool {
@@ -312,7 +311,7 @@ func rewriteToUseGot(ctxt *obj.Link, p *obj.Prog, newprog obj.ProgAlloc) {
 			// Special case: clobber the destination register with
 			// the PC so we don't have to clobber CX.
 			// The SSA backend depends on CX not being clobbered across LEAL.
-			// See cmd/compile/github.com/go-asm/go/ssa/gen/386.rules (search for Flag_shared).
+			// See cmd/compile/internal/ssa/gen/386.rules (search for Flag_shared).
 			reg = p.To.Reg
 		}
 	}

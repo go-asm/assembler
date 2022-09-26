@@ -5,11 +5,10 @@
 package reflectlite
 
 import (
+	"internal/goarch"
+	"internal/unsafeheader"
 	"runtime"
 	"unsafe"
-
-	"github.com/go-asm/go/goarch"
-	"github.com/go-asm/go/unsafeheader"
 )
 
 // Value is the reflection interface to a Go value.

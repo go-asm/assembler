@@ -8,13 +8,12 @@ import (
 	"bytes"
 	"debug/elf"
 	"fmt"
+	"internal/xcoff"
 	"io"
 	"io/fs"
 	"os"
 	"strconv"
 	"strings"
-
-	"github.com/go-asm/go/xcoff"
 )
 
 var (
@@ -104,7 +103,7 @@ func ReadFile(name string) (id string, err error) {
 // readGccgoArchive tries to parse the archive as a standard Unix
 // archive file, and fetch the build ID from the _buildid.o entry.
 // The _buildid.o entry is written by (*Builder).gccgoBuildIDELFFile
-// in cmd/go/github.com/go-asm/go/work/exec.go.
+// in cmd/go/internal/work/exec.go.
 func readGccgoArchive(name string, f *os.File) (string, error) {
 	bad := func() (string, error) {
 		return "", &fs.PathError{Op: "parse", Path: name, Err: errBuildIDMalformed}
@@ -162,7 +161,7 @@ func readGccgoArchive(name string, f *os.File) (string, error) {
 // readGccgoBigArchive tries to parse the archive as an AIX big
 // archive file, and fetch the build ID from the _buildid.o entry.
 // The _buildid.o entry is written by (*Builder).gccgoBuildIDXCOFFFile
-// in cmd/go/github.com/go-asm/go/work/exec.go.
+// in cmd/go/internal/work/exec.go.
 func readGccgoBigArchive(name string, f *os.File) (string, error) {
 	bad := func() (string, error) {
 		return "", &fs.PathError{Op: "parse", Path: name, Err: errBuildIDMalformed}

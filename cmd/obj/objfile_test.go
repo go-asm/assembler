@@ -6,16 +6,15 @@ package obj
 
 import (
 	"bytes"
-	"io/ioutil"
+	"internal/testenv"
 	"os"
 	"os/exec"
 	"path/filepath"
 	"testing"
 	"unsafe"
 
-	"github.com/go-asm/go/cmd/goobj"
-	"github.com/go-asm/go/cmd/sys"
-	"github.com/go-asm/go/testenv"
+	"cmd/internal/goobj"
+	"cmd/internal/sys"
 )
 
 var dummyArch = LinkArch{Arch: sys.ArchAMD64}
@@ -41,13 +40,13 @@ func TestContentHash64(t *testing.T) {
 
 func TestContentHash(t *testing.T) {
 	syms := []*LSym{
-		{P: []byte("TestSymbol")},  // 0
-		{P: []byte("TestSymbol")},  // 1
-		{P: []byte("TestSymbol2")}, // 2
-		{P: []byte("")},            // 3
-		{P: []byte("")},            // 4
-		{P: []byte("")},            // 5
-		{P: []byte("")},            // 6
+		&LSym{P: []byte("TestSymbol")},  // 0
+		&LSym{P: []byte("TestSymbol")},  // 1
+		&LSym{P: []byte("TestSymbol2")}, // 2
+		&LSym{P: []byte("")},            // 3
+		&LSym{P: []byte("")},            // 4
+		&LSym{P: []byte("")},            // 5
+		&LSym{P: []byte("")},            // 6
 	}
 	for _, s := range syms {
 		s.Set(AttrContentAddressable, true)
@@ -100,14 +99,14 @@ func TestSymbolTooLarge(t *testing.T) { // Issue 42054
 		t.Skip("skip on 32-bit architectures")
 	}
 
-	tmpdir, err := ioutil.TempDir("", "TestSymbolTooLarge")
+	tmpdir, err := os.MkdirTemp("", "TestSymbolTooLarge")
 	if err != nil {
 		t.Fatal(err)
 	}
 	defer os.RemoveAll(tmpdir)
 
 	src := filepath.Join(tmpdir, "p.go")
-	err = ioutil.WriteFile(src, []byte("package p; var x [1<<32]byte"), 0666)
+	err = os.WriteFile(src, []byte("package p; var x [1<<32]byte"), 0666)
 	if err != nil {
 		t.Fatalf("failed to write source file: %v\n", err)
 	}
@@ -130,7 +129,7 @@ func TestNoRefName(t *testing.T) {
 	tmpdir := t.TempDir()
 
 	src := filepath.Join(tmpdir, "x.go")
-	err := ioutil.WriteFile(src, []byte("package main; import \"fmt\"; func main() { fmt.Println(123) }\n"), 0666)
+	err := os.WriteFile(src, []byte("package main; import \"fmt\"; func main() { fmt.Println(123) }\n"), 0666)
 	if err != nil {
 		t.Fatalf("failed to write source file: %v\n", err)
 	}

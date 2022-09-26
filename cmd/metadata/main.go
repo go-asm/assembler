@@ -14,11 +14,10 @@
 package main
 
 import (
+	"cmd/internal/osinfo"
 	"fmt"
+	"internal/sysinfo"
 	"runtime"
-
-	"github.com/go-asm/go/cmd/osinfo"
-	"github.com/go-asm/go/sysinfo"
 )
 
 func main() {

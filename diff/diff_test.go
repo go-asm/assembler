@@ -6,10 +6,9 @@ package diff
 
 import (
 	"bytes"
+	"internal/txtar"
 	"path/filepath"
 	"testing"
-
-	"github.com/go-asm/go/txtar"
 )
 
 func clean(text []byte) []byte {

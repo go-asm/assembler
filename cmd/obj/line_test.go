@@ -5,10 +5,9 @@
 package obj
 
 import (
+	"cmd/internal/src"
 	"fmt"
 	"testing"
-
-	"github.com/go-asm/go/cmd/src"
 )
 
 func TestLinkgetlineFromPos(t *testing.T) {

@@ -11,11 +11,10 @@
 package intern
 
 import (
+	"internal/godebug"
 	"runtime"
 	"sync"
 	"unsafe"
-
-	"github.com/go-asm/go/godebug"
 )
 
 // A Value pointer is the handle to an underlying comparable value.

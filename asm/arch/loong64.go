@@ -9,8 +9,8 @@
 package arch
 
 import (
-	"github.com/go-asm/go/cmd/obj"
-	"github.com/go-asm/go/cmd/obj/loong64"
+	"cmd/internal/obj"
+	"cmd/internal/obj/loong64"
 )
 
 func jumpLoong64(word string) bool {

@@ -6,14 +6,13 @@ package wasm
 
 import (
 	"bytes"
+	"cmd/internal/obj"
+	"cmd/internal/objabi"
+	"cmd/internal/sys"
 	"encoding/binary"
 	"fmt"
 	"io"
 	"math"
-
-	"github.com/go-asm/go/cmd/obj"
-	"github.com/go-asm/go/cmd/objabi"
-	"github.com/go-asm/go/cmd/sys"
 )
 
 var Register = map[string]int16{

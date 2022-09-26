@@ -6,14 +6,13 @@ package fmtsort_test
 
 import (
 	"fmt"
+	"internal/fmtsort"
 	"math"
 	"reflect"
 	"sort"
 	"strings"
 	"testing"
 	"unsafe"
-
-	"github.com/go-asm/go/fmtsort"
 )
 
 var compareTests = [][]reflect.Value{
@@ -148,7 +147,7 @@ func sprint(data any) string {
 		}
 		b.WriteString(sprintKey(key))
 		b.WriteRune(':')
-		b.WriteString(fmt.Sprint(om.Value[i]))
+		fmt.Fprint(b, om.Value[i])
 	}
 	return b.String()
 }

@@ -5,12 +5,11 @@
 package loong64
 
 import (
+	"cmd/internal/obj"
+	"cmd/internal/objabi"
+	"cmd/internal/sys"
 	"log"
 	"math"
-
-	"github.com/go-asm/go/cmd/obj"
-	"github.com/go-asm/go/cmd/objabi"
-	"github.com/go-asm/go/cmd/sys"
 )
 
 func progedit(ctxt *obj.Link, p *obj.Prog, newprog obj.ProgAlloc) {

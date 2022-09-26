@@ -6,7 +6,7 @@
 
 package bytealg
 
-import "github.com/go-asm/go/cpu"
+import "internal/cpu"
 
 const MaxBruteForce = 16
 

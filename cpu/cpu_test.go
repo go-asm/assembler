@@ -5,13 +5,12 @@
 package cpu_test
 
 import (
+	. "internal/cpu"
+	"internal/godebug"
+	"internal/testenv"
 	"os"
 	"os/exec"
 	"testing"
-
-	. "github.com/go-asm/go/cpu"
-	"github.com/go-asm/go/godebug"
-	"github.com/go-asm/go/testenv"
 )
 
 func MustHaveDebugOptionsSupport(t *testing.T) {

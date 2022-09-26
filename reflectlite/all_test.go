@@ -7,13 +7,12 @@ package reflectlite_test
 import (
 	"encoding/base64"
 	"fmt"
+	. "internal/reflectlite"
 	"math"
 	"reflect"
 	"runtime"
 	"testing"
 	"unsafe"
-
-	. "github.com/go-asm/go/reflectlite"
 )
 
 func ToValue(v Value) reflect.Value {
@@ -778,7 +777,7 @@ func TestImportPath(t *testing.T) {
 		{TypeOf(map[string]int{}), ""},
 		{TypeOf((*error)(nil)).Elem(), ""},
 		{TypeOf((*Point)(nil)), ""},
-		{TypeOf((*Point)(nil)).Elem(), "github.com/go-asm/go/reflectlite_test"},
+		{TypeOf((*Point)(nil)).Elem(), "internal/reflectlite_test"},
 	}
 	for _, test := range tests {
 		if path := test.t.PkgPath(); path != test.path {
@@ -975,8 +974,8 @@ var nameTests = []nameTest{
 		F()
 	})(nil), ""},
 	{(*TheNameOfThisTypeIsExactly255BytesLongSoWhenTheCompilerPrependsTheReflectTestPackageNameAndExtraStarTheLinkerRuntimeAndReflectPackagesWillHaveToCorrectlyDecodeTheSecondLengthByte0123456789_0123456789_0123456789_0123456789_0123456789_012345678)(nil), "TheNameOfThisTypeIsExactly255BytesLongSoWhenTheCompilerPrependsTheReflectTestPackageNameAndExtraStarTheLinkerRuntimeAndReflectPackagesWillHaveToCorrectlyDecodeTheSecondLengthByte0123456789_0123456789_0123456789_0123456789_0123456789_012345678"},
-	{(*B[A])(nil), "B[github.com/go-asm/go/reflectlite_test.A]"},
-	{(*B[B[A]])(nil), "B[github.com/go-asm/go/reflectlite_test.B[github.com/go-asm/go/reflectlite_test.A]]"},
+	{(*B[A])(nil), "B[internal/reflectlite_test.A]"},
+	{(*B[B[A]])(nil), "B[internal/reflectlite_test.B[internal/reflectlite_test.A]]"},
 }
 
 func TestNames(t *testing.T) {

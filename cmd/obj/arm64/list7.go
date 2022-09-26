@@ -31,9 +31,8 @@
 package arm64
 
 import (
+	"cmd/internal/obj"
 	"fmt"
-
-	"github.com/go-asm/go/cmd/obj"
 )
 
 var strcond = [16]string{

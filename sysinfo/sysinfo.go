@@ -7,9 +7,8 @@
 package sysinfo
 
 import (
+	internalcpu "internal/cpu"
 	"sync"
-
-	internalcpu "github.com/go-asm/go/cpu"
 )
 
 type cpuInfo struct {
@@ -21,7 +20,7 @@ var CPU cpuInfo
 
 func (cpu *cpuInfo) Name() string {
 	cpu.once.Do(func() {
-		// Try to get the information from github.com/go-asm/go/cpu.
+		// Try to get the information from internal/cpu.
 		if name := internalcpu.Name(); name != "" {
 			cpu.name = name
 			return

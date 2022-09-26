@@ -9,10 +9,9 @@
 package reflectlite_test
 
 import (
+	. "internal/reflectlite"
 	"reflect"
 	"strconv"
-
-	. "github.com/go-asm/go/reflectlite"
 )
 
 // valueToString returns a textual representation of the reflection value val.

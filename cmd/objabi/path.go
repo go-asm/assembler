@@ -43,7 +43,7 @@ func PathToPrefix(s string) string {
 // IsRuntimePackagePath examines 'pkgpath' and returns TRUE if it
 // belongs to the collection of "runtime-related" packages, including
 // "runtime" itself, "reflect", "syscall", and the
-// "runtime/github.com/go-asm/go/*" packages. The compiler and/or assembler in
+// "runtime/internal/*" packages. The compiler and/or assembler in
 // some cases need to be aware of when they are building such a
 // package, for example to enable features such as ABI selectors in
 // assembly sources.
@@ -58,7 +58,7 @@ func IsRuntimePackagePath(pkgpath string) bool {
 		rval = true
 	case "syscall":
 		rval = true
-	case "github.com/go-asm/go/bytealg":
+	case "internal/bytealg":
 		rval = true
 	default:
 		rval = strings.HasPrefix(pkgpath, "runtime/internal")

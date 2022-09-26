@@ -31,14 +31,13 @@
 package arm
 
 import (
+	"cmd/internal/obj"
+	"cmd/internal/objabi"
 	"fmt"
+	"internal/buildcfg"
 	"log"
 	"math"
 	"sort"
-
-	"github.com/go-asm/go/buildcfg"
-	"github.com/go-asm/go/cmd/obj"
-	"github.com/go-asm/go/cmd/objabi"
 )
 
 // ctxt5 holds state while assembling a single function.

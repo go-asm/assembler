@@ -8,6 +8,11 @@ package obj
 
 import (
 	"bytes"
+	"cmd/internal/bio"
+	"cmd/internal/goobj"
+	"cmd/internal/notsha256"
+	"cmd/internal/objabi"
+	"cmd/internal/sys"
 	"encoding/binary"
 	"fmt"
 	"io"
@@ -16,12 +21,6 @@ import (
 	"path/filepath"
 	"sort"
 	"strings"
-
-	"github.com/go-asm/go/cmd/bio"
-	"github.com/go-asm/go/cmd/goobj"
-	"github.com/go-asm/go/cmd/notsha256"
-	"github.com/go-asm/go/cmd/objabi"
-	"github.com/go-asm/go/cmd/sys"
 )
 
 const UnlinkablePkg = "<unlinkable>" // invalid package path, used when compiled without -p flag
@@ -322,14 +321,14 @@ func (w *writer) Sym(s *LSym) {
 	if s.ReflectMethod() {
 		flag |= goobj.SymFlagReflectMethod
 	}
-	if strings.HasPrefix(s.Name, "type.") && s.Name[5] != '.' && s.Type == objabi.SRODATA {
+	if strings.HasPrefix(s.Name, "type:") && s.Name[5] != '.' && s.Type == objabi.SRODATA {
 		flag |= goobj.SymFlagGoType
 	}
 	flag2 := uint8(0)
 	if s.UsedInIface() {
 		flag2 |= goobj.SymFlagUsedInIface
 	}
-	if strings.HasPrefix(s.Name, "go.itab.") && s.Type == objabi.SRODATA {
+	if strings.HasPrefix(s.Name, "go:itab.") && s.Type == objabi.SRODATA {
 		flag2 |= goobj.SymFlagItab
 	}
 	if strings.HasPrefix(s.Name, w.ctxt.Pkgpath) && strings.HasPrefix(s.Name[len(w.ctxt.Pkgpath):], ".") && strings.HasPrefix(s.Name[len(w.ctxt.Pkgpath)+1:], objabi.GlobalDictPrefix) {
@@ -352,10 +351,9 @@ func (w *writer) Sym(s *LSym) {
 		// TODO: maybe the compiler could set the alignment for all
 		// data symbols more carefully.
 		switch {
-		case strings.HasPrefix(s.Name, "go.string."),
-			strings.HasPrefix(name, "type..namedata."),
-			strings.HasPrefix(name, "type..importpath."),
-			strings.HasPrefix(name, "runtime.gcbits."),
+		case strings.HasPrefix(s.Name, "go:string."),
+			strings.HasPrefix(name, "type:.namedata."),
+			strings.HasPrefix(name, "type:.importpath."),
 			strings.HasSuffix(name, ".opendefer"),
 			strings.HasSuffix(name, ".arginfo0"),
 			strings.HasSuffix(name, ".arginfo1"),
@@ -414,7 +412,7 @@ func (w *writer) Hash(s *LSym) {
 // Allowing flexibility increases the effectiveness of content-addressibility.
 // But in some cases, such as doing addressing based on a base symbol,
 // we need to ensure that a symbol is always in a prticular section.
-// Some of these conditions are duplicated in cmd/link/github.com/go-asm/go/ld.(*Link).symtab.
+// Some of these conditions are duplicated in cmd/link/internal/ld.(*Link).symtab.
 // TODO: instead of duplicating them, have the compiler decide where symbols go.
 func contentHashSection(s *LSym) byte {
 	name := s.Name
@@ -431,9 +429,9 @@ func contentHashSection(s *LSym) byte {
 		strings.HasSuffix(name, ".wrapinfo") ||
 		strings.HasSuffix(name, ".args_stackmap") ||
 		strings.HasSuffix(name, ".stkobj") {
-		return 'F' // go.func.* or go.funcrel.*
+		return 'F' // go:func.* or go:funcrel.*
 	}
-	if strings.HasPrefix(name, "type.") {
+	if strings.HasPrefix(name, "type:") {
 		return 'T'
 	}
 	return 0
@@ -652,7 +650,7 @@ func (w *writer) refNames() {
 		o.Write(w.Writer)
 	})
 	// TODO: output in sorted order?
-	// Currently tools (github.com/go-asm/go/cmd/goobj package) doesn't use mmap,
+	// Currently tools (cmd/internal/goobj package) doesn't use mmap,
 	// and it just read it into a map in memory upfront. If it uses
 	// mmap, if the output is sorted, it probably could avoid reading
 	// into memory and just do lookups in the mmap'd object file.
@@ -699,7 +697,6 @@ func nAuxSym(s *LSym) int {
 // generate symbols for FuncInfo.
 func genFuncInfoSyms(ctxt *Link) {
 	infosyms := make([]*LSym, 0, len(ctxt.Text))
-	hashedsyms := make([]*LSym, 0, 4*len(ctxt.Text))
 	var b bytes.Buffer
 	symidx := int32(len(ctxt.defs))
 	for _, s := range ctxt.Text {
@@ -761,7 +758,6 @@ func genFuncInfoSyms(ctxt *Link) {
 		}
 	}
 	ctxt.defs = append(ctxt.defs, infosyms...)
-	ctxt.hasheddefs = append(ctxt.hasheddefs, hashedsyms...)
 }
 
 func writeAuxSymDebug(ctxt *Link, par *LSym, aux *LSym) {

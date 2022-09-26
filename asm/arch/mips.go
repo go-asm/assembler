@@ -9,8 +9,8 @@
 package arch
 
 import (
-	"github.com/go-asm/go/cmd/obj"
-	"github.com/go-asm/go/cmd/obj/mips"
+	"cmd/internal/obj"
+	"cmd/internal/obj/mips"
 )
 
 func jumpMIPS(word string) bool {

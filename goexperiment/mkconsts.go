@@ -11,12 +11,11 @@ package main
 import (
 	"bytes"
 	"fmt"
+	"internal/goexperiment"
 	"log"
 	"os"
 	"reflect"
 	"strings"
-
-	"github.com/go-asm/go/goexperiment"
 )
 
 func main() {

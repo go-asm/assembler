@@ -7,10 +7,9 @@
 package cpu_test
 
 import (
+	. "internal/cpu"
+	"internal/godebug"
 	"testing"
-
-	. "github.com/go-asm/go/cpu"
-	"github.com/go-asm/go/godebug"
 )
 
 func TestX86ifAVX2hasAVX(t *testing.T) {

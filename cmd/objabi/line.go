@@ -5,11 +5,10 @@
 package objabi
 
 import (
+	"internal/buildcfg"
 	"os"
 	"path/filepath"
 	"strings"
-
-	"github.com/go-asm/go/buildcfg"
 )
 
 // WorkingDir returns the current working directory

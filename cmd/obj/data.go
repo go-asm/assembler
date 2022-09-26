@@ -32,10 +32,9 @@
 package obj
 
 import (
+	"cmd/internal/objabi"
 	"log"
 	"math"
-
-	"github.com/go-asm/go/cmd/objabi"
 )
 
 // Grow increases the length of s.P to lsiz.

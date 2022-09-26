@@ -5,10 +5,9 @@
 package reflectlite
 
 import (
+	"internal/goarch"
+	"internal/unsafeheader"
 	"unsafe"
-
-	"github.com/go-asm/go/goarch"
-	"github.com/go-asm/go/unsafeheader"
 )
 
 // Swapper returns a function that swaps the elements in the provided

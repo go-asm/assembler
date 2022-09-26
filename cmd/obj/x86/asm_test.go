@@ -5,10 +5,9 @@
 package x86
 
 import (
+	"cmd/internal/obj"
+	"cmd/internal/objabi"
 	"testing"
-
-	"github.com/go-asm/go/cmd/obj"
-	"github.com/go-asm/go/cmd/objabi"
 )
 
 type oclassTest struct {

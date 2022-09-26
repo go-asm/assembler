@@ -31,12 +31,11 @@
 package arm
 
 import (
+	"cmd/internal/obj"
+	"cmd/internal/objabi"
+	"cmd/internal/sys"
+	"internal/buildcfg"
 	"log"
-
-	"github.com/go-asm/go/buildcfg"
-	"github.com/go-asm/go/cmd/obj"
-	"github.com/go-asm/go/cmd/objabi"
-	"github.com/go-asm/go/cmd/sys"
 )
 
 var progedit_tlsfallback *obj.LSym

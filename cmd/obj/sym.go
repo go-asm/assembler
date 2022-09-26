@@ -32,16 +32,15 @@
 package obj
 
 import (
+	"cmd/internal/goobj"
+	"cmd/internal/notsha256"
+	"cmd/internal/objabi"
 	"encoding/base64"
 	"fmt"
+	"internal/buildcfg"
 	"log"
 	"math"
 	"sort"
-
-	"github.com/go-asm/go/buildcfg"
-	"github.com/go-asm/go/cmd/goobj"
-	"github.com/go-asm/go/cmd/notsha256"
-	"github.com/go-asm/go/cmd/objabi"
 )
 
 func Linknew(arch *LinkArch) *Link {

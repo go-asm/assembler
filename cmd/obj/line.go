@@ -5,8 +5,8 @@
 package obj
 
 import (
-	"github.com/go-asm/go/cmd/goobj"
-	"github.com/go-asm/go/cmd/src"
+	"cmd/internal/goobj"
+	"cmd/internal/src"
 )
 
 // AddImport adds a package to the list of imported packages.

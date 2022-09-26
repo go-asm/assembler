@@ -5,10 +5,9 @@
 package obj
 
 import (
+	"cmd/internal/objabi"
 	"fmt"
 	"strings"
-
-	"github.com/go-asm/go/cmd/objabi"
 )
 
 type Plist struct {

@@ -8,13 +8,12 @@ package windows_test
 
 import (
 	"fmt"
+	"internal/syscall/windows"
 	"os"
 	"os/exec"
 	"syscall"
 	"testing"
 	"unsafe"
-
-	"github.com/go-asm/go/syscall/windows"
 )
 
 func TestRunAtLowIntegrity(t *testing.T) {

@@ -2,7 +2,7 @@
 
 package loong64
 
-import "github.com/go-asm/go/cmd/obj"
+import "cmd/internal/obj"
 
 var Anames = []string{
 	obj.A_ARCHSPECIFIC: "ABSD",
@@ -88,6 +88,7 @@ var Anames = []string{
 	"SQRTF",
 	"SRA",
 	"SRL",
+	"ROTR",
 	"SUB",
 	"SUBD",
 	"SUBF",
@@ -99,12 +100,15 @@ var Anames = []string{
 	"TNE",
 	"WORD",
 	"XOR",
+	"MASKEQZ",
+	"MASKNEZ",
 	"MOVV",
 	"MOVVL",
 	"MOVVR",
 	"SLLV",
 	"SRAV",
 	"SRLV",
+	"ROTRV",
 	"DIVV",
 	"DIVVU",
 	"REMV",

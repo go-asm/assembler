@@ -6,11 +6,10 @@ package unsafeheader_test
 
 import (
 	"bytes"
+	"internal/unsafeheader"
 	"reflect"
 	"testing"
 	"unsafe"
-
-	"github.com/go-asm/go/unsafeheader"
 )
 
 // TestTypeMatchesReflectType ensures that the name and layout of the

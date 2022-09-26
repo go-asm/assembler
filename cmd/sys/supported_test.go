@@ -5,10 +5,9 @@
 package sys
 
 import (
+	"internal/testenv"
 	"runtime"
 	"testing"
-
-	"github.com/go-asm/go/testenv"
 )
 
 func TestMustLinkExternalMatchesTestenv(t *testing.T) {

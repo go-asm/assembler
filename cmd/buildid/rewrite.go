@@ -6,12 +6,11 @@ package buildid
 
 import (
 	"bytes"
+	"cmd/internal/codesign"
 	"crypto/sha256"
 	"debug/macho"
 	"fmt"
 	"io"
-
-	"github.com/go-asm/go/cmd/codesign"
 )
 
 // FindAndHash reads all of r and returns the offsets of occurrences of id.

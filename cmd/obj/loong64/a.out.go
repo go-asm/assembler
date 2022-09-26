@@ -5,7 +5,7 @@
 package loong64
 
 import (
-	"github.com/go-asm/go/cmd/obj"
+	"cmd/internal/obj"
 )
 
 //go:generate go run ../stringer.go -i $GOFILE -o anames.go -p loong64
@@ -335,6 +335,7 @@ const (
 	ASQRTF
 	ASRA
 	ASRL
+	AROTR
 	ASUB
 	ASUBD
 	ASUBF
@@ -351,6 +352,9 @@ const (
 
 	AXOR
 
+	AMASKEQZ
+	AMASKNEZ
+
 	// 64-bit
 	AMOVV
 	AMOVVL
@@ -359,6 +363,7 @@ const (
 	ASLLV
 	ASRAV
 	ASRLV
+	AROTRV
 	ADIVV
 	ADIVVU
 

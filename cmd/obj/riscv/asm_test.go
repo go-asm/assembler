@@ -7,14 +7,12 @@ package riscv
 import (
 	"bytes"
 	"fmt"
-	"io/ioutil"
+	"internal/testenv"
 	"os"
 	"os/exec"
 	"path/filepath"
 	"runtime"
 	"testing"
-
-	"github.com/go-asm/go/testenv"
 )
 
 // TestLargeBranch generates a large function with a very far conditional
@@ -25,7 +23,7 @@ func TestLargeBranch(t *testing.T) {
 	}
 	testenv.MustHaveGoBuild(t)
 
-	dir, err := ioutil.TempDir("", "testlargebranch")
+	dir, err := os.MkdirTemp("", "testlargebranch")
 	if err != nil {
 		t.Fatalf("Could not create directory: %v", err)
 	}
@@ -36,7 +34,7 @@ func TestLargeBranch(t *testing.T) {
 	genLargeBranch(buf)
 
 	tmpfile := filepath.Join(dir, "x.s")
-	if err := ioutil.WriteFile(tmpfile, buf.Bytes(), 0644); err != nil {
+	if err := os.WriteFile(tmpfile, buf.Bytes(), 0644); err != nil {
 		t.Fatalf("Failed to write file: %v", err)
 	}
 
@@ -68,13 +66,13 @@ func TestLargeCall(t *testing.T) {
 	}
 	testenv.MustHaveGoBuild(t)
 
-	dir, err := ioutil.TempDir("", "testlargecall")
+	dir, err := os.MkdirTemp("", "testlargecall")
 	if err != nil {
 		t.Fatalf("could not create directory: %v", err)
 	}
 	defer os.RemoveAll(dir)
 
-	if err := ioutil.WriteFile(filepath.Join(dir, "go.mod"), []byte("module largecall"), 0644); err != nil {
+	if err := os.WriteFile(filepath.Join(dir, "go.mod"), []byte("module largecall"), 0644); err != nil {
 		t.Fatalf("Failed to write file: %v\n", err)
 	}
 	main := `package main
@@ -85,7 +83,7 @@ func main() {
 func x()
 func y()
 `
-	if err := ioutil.WriteFile(filepath.Join(dir, "x.go"), []byte(main), 0644); err != nil {
+	if err := os.WriteFile(filepath.Join(dir, "x.go"), []byte(main), 0644); err != nil {
 		t.Fatalf("failed to write main: %v\n", err)
 	}
 
@@ -93,7 +91,7 @@ func y()
 	buf := bytes.NewBuffer(make([]byte, 0, 7000000))
 	genLargeCall(buf)
 
-	if err := ioutil.WriteFile(filepath.Join(dir, "x.s"), buf.Bytes(), 0644); err != nil {
+	if err := os.WriteFile(filepath.Join(dir, "x.s"), buf.Bytes(), 0644); err != nil {
 		t.Fatalf("Failed to write file: %v\n", err)
 	}
 
@@ -131,13 +129,13 @@ func genLargeCall(buf *bytes.Buffer) {
 
 // Issue 20348.
 func TestNoRet(t *testing.T) {
-	dir, err := ioutil.TempDir("", "testnoret")
+	dir, err := os.MkdirTemp("", "testnoret")
 	if err != nil {
 		t.Fatal(err)
 	}
 	defer os.RemoveAll(dir)
 	tmpfile := filepath.Join(dir, "x.s")
-	if err := ioutil.WriteFile(tmpfile, []byte("TEXT ·stub(SB),$0-0\nNOP\n"), 0644); err != nil {
+	if err := os.WriteFile(tmpfile, []byte("TEXT ·stub(SB),$0-0\nNOP\n"), 0644); err != nil {
 		t.Fatal(err)
 	}
 	cmd := exec.Command(testenv.GoToolPath(t), "tool", "asm", "-o", filepath.Join(dir, "x.o"), tmpfile)
@@ -148,7 +146,7 @@ func TestNoRet(t *testing.T) {
 }
 
 func TestImmediateSplitting(t *testing.T) {
-	dir, err := ioutil.TempDir("", "testimmsplit")
+	dir, err := os.MkdirTemp("", "testimmsplit")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -191,7 +189,7 @@ TEXT _stub(SB),$0-0
 	MOVF	F6, 4096(X5)
 	MOVD	F6, 4096(X5)
 `
-	if err := ioutil.WriteFile(tmpfile, []byte(asm), 0644); err != nil {
+	if err := os.WriteFile(tmpfile, []byte(asm), 0644); err != nil {
 		t.Fatal(err)
 	}
 	cmd := exec.Command(testenv.GoToolPath(t), "tool", "asm", "-o", filepath.Join(dir, "x.o"), tmpfile)

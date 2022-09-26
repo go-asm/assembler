@@ -11,8 +11,8 @@ package arch
 import (
 	"strings"
 
-	"github.com/go-asm/go/cmd/obj"
-	"github.com/go-asm/go/cmd/obj/arm"
+	"cmd/internal/obj"
+	"cmd/internal/obj/arm"
 )
 
 var armLS = map[string]uint8{

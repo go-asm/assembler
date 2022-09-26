@@ -2,7 +2,7 @@
 
 package x86
 
-import "github.com/go-asm/go/cmd/obj"
+import "cmd/internal/obj"
 
 var Anames = []string{
 	obj.A_ARCHSPECIFIC: "AAA",

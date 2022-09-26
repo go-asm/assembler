@@ -2,7 +2,7 @@
 
 package riscv
 
-import "github.com/go-asm/go/cmd/obj"
+import "cmd/internal/obj"
 
 type inst struct {
 	opcode uint32

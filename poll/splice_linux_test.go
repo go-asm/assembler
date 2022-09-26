@@ -5,13 +5,12 @@
 package poll_test
 
 import (
+	"internal/poll"
 	"runtime"
 	"sync"
 	"sync/atomic"
 	"testing"
 	"time"
-
-	"github.com/go-asm/go/poll"
 )
 
 var closeHook atomic.Value // func(fd int)

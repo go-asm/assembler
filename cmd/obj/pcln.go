@@ -5,12 +5,11 @@
 package obj
 
 import (
+	"cmd/internal/goobj"
+	"cmd/internal/objabi"
 	"encoding/binary"
 	"fmt"
 	"log"
-
-	"github.com/go-asm/go/cmd/goobj"
-	"github.com/go-asm/go/cmd/objabi"
 )
 
 // funcpctab writes to dst a pc-value table mapping the code in func to the values

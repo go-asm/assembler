@@ -7,13 +7,11 @@ package buildid
 import (
 	"bytes"
 	"crypto/sha256"
-	"io/ioutil"
+	"internal/obscuretestdata"
 	"os"
 	"reflect"
 	"strings"
 	"testing"
-
-	"github.com/go-asm/go/obscuretestdata"
 )
 
 const (
@@ -22,7 +20,7 @@ const (
 )
 
 func TestReadFile(t *testing.T) {
-	f, err := ioutil.TempFile("", "buildid-test-")
+	f, err := os.CreateTemp("", "buildid-test-")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -60,7 +58,7 @@ func TestReadFile(t *testing.T) {
 			t.Errorf("ReadFile(%s) [readSize=2k] = %q, %v, want %q, nil", f, id, err, expectedID)
 		}
 
-		data, err := ioutil.ReadFile(f)
+		data, err := os.ReadFile(f)
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -69,7 +67,7 @@ func TestReadFile(t *testing.T) {
 			t.Errorf("FindAndHash(%s): %v", f, err)
 			continue
 		}
-		if err := ioutil.WriteFile(tmp, data, 0666); err != nil {
+		if err := os.WriteFile(tmp, data, 0666); err != nil {
 			t.Error(err)
 			continue
 		}

@@ -2,14 +2,13 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-//go:build dragonfly || freebsd || linux || netbsd || openbsd
+//go:build dragonfly || freebsd || linux || netbsd || (openbsd && mips64)
 
 package poll
 
 import (
+	"internal/syscall/unix"
 	"syscall"
-
-	"github.com/go-asm/go/syscall/unix"
 )
 
 func fcntl(fd int, cmd int, arg int) (int, error) {

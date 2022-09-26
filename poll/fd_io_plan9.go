@@ -5,11 +5,10 @@
 package poll
 
 import (
+	"internal/itoa"
 	"runtime"
 	"sync"
 	"syscall"
-
-	"github.com/go-asm/go/itoa"
 )
 
 // asyncIO implements asynchronous cancelable I/O.

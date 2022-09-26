@@ -4,7 +4,7 @@
 
 package objabi
 
-import "github.com/go-asm/go/buildcfg"
+import "internal/buildcfg"
 
 // For the linkers. Must match Go definitions.
 
@@ -27,5 +27,5 @@ func stackGuardMultiplier() int {
 	if buildcfg.GOOS == "aix" {
 		return 2
 	}
-	return stackGuardMultiplierDefault
+	return 1
 }

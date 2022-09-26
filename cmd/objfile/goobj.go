@@ -7,17 +7,16 @@
 package objfile
 
 import (
+	"cmd/internal/archive"
+	"cmd/internal/goobj"
+	"cmd/internal/objabi"
+	"cmd/internal/sys"
 	"debug/dwarf"
 	"debug/gosym"
 	"errors"
 	"fmt"
 	"io"
 	"os"
-
-	"github.com/go-asm/go/cmd/archive"
-	"github.com/go-asm/go/cmd/goobj"
-	"github.com/go-asm/go/cmd/objabi"
-	"github.com/go-asm/go/cmd/sys"
 )
 
 type goobjFile struct {

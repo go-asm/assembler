@@ -9,10 +9,9 @@ package objfile
 import (
 	"debug/dwarf"
 	"fmt"
+	"internal/xcoff"
 	"io"
 	"unicode"
-
-	"github.com/go-asm/go/xcoff"
 )
 
 type xcoffFile struct {

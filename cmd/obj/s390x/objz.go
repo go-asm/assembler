@@ -1,4 +1,4 @@
-// Based on github.com/go-asm/go/cmd/obj/ppc64/obj9.go.
+// Based on cmd/internal/obj/ppc64/obj9.go.
 //
 //	Copyright © 1994-1999 Lucent Technologies Inc.  All rights reserved.
 //	Portions Copyright © 1995-1997 C H Forsyth (forsyth@terzarima.net)
@@ -30,12 +30,11 @@
 package s390x
 
 import (
+	"cmd/internal/obj"
+	"cmd/internal/objabi"
+	"cmd/internal/sys"
 	"log"
 	"math"
-
-	"github.com/go-asm/go/cmd/obj"
-	"github.com/go-asm/go/cmd/objabi"
-	"github.com/go-asm/go/cmd/sys"
 )
 
 func progedit(ctxt *obj.Link, p *obj.Prog, newprog obj.ProgAlloc) {

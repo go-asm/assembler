@@ -9,11 +9,10 @@
 package arch
 
 import (
+	"cmd/internal/obj"
+	"cmd/internal/obj/arm64"
 	"errors"
 	"fmt"
-
-	"github.com/go-asm/go/cmd/obj"
-	"github.com/go-asm/go/cmd/obj/arm64"
 )
 
 var arm64LS = map[string]uint8{
@@ -132,7 +131,7 @@ func IsARM64STLXR(op obj.As) bool {
 // inputs does not fit into prog.Reg, so require special handling.
 func IsARM64TBL(op obj.As) bool {
 	switch op {
-	case arm64.AVTBL, arm64.AVMOVQ:
+	case arm64.AVTBL, arm64.AVTBX, arm64.AVMOVQ:
 		return true
 	}
 	return false

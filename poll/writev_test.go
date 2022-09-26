@@ -5,10 +5,9 @@
 package poll_test
 
 import (
+	"internal/poll"
 	"reflect"
 	"testing"
-
-	"github.com/go-asm/go/poll"
 )
 
 func TestConsume(t *testing.T) {

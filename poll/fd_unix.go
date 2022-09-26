@@ -7,11 +7,10 @@
 package poll
 
 import (
+	"internal/syscall/unix"
 	"io"
 	"sync/atomic"
 	"syscall"
-
-	"github.com/go-asm/go/syscall/unix"
 )
 
 // FD is a file descriptor. The net and os packages use this type as a

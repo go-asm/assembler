@@ -31,9 +31,8 @@
 package x86
 
 import (
+	"cmd/internal/obj"
 	"fmt"
-
-	"github.com/go-asm/go/cmd/obj"
 )
 
 var Register = []string{

@@ -4,7 +4,7 @@ import (
 	"bufio"
 	"bytes"
 	"fmt"
-	"io/ioutil"
+	"internal/testenv"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -12,8 +12,6 @@ import (
 	"strconv"
 	"strings"
 	"testing"
-
-	"github.com/go-asm/go/testenv"
 )
 
 const testdata = `
@@ -82,7 +80,7 @@ func normalize(s string) string {
 }
 
 func asmOutput(t *testing.T, s string) []byte {
-	tmpdir, err := ioutil.TempDir("", "progedittest")
+	tmpdir, err := os.MkdirTemp("", "progedittest")
 	if err != nil {
 		t.Fatal(err)
 	}

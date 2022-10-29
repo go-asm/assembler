@@ -449,11 +449,15 @@ func (t *uncommonType) exportedMethods() []method {
 // resolveNameOff resolves a name offset from a base pointer.
 // The (*rtype).nameOff method is a convenience wrapper for this function.
 // Implemented in the runtime package.
+//
+//go:linkname resolveNameOff internal/reflectlite.resolveTypeOff
 func resolveNameOff(ptrInModule unsafe.Pointer, off int32) unsafe.Pointer
 
 // resolveTypeOff resolves an *rtype offset from a base type.
 // The (*rtype).typeOff method is a convenience wrapper for this function.
 // Implemented in the runtime package.
+//
+//go:linkname resolveTypeOff internal/reflectlite.resolveTypeOff
 func resolveTypeOff(rtype unsafe.Pointer, off int32) unsafe.Pointer
 
 type nameOff int32 // offset to a name

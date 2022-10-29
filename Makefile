@@ -10,7 +10,14 @@ sync:
 	rm -rf $(shell find . -mindepth 1 -maxdepth 1 -type d -not -iwholename '**.git**' -not -iwholename '**_**' -not -iwholename '**assembler**' | sort)
 	ditto ${HOME}/sdk/${GO_VERSION}/src/internal .
 	ditto ${HOME}/sdk/${GO_VERSION}/src/cmd/internal ./cmd
-	ditto ${HOME}/sdk/${GO_VERSION}/src/cmd/asm/internal/arch ./asm/arch
+	for d in $(shell find ${HOME}/sdk/${GO_VERSION}/src/cmd -mindepth 2 -maxdepth 2 -type d -iwholename '*internal*'); \
+		do \
+		if [ $$(basename $$d) = 'internal' ]; then \
+		  mkdir -p ./cmd/$$(basename $$(dirname $$d)) && ditto $$d ./cmd/$$(basename $$(dirname $$d)); \
+		else \
+		  mkdir -p ./cmd/$$(basename $$d) && ditto $$d ./cmd/$$(basename $$d); \
+		fi \
+	done
 
 .PHONY: remove
 remove:
@@ -18,6 +25,13 @@ remove:
 	rm -f fuzz/trace.go
 	rm -f syscall/unix/getentropy_darwin.go
 	rm -f bytealg/compare_amd64.s bytealg/compare_arm64.s bytealg/equal_amd64.s bytealg/equal_arm64.s
+
+.PHONY: fiximport
+fiximport:
+	grep -E -rl 'cmd/(asm|compile|go|link)/internal' ${CURDIR}/** | grep -v -e Makefile -e assembler | xargs sed -E -i 's|cmd/(\w*)/internal/|github.com/go-asm/go/cmd/\1/|g'
+	grep -rl '"cmd/internal/' ${CURDIR}/** | grep -v -e Makefile -e assembler | xargs sed -i 's|"cmd/internal/|"github.com/go-asm/go/cmd/|g'
+	grep -rl '"internal/' ${CURDIR}/** | grep -v -e Makefile -e assembler | xargs sed -i 's|"internal/|"github.com/go-asm/go/|g'
+	sed -i 's|../../github.com/go-asm/go/cmd/reflectdata/reflect.go|src/cmd/reflectdata/reflect.go|g' reflectlite/type.go
 
 define fix_linkname
 sed -i -E ':a;N;$$!ba;s|${1}|${2}|' ${3}
@@ -44,13 +58,7 @@ linkname:
 	sed -i -E ':a;N;$$!ba;s|func ifaceE2I\(t \*rtype, src any, dst unsafe.Pointer\)|//go:linkname ifaceE2I internal/reflectlite.ifaceE2I\nfunc ifaceE2I\(t \*rtype, src any, dst unsafe.Pointer\)|' reflectlite/value.go
 	sed -i -E ':a;N;$$!ba;s|func typedmemmove\(t \*rtype, dst, src unsafe.Pointer\)|//go:linkname typedmemmove internal/reflectlite.typedmemmove\nfunc typedmemmove\(t \*rtype, dst, src unsafe.Pointer\)|' reflectlite/value.go
 
-.PHONY: fiximport
-fiximport:
-	grep -rl 'cmd/internal/' ${CURDIR}/** | grep -v Makefile | xargs sed -i 's|cmd/internal/|github.com/go-asm/go/cmd/|g'
-	grep -rl 'internal/' ${CURDIR}/** | grep -v Makefile | xargs sed -i 's|internal/|github.com/go-asm/go/|g'
-	sed -i 's|../../github.com/go-asm/go/cmd/reflectdata/reflect.go|src/cmd/reflectdata/reflect.go|g' reflectlite/type.go
-
 .PHONY: fmt
 fmt:
-	gofmt -w -s .
-	goimports -w -local=github.com/go-asm/go .
+	@gofmt -w -s $(shell find . -name '*.go' -not -iwholename '*testdata*')
+	@goimports -w -local=github.com/go-asm/go $(shell find . -name '*.go' -not -iwholename '*testdata*')

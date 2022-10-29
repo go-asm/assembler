@@ -5,8 +5,8 @@
 //go:build unix || windows
 
 // Export guts for testing on posix.
-// Since testing imports os and os imports github.com/go-asm/go/poll,
-// the github.com/go-asm/go/poll tests can not be in package poll.
+// Since testing imports os and os imports internal/poll,
+// the internal/poll tests can not be in package poll.
 
 package poll
 

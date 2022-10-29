@@ -4371,7 +4371,7 @@ func (ab *AsmBuf) doasm(ctxt *obj.Link, cursym *obj.LSym, p *obj.Prog) {
 				}
 				// NOTE(rsc): This is probably safe to do always,
 				// but when enabled it chooses different encodings
-				// than the old github.com/go-asm/go/cmd/obj/i386 code did,
+				// than the old cmd/internal/obj/i386 code did,
 				// which breaks our "same bits out" checks.
 				// In particular, CMPB AX, $0 encodes as 80 f8 00
 				// in the original obj/i386, and it would encode

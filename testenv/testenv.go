@@ -121,7 +121,7 @@ func findGOROOT() (string, error) {
 		// binary was built with -trimpath, or perhaps because GOROOT_FINAL was set
 		// without GOROOT and the tree hasn't been moved there yet).
 		//
-		// Since this is github.com/go-asm/go/testenv, we can cheat and assume that the caller
+		// Since this is internal/testenv, we can cheat and assume that the caller
 		// is a test of some package in a subdirectory of GOROOT/src. ('go test'
 		// runs the test in the directory containing the packaged under test.) That
 		// means that if we start walking up the tree, we should eventually find
@@ -296,7 +296,7 @@ func MustHaveCGO(t testing.TB) {
 
 // CanInternalLink reports whether the current system can link programs with
 // internal linking.
-// (This is the opposite of github.com/go-asm/go/cmd/sys.MustLinkExternal. Keep them in sync.)
+// (This is the opposite of cmd/internal/sys.MustLinkExternal. Keep them in sync.)
 func CanInternalLink() bool {
 	switch runtime.GOOS {
 	case "android":

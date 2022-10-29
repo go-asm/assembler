@@ -414,7 +414,7 @@ func (w *writer) Hash(s *LSym) {
 // Allowing flexibility increases the effectiveness of content-addressibility.
 // But in some cases, such as doing addressing based on a base symbol,
 // we need to ensure that a symbol is always in a prticular section.
-// Some of these conditions are duplicated in cmd/link/github.com/go-asm/go/ld.(*Link).symtab.
+// Some of these conditions are duplicated in github.com/go-asm/go/cmd/link/ld.(*Link).symtab.
 // TODO: instead of duplicating them, have the compiler decide where symbols go.
 func contentHashSection(s *LSym) byte {
 	name := s.Name
@@ -652,7 +652,7 @@ func (w *writer) refNames() {
 		o.Write(w.Writer)
 	})
 	// TODO: output in sorted order?
-	// Currently tools (github.com/go-asm/go/cmd/goobj package) doesn't use mmap,
+	// Currently tools (cmd/internal/goobj package) doesn't use mmap,
 	// and it just read it into a map in memory upfront. If it uses
 	// mmap, if the output is sorted, it probably could avoid reading
 	// into memory and just do lookups in the mmap'd object file.

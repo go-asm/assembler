@@ -845,7 +845,7 @@ func (s *LSym) String() string {
 	return s.Name
 }
 
-// The compiler needs *LSym to be assignable to cmd/compile/github.com/go-asm/go/ssa.Sym.
+// The compiler needs *LSym to be assignable to github.com/go-asm/go/cmd/compile/ssa.Sym.
 func (*LSym) CanBeAnSSASym() {}
 func (*LSym) CanBeAnSSAAux() {}
 

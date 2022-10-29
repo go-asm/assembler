@@ -7,7 +7,7 @@ package assembler
 import (
 	"fmt"
 
-	"github.com/go-asm/go/asm/arch"
+	"github.com/go-asm/go/cmd/asm/arch"
 	"github.com/go-asm/go/cmd/obj"
 	"github.com/go-asm/go/cmd/objabi"
 )

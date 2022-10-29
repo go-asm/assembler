@@ -1,4 +1,4 @@
-// Based on github.com/go-asm/go/cmd/obj/ppc64/list9.go.
+// Based on cmd/internal/obj/ppc64/list9.go.
 //
 //	Copyright © 1994-1999 Lucent Technologies Inc.  All rights reserved.
 //	Portions Copyright © 1995-1997 C H Forsyth (forsyth@terzarima.net)

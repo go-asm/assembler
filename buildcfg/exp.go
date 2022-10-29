@@ -54,7 +54,7 @@ var FramePointerEnabled = GOARCH == "amd64" || GOARCH == "arm64"
 // configuration tuple and returns the enabled and baseline experiment
 // flag sets.
 //
-// TODO(mdempsky): Move to github.com/go-asm/go/goexperiment.
+// TODO(mdempsky): Move to internal/goexperiment.
 func ParseGOEXPERIMENT(goos, goarch, goexp string) (*ExperimentFlags, error) {
 	// regabiSupported is set to true on platforms where register ABI is
 	// supported and enabled by default.

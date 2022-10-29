@@ -312,7 +312,7 @@ func rewriteToUseGot(ctxt *obj.Link, p *obj.Prog, newprog obj.ProgAlloc) {
 			// Special case: clobber the destination register with
 			// the PC so we don't have to clobber CX.
 			// The SSA backend depends on CX not being clobbered across LEAL.
-			// See cmd/compile/github.com/go-asm/go/ssa/gen/386.rules (search for Flag_shared).
+			// See github.com/go-asm/go/cmd/compile/ssa/gen/386.rules (search for Flag_shared).
 			reg = p.To.Reg
 		}
 	}

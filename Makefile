@@ -1,6 +1,6 @@
 .DEFAULT_GOAL = all
 
-GO_VERSION ?= go1.19.1
+GO_VERSION ?= go1.19.2
 
 .PHONY: all
 all: sync remove fiximport linkname fmt
@@ -38,6 +38,11 @@ linkname:
 	$(call fix_linkname,\n(func runtime_pollSetDeadline),\n//go:linkname runtime_pollSetDeadline runtime.pollSetDeadline\n\1,poll/fd_poll_runtime.go)
 	$(call fix_linkname,\n(func runtime_pollUnblock),\n//go:linkname runtime_pollUnblock runtime.pollUnblock\n\1,poll/fd_poll_runtime.go)
 	$(call fix_linkname,\n(func runtime_isPollServerDescriptor),\n//go:linkname runtime_isPollServerDescriptor runtime.isPollServerDescriptor\n\1,poll/fd_poll_runtime.go)
+	sed -i -E ':a;N;$$!ba;s|func resolveNameOff\(ptrInModule unsafe.Pointer, off int32\) unsafe.Pointer|//go:linkname resolveNameOff internal/reflectlite.resolveTypeOff\nfunc resolveNameOff\(ptrInModule unsafe.Pointer, off int32\) unsafe.Pointer|' reflectlite/type.go
+	sed -i -E ':a;N;$$!ba;s|func resolveTypeOff\(rtype unsafe.Pointer, off int32\) unsafe.Pointer|//go:linkname resolveTypeOff internal/reflectlite.resolveTypeOff\nfunc resolveTypeOff\(rtype unsafe.Pointer, off int32\) unsafe.Pointer|' reflectlite/type.go
+	sed -i -E ':a;N;$$!ba;s|// implemented in package runtime\nfunc unsafe_New\(\*rtype\) unsafe.Pointer|// implemented in package runtime\n//go:linkname unsafe_New internal/reflectlite.unsafe_New\nfunc unsafe_New\(\*rtype\) unsafe.Pointer|' reflectlite/value.go
+	sed -i -E ':a;N;$$!ba;s|func ifaceE2I\(t \*rtype, src any, dst unsafe.Pointer\)|//go:linkname ifaceE2I internal/reflectlite.ifaceE2I\nfunc ifaceE2I\(t \*rtype, src any, dst unsafe.Pointer\)|' reflectlite/value.go
+	sed -i -E ':a;N;$$!ba;s|func typedmemmove\(t \*rtype, dst, src unsafe.Pointer\)|//go:linkname typedmemmove internal/reflectlite.typedmemmove\nfunc typedmemmove\(t \*rtype, dst, src unsafe.Pointer\)|' reflectlite/value.go
 
 .PHONY: fiximport
 fiximport:

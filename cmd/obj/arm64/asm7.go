@@ -4907,7 +4907,7 @@ func (c *ctxt7) asmout(p *obj.Prog, o *Optab, out []uint32) {
 			}
 		}
 		o1 |= uint32(p.To.Offset)
-		// cmd/asm/github.com/go-asm/go/arch/arm64.go:ARM64RegisterListOffset
+		// github.com/go-asm/go/cmd/asm/arch/arm64.go:ARM64RegisterListOffset
 		// add opcode(bit 12-15) for vld1, mask it off if it's not vld1
 		o1 = c.maskOpvldvst(p, o1)
 		o1 |= uint32(r&31) << 5
@@ -5019,7 +5019,7 @@ func (c *ctxt7) asmout(p *obj.Prog, o *Optab, out []uint32) {
 			}
 		}
 		o1 |= uint32(p.From.Offset)
-		// cmd/asm/github.com/go-asm/go/arch/arm64.go:ARM64RegisterListOffset
+		// github.com/go-asm/go/cmd/asm/arch/arm64.go:ARM64RegisterListOffset
 		// add opcode(bit 12-15) for vst1, mask it off if it's not vst1
 		o1 = c.maskOpvldvst(p, o1)
 		o1 |= uint32(r&31) << 5

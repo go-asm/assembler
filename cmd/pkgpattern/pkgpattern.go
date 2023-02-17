@@ -9,7 +9,7 @@ import (
 	"strings"
 )
 
-// Note: most of this code was originally part of the cmd/go/github.com/go-asm/go/search
+// Note: most of this code was originally part of the github.com/go-asm/go/cmd/go/search
 // package; it was migrated here in order to support the use case of
 // commands other than cmd/go that need to accept package pattern args.
 

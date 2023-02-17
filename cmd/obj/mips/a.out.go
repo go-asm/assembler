@@ -250,7 +250,7 @@ func init() {
 		}
 	}
 	f(REG_R0, REG_R31, 0)
-	f(REG_F0, REG_F31, 32) // For 32-bit MIPS, compiler only uses even numbered registers --  see cmd/compile/github.com/go-asm/go/ssa/gen/MIPSOps.go
+	f(REG_F0, REG_F31, 32) // For 32-bit MIPS, compiler only uses even numbered registers --  see github.com/go-asm/go/cmd/compile/ssa/gen/MIPSOps.go
 	MIPSDWARFRegisters[REG_HI] = 64
 	MIPSDWARFRegisters[REG_LO] = 65
 	// The lower bits of W registers are alias to F registers

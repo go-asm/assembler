@@ -111,8 +111,8 @@ const Ptr = Pointer
 //
 // tflag values must be kept in sync with copies in:
 //
-//	cmd/compile/github.com/go-asm/go/reflectdata/reflect.go
-//	cmd/link/github.com/go-asm/go/ld/decodesym.go
+//	github.com/go-asm/go/cmd/compile/reflectdata/reflect.go
+//	github.com/go-asm/go/cmd/link/ld/decodesym.go
 //	runtime/type.go
 type tflag uint8
 

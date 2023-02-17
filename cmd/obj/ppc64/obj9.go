@@ -662,7 +662,7 @@ func preprocess(ctxt *obj.Link, cursym *obj.LSym, newprog obj.ProgAlloc) {
 				// way to use r12 as the source.
 				//
 				// Note that the same condition is tested in
-				// putelfsym in cmd/link/github.com/go-asm/go/ld/symtab.go
+				// putelfsym in github.com/go-asm/go/cmd/link/ld/symtab.go
 				// where we set the st_other field to indicate
 				// the presence of these instructions.
 				q = obj.Appendp(q, c.newprog)

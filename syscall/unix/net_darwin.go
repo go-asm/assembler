@@ -36,8 +36,6 @@ type Addrinfo struct {
 	Next      *Addrinfo
 }
 
-//go:cgo_ldflag "-lresolv"
-
 //go:cgo_import_dynamic libc_getaddrinfo getaddrinfo "/usr/lib/libSystem.B.dylib"
 func libc_getaddrinfo_trampoline()
 

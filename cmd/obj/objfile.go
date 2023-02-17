@@ -423,7 +423,7 @@ func (w *writer) Hash(s *LSym) {
 // Allowing flexibility increases the effectiveness of content-addressibility.
 // But in some cases, such as doing addressing based on a base symbol,
 // we need to ensure that a symbol is always in a prticular section.
-// Some of these conditions are duplicated in cmd/link/github.com/go-asm/go/ld.(*Link).symtab.
+// Some of these conditions are duplicated in github.com/go-asm/go/cmd/link/ld.(*Link).symtab.
 // TODO: instead of duplicating them, have the compiler decide where symbols go.
 func contentHashSection(s *LSym) byte {
 	name := s.Name

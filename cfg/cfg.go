@@ -4,7 +4,7 @@
 
 // Package cfg holds configuration shared by the Go command and github.com/go-asm/go/testenv.
 // Definitions that don't need to be exposed outside of cmd/go should be in
-// cmd/go/github.com/go-asm/go/cfg instead of this package.
+// github.com/go-asm/go/cmd/go/cfg instead of this package.
 package cfg
 
 // KnownEnv is a list of environment variables that affect the operation

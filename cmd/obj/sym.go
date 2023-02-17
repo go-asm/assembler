@@ -350,6 +350,7 @@ func (ctxt *Link) traverseSyms(flag traverseFlag, fn func(*LSym)) {
 		}
 	}
 	lists := [][]*LSym{ctxt.Text, ctxt.Data}
+	files := ctxt.PosTable.FileTable()
 	for _, list := range lists {
 		for _, s := range list {
 			if flag&traverseDefs != 0 {
@@ -366,7 +367,7 @@ func (ctxt *Link) traverseSyms(flag traverseFlag, fn func(*LSym)) {
 					f := func(parent *LSym, aux *LSym) {
 						fn(aux)
 					}
-					ctxt.traverseFuncAux(flag, s, f)
+					ctxt.traverseFuncAux(flag, s, f, files)
 				}
 			}
 			if flag&traversePcdata != 0 && s.Type == objabi.STEXT {
@@ -383,7 +384,7 @@ func (ctxt *Link) traverseSyms(flag traverseFlag, fn func(*LSym)) {
 	}
 }
 
-func (ctxt *Link) traverseFuncAux(flag traverseFlag, fsym *LSym, fn func(parent *LSym, aux *LSym)) {
+func (ctxt *Link) traverseFuncAux(flag traverseFlag, fsym *LSym, fn func(parent *LSym, aux *LSym), files []string) {
 	fninfo := fsym.Func()
 	pc := &fninfo.Pcln
 	if flag&traverseAux == 0 {
@@ -396,7 +397,6 @@ func (ctxt *Link) traverseFuncAux(flag traverseFlag, fsym *LSym, fn func(parent 
 			fn(fsym, d)
 		}
 	}
-	files := ctxt.PosTable.FileTable()
 	usedFiles := make([]goobj.CUFileIndex, 0, len(pc.UsedFiles))
 	for f := range pc.UsedFiles {
 		usedFiles = append(usedFiles, f)
@@ -411,7 +411,7 @@ func (ctxt *Link) traverseFuncAux(flag traverseFlag, fsym *LSym, fn func(parent 
 		if call.Func != nil {
 			fn(fsym, call.Func)
 		}
-		f, _ := linkgetlineFromPos(ctxt, call.Pos)
+		f, _ := ctxt.getFileSymbolAndLine(call.Pos)
 		if filesym := ctxt.Lookup(f); filesym != nil {
 			fn(fsym, filesym)
 		}
@@ -436,6 +436,7 @@ func (ctxt *Link) traverseFuncAux(flag traverseFlag, fsym *LSym, fn func(parent 
 // Traverse aux symbols, calling fn for each sym/aux pair.
 func (ctxt *Link) traverseAuxSyms(flag traverseFlag, fn func(parent *LSym, aux *LSym)) {
 	lists := [][]*LSym{ctxt.Text, ctxt.Data}
+	files := ctxt.PosTable.FileTable()
 	for _, list := range lists {
 		for _, s := range list {
 			if s.Gotype != nil {
@@ -446,7 +447,7 @@ func (ctxt *Link) traverseAuxSyms(flag traverseFlag, fn func(parent *LSym, aux *
 			if s.Type != objabi.STEXT {
 				continue
 			}
-			ctxt.traverseFuncAux(flag, s, fn)
+			ctxt.traverseFuncAux(flag, s, fn, files)
 		}
 	}
 }

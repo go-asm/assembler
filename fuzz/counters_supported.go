@@ -8,8 +8,6 @@ package fuzz
 
 import (
 	"unsafe"
-
-	"github.com/go-asm/go/unsafeheader"
 )
 
 // coverage returns a []byte containing unique 8-bit counters for each edge of
@@ -19,12 +17,5 @@ import (
 func coverage() []byte {
 	addr := unsafe.Pointer(&_counters)
 	size := uintptr(unsafe.Pointer(&_ecounters)) - uintptr(addr)
-
-	var res []byte
-	*(*unsafeheader.Slice)(unsafe.Pointer(&res)) = unsafeheader.Slice{
-		Data: addr,
-		Len:  int(size),
-		Cap:  int(size),
-	}
-	return res
+	return unsafe.Slice((*byte)(addr), int(size))
 }

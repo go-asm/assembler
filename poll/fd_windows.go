@@ -269,7 +269,6 @@ const (
 	kindNet fileKind = iota
 	kindFile
 	kindConsole
-	kindDir
 	kindPipe
 )
 
@@ -287,12 +286,10 @@ func (fd *FD) Init(net string, pollable bool) (string, error) {
 	}
 
 	switch net {
-	case "file":
+	case "file", "dir":
 		fd.kind = kindFile
 	case "console":
 		fd.kind = kindConsole
-	case "dir":
-		fd.kind = kindDir
 	case "pipe":
 		fd.kind = kindPipe
 	case "tcp", "tcp4", "tcp6",
@@ -372,8 +369,6 @@ func (fd *FD) destroy() error {
 	case kindNet:
 		// The net package uses the CloseFunc variable for testing.
 		err = CloseFunc(fd.Sysfd)
-	case kindDir:
-		err = syscall.FindClose(fd.Sysfd)
 	default:
 		err = syscall.CloseHandle(fd.Sysfd)
 	}
@@ -501,8 +496,7 @@ func (fd *FD) readConsole(b []byte) (int, error) {
 					}
 				}
 			}
-			n := utf8.EncodeRune(buf[len(buf):cap(buf)], r)
-			buf = buf[:len(buf)+n]
+			buf = utf8.AppendRune(buf, r)
 		}
 		fd.readbyte = buf
 		fd.readbyteOffset = 0
@@ -1008,15 +1002,6 @@ func (fd *FD) Seek(offset int64, whence int) (int64, error) {
 	defer fd.l.Unlock()
 
 	return syscall.Seek(fd.Sysfd, offset, whence)
-}
-
-// FindNextFile wraps syscall.FindNextFile.
-func (fd *FD) FindNextFile(data *syscall.Win32finddata) error {
-	if err := fd.incref(); err != nil {
-		return err
-	}
-	defer fd.decref()
-	return syscall.FindNextFile(fd.Sysfd, data)
 }
 
 // Fchmod updates syscall.ByHandleFileInformation.Fileattributes when needed.

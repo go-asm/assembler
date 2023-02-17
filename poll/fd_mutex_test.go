@@ -15,7 +15,7 @@ import (
 )
 
 func TestMutexLock(t *testing.T) {
-	var mu FDMutex
+	var mu XFDMutex
 
 	if !mu.Incref() {
 		t.Fatal("broken")
@@ -40,7 +40,7 @@ func TestMutexLock(t *testing.T) {
 }
 
 func TestMutexClose(t *testing.T) {
-	var mu FDMutex
+	var mu XFDMutex
 	if !mu.IncrefAndClose() {
 		t.Fatal("broken")
 	}
@@ -61,7 +61,7 @@ func TestMutexClose(t *testing.T) {
 
 func TestMutexCloseUnblock(t *testing.T) {
 	c := make(chan bool, 4)
-	var mu FDMutex
+	var mu XFDMutex
 	mu.RWLock(true)
 	for i := 0; i < 4; i++ {
 		go func() {
@@ -105,7 +105,7 @@ func TestMutexPanic(t *testing.T) {
 		f()
 	}
 
-	var mu FDMutex
+	var mu XFDMutex
 	ensurePanics(func() { mu.Decref() })
 	ensurePanics(func() { mu.RWUnlock(true) })
 	ensurePanics(func() { mu.RWUnlock(false) })
@@ -138,7 +138,7 @@ func TestMutexOverflowPanic(t *testing.T) {
 		}
 	}()
 
-	var mu1 FDMutex
+	var mu1 XFDMutex
 	for i := 0; i < 1<<21; i++ {
 		mu1.Incref()
 	}
@@ -153,7 +153,7 @@ func TestMutexStress(t *testing.T) {
 	}
 	defer runtime.GOMAXPROCS(runtime.GOMAXPROCS(P))
 	done := make(chan bool, P)
-	var mu FDMutex
+	var mu XFDMutex
 	var readState [2]uint64
 	var writeState [2]uint64
 	for p := 0; p < P; p++ {

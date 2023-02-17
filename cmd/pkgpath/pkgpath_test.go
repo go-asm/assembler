@@ -7,6 +7,8 @@ package pkgpath
 import (
 	"os"
 	"testing"
+
+	"github.com/go-asm/go/testenv"
 )
 
 const testEnvName = "GO_PKGPATH_TEST_COMPILER"
@@ -34,6 +36,8 @@ func init() {
 }
 
 func TestToSymbolFunc(t *testing.T) {
+	testenv.MustHaveExec(t)
+
 	const input = "pä世🜃"
 	tests := []struct {
 		env     string

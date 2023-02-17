@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// If you update this constraint, also update github.com/go-asm/go/cmd/sys.FuzzSupported.
+// If you update this constraint, also update github.com/go-asm/go/platform.FuzzSupported.
 //
 //go:build !darwin && !freebsd && !linux && !windows
 

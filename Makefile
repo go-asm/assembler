@@ -1,20 +1,41 @@
 .DEFAULT_GOAL = all
 
 GO_VERSION ?= go1.20.1
+GO_SRC ?= ${HOME}/sdk/${GO_VERSION}/src
 
 .PHONY: all
 all: sync remove fiximport linkname fmt
 
+define ditto
+ditto ${GO_SRC}/${1} ${2}
+sed -i 's|package main|package $(shell basename ${2})|' ${2}/*.go || true
+endef
+
 .PHONY: sync
 sync:
 	rm -rf $(shell find . -mindepth 1 -maxdepth 1 -type d -not -iwholename '**.git**' -not -iwholename '**_**' -not -iwholename '**assembler**' | sort)
-	ditto ${HOME}/sdk/${GO_VERSION}/src/internal .
-	ditto ${HOME}/sdk/${GO_VERSION}/src/cmd/internal ./cmd
-	ditto ${HOME}/sdk/${GO_VERSION}/src/cmd/asm/internal/arch ./asm/arch
+	$(call ditto,internal,.)
+	$(call ditto,cmd/internal,./cmd)
+	$(call ditto,cmd/api,./cmd/api)
+	$(call ditto,cmd/asm/internal,./cmd/asm)
+	$(call ditto,cmd/cgo,./cmd/cgo)
+	$(call ditto,cmd/compile/internal,./cmd/compile)
+	$(call ditto,cmd/covdata,./cmd/covdata)
+	$(call ditto,cmd/dist,./cmd/dist)
+	$(call ditto,cmd/doc,./cmd/doc)
+	$(call ditto,cmd/fix,./cmd/fix)
+	$(call ditto,cmd/go/internal,./cmd/go)
+	$(call ditto,cmd/gofmt,./cmd/gofmt)
+	$(call ditto,cmd/link/internal,./cmd/link)
+	$(call ditto,cmd/nm,./cmd/nm)
+	$(call ditto,cmd/objdump,./cmd/objdump)
+	$(call ditto,cmd/pack,./cmd/pack)
+	$(call ditto,cmd/pprof,./cmd/pprof)
+	$(call ditto,cmd/trace,./cmd/trace)
 
 .PHONY: remove
 remove:
-	rm -rf abi
+	# rm -rf abi
 	rm -f fuzz/trace.go
 	rm -f syscall/unix/getentropy_darwin.go
 	rm -f bytealg/compare_amd64.s bytealg/compare_arm64.s bytealg/equal_amd64.s bytealg/equal_arm64.s
@@ -38,6 +59,7 @@ linkname:
 	$(call fix_linkname,\n(func runtime_pollSetDeadline),\n//go:linkname runtime_pollSetDeadline runtime.pollSetDeadline\n\1,poll/fd_poll_runtime.go)
 	$(call fix_linkname,\n(func runtime_pollUnblock),\n//go:linkname runtime_pollUnblock runtime.pollUnblock\n\1,poll/fd_poll_runtime.go)
 	$(call fix_linkname,\n(func runtime_isPollServerDescriptor),\n//go:linkname runtime_isPollServerDescriptor runtime.isPollServerDescriptor\n\1,poll/fd_poll_runtime.go)
+	$(call fix_linkname,\n//go:cgo_ldflag "-lresolv",,syscall/unix/net_darwin.go)
 	sed -i -E ':a;N;$$!ba;s|func resolveNameOff\(ptrInModule unsafe.Pointer, off int32\) unsafe.Pointer|//go:linkname resolveNameOff internal/reflectlite.resolveTypeOff\nfunc resolveNameOff\(ptrInModule unsafe.Pointer, off int32\) unsafe.Pointer|' reflectlite/type.go
 	sed -i -E ':a;N;$$!ba;s|func resolveTypeOff\(rtype unsafe.Pointer, off int32\) unsafe.Pointer|//go:linkname resolveTypeOff internal/reflectlite.resolveTypeOff\nfunc resolveTypeOff\(rtype unsafe.Pointer, off int32\) unsafe.Pointer|' reflectlite/type.go
 	sed -i -E ':a;N;$$!ba;s|// implemented in package runtime\nfunc unsafe_New\(\*rtype\) unsafe.Pointer|// implemented in package runtime\n//go:linkname unsafe_New internal/reflectlite.unsafe_New\nfunc unsafe_New\(\*rtype\) unsafe.Pointer|' reflectlite/value.go
@@ -48,6 +70,10 @@ linkname:
 fiximport:
 	grep -rl 'cmd/internal/' ${CURDIR}/** | grep -v Makefile | xargs sed -i 's|cmd/internal/|github.com/go-asm/go/cmd/|g'
 	grep -rl 'internal/' ${CURDIR}/** | grep -v Makefile | xargs sed -i 's|internal/|github.com/go-asm/go/|g'
+	grep -rl 'cmd/.*/github.com/go-asm' ${CURDIR}/** | grep -v -e Makefile | xargs sed -i -E 's|cmd/(.*)/github.com/go-asm/go|github.com/go-asm/go/cmd/\1|g'
+	grep -rl 'github.com/go-asm/go/cmd/go/github.com/go-asm/go' ${CURDIR}/** | grep -v -e Makefile | xargs sed -i -E 's|github.com/go-asm/go/cmd/go/github.com/go-asm/go|github.com/go-asm/go/cmd/go|g'
+	grep -rl 'github.com/go-asm/go/cmd/go/lockedfile/filelock' ${CURDIR}/** | grep -v -e Makefile | xargs sed -i -E 's|github.com/go-asm/go/cmd/go/lockedfile/filelock|github.com/go-asm/go/cmd/go/lockedfile/internal/filelock|g'
+	grep -rl 'github.com/go-asm/go/cmd/go/test/genflags' ${CURDIR}/** | grep -v -e Makefile | xargs sed -i -E 's|github.com/go-asm/go/cmd/go/test/genflags|github.com/go-asm/go/cmd/go/test/internal/genflags|g'
 	sed -i 's|../../github.com/go-asm/go/cmd/reflectdata/reflect.go|src/cmd/reflectdata/reflect.go|g' reflectlite/type.go
 
 .PHONY: fmt

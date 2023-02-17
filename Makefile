@@ -1,6 +1,6 @@
 .DEFAULT_GOAL = all
 
-GO_VERSION ?= go1.20
+GO_VERSION ?= go1.20.1
 
 .PHONY: all
 all: sync remove fiximport linkname fmt

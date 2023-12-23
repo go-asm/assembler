@@ -1,16 +1,18 @@
 .DEFAULT_GOAL = all
 
-GO_VERSION ?= go1.20.1
+GO_VERSION ?= go1.20.2
 
 .PHONY: all
 all: sync remove fiximport linkname fmt
 
 .PHONY: sync
 sync:
+	go run golang.org/dl/${GO_VERSION}@latest download
 	rm -rf $(shell find . -mindepth 1 -maxdepth 1 -type d -not -iwholename '**.git**' -not -iwholename '**_**' -not -iwholename '**assembler**' | sort)
 	ditto ${HOME}/sdk/${GO_VERSION}/src/internal .
 	ditto ${HOME}/sdk/${GO_VERSION}/src/cmd/internal ./cmd
 	ditto ${HOME}/sdk/${GO_VERSION}/src/cmd/asm/internal/arch ./asm/arch
+	@rm -rf ${HOME}/sdk/${GO_VERSION}
 
 .PHONY: remove
 remove:

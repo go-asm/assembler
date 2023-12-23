@@ -32,7 +32,7 @@ func runtime_pollClose(ctx uintptr)
 func runtime_pollWait(ctx uintptr, mode int) int
 
 //go:linkname runtime_pollWaitCanceled runtime.pollWaitCanceled
-func runtime_pollWaitCanceled(ctx uintptr, mode int) int
+func runtime_pollWaitCanceled(ctx uintptr, mode int)
 
 //go:linkname runtime_pollReset runtime.pollReset
 func runtime_pollReset(ctx uintptr, mode int) int

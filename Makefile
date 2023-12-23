@@ -1,6 +1,6 @@
 .DEFAULT_GOAL = all
 
-GO_VERSION ?= 1.20.11
+GO_VERSION ?= 1.20.12
 
 .PHONY: all
 all: sync remove fix fmt commit

@@ -440,14 +440,14 @@ func (t *uncommonType) exportedMethods() []method {
 // The (*rtype).nameOff method is a convenience wrapper for this function.
 // Implemented in the runtime package.
 //
-//go:linkname resolveNameOff internal/reflectlite.resolveTypeOff
+//go:linkname resolveNameOff github.com/go-asm/go/reflectlite.resolveTypeOff
 func resolveNameOff(ptrInModule unsafe.Pointer, off int32) unsafe.Pointer
 
 // resolveTypeOff resolves an *rtype offset from a base type.
 // The (*rtype).typeOff method is a convenience wrapper for this function.
 // Implemented in the runtime package.
 //
-//go:linkname resolveTypeOff internal/reflectlite.resolveTypeOff
+//go:linkname resolveTypeOff github.com/go-asm/go/reflectlite.resolveTypeOff
 func resolveTypeOff(rtype unsafe.Pointer, off int32) unsafe.Pointer
 
 type nameOff int32 // offset to a name

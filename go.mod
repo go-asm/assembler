@@ -1,6 +1,6 @@
 module github.com/go-asm/go
 
-go 1.18
+go 1.20
 
 require (
 	golang.org/x/arch v0.0.0-20220412001346-fc48f9fe4c15

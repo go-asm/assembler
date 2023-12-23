@@ -1,6 +1,6 @@
 .DEFAULT_GOAL = all
 
-GO_VERSION ?= 1.20.8
+GO_VERSION ?= 1.20.9
 
 .PHONY: all
 all: sync remove fix fmt commit
@@ -66,3 +66,8 @@ commit:
 	git commit --gpg-sign --signoff -m "all: sync to go${GO_VERSION}"
 	git tag -a v${GO_VERSION} -m v${GO_VERSION}
 	@rm -rf ${HOME}/sdk/go${GO_VERSION}
+
+.PHONY: check
+check:
+	@go build -o /dev/null ./...
+	@if go vet ./... 2>&1 | grep -E -v -e '#.*' -e 'missing Go declaration' -e 'possible misuse of unsafe.Pointer'; then exit 1; fi

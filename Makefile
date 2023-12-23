@@ -1,6 +1,6 @@
 .DEFAULT_GOAL = all
 
-GO_VERSION ?= 1.20.6
+GO_VERSION ?= 1.20.7
 
 .PHONY: all
 all: sync remove fix fmt commit
@@ -57,8 +57,8 @@ fix/import:
 
 .PHONY: fmt
 fmt:
-	gofmt -w -s $(shell find . -type f -iwholename '*.go' -not -iwholename '*.git*' -not -iwholename '*testdata*')
-	goimports -w -local=github.com/go-asm/go $(shell find . -type f -iwholename '*.go' -not -iwholename '*.git*' -not -iwholename '*testdata*')
+	@gofmt -w -s $(shell find . -type f -iwholename '*.go' -not -iwholename '*.git*' -not -iwholename '*testdata*')
+	@goimports -w -local=github.com/go-asm/go $(shell find . -type f -iwholename '*.go' -not -iwholename '*.git*' -not -iwholename '*testdata*')
 
 .PHONY: commit
 commit:

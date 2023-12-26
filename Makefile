@@ -1,21 +1,41 @@
 .DEFAULT_GOAL = all
 
-GO_VERSION ?= 1.20.12
+GO_VERSION ?= 1.21.0
 
 .PHONY: all
 all: sync remove fix fmt commit
+
+define ditto
+ditto ${GO_SRC}/${1} ${2}
+sed -i 's|package main|package $(shell basename ${2})|' ${2}/*.go || true
+endef
 
 .PHONY: sync
 sync:
 	go run golang.org/dl/go${GO_VERSION}@latest download
 	rm -rf $(shell find . -mindepth 1 -maxdepth 1 -type d -not -iwholename '**.git**' -not -iwholename '**_**' -not -iwholename '**assembler**' | sort)
-	ditto ${HOME}/sdk/go${GO_VERSION}/src/internal .
-	ditto ${HOME}/sdk/go${GO_VERSION}/src/cmd/internal ./cmd
-	ditto ${HOME}/sdk/go${GO_VERSION}/src/cmd/asm/internal/arch ./asm/arch
+	$(call ditto,${HOME}/sdk/go${GO_VERSION}/src/internal,.)
+	$(call ditto,${HOME}/sdk/go${GO_VERSION}/src/cmd/internal,./cmd)
+	$(call ditto,${HOME}/sdk/go${GO_VERSION}/src/cmd/api,./cmd/api)
+	$(call ditto,${HOME}/sdk/go${GO_VERSION}/src/cmd/asm/internal,./cmd/asm)
+	$(call ditto,${HOME}/sdk/go${GO_VERSION}/src/cmd/cgo,./cmd/cgo)
+	$(call ditto,${HOME}/sdk/go${GO_VERSION}/src/cmd/compile/internal,./cmd/compile)
+	$(call ditto,${HOME}/sdk/go${GO_VERSION}/src/cmd/covdata,./cmd/covdata)
+	$(call ditto,${HOME}/sdk/go${GO_VERSION}/src/cmd/dist,./cmd/dist)
+	$(call ditto,${HOME}/sdk/go${GO_VERSION}/src/cmd/doc,./cmd/doc)
+	$(call ditto,${HOME}/sdk/go${GO_VERSION}/src/cmd/fix,./cmd/fix)
+	$(call ditto,${HOME}/sdk/go${GO_VERSION}/src/cmd/go/internal,./cmd/go)
+	$(call ditto,${HOME}/sdk/go${GO_VERSION}/src/cmd/gofmt,./cmd/gofmt)
+	$(call ditto,${HOME}/sdk/go${GO_VERSION}/src/cmd/link/internal,./cmd/link)
+	$(call ditto,${HOME}/sdk/go${GO_VERSION}/src/cmd/nm,./cmd/nm)
+	$(call ditto,${HOME}/sdk/go${GO_VERSION}/src/cmd/objdump,./cmd/objdump)
+	$(call ditto,${HOME}/sdk/go${GO_VERSION}/src/cmd/pack,./cmd/pack)
+	$(call ditto,${HOME}/sdk/go${GO_VERSION}/src/cmd/pprof,./cmd/pprof)
+	$(call ditto,${HOME}/sdk/go${GO_VERSION}/src/cmd/trace,./cmd/trace)
 
 .PHONY: remove
 remove:
-	rm -rf abi
+	rm -rf cmd/cgo/internal/test/ cmd/cgo/internal cmd/cgo/internal/testcarchive/
 	rm -f fuzz/trace.go
 	rm -f syscall/unix/getentropy_darwin.go syscall/unix/pty_darwin.go syscall/unix/user_darwin.go syscall/unix/net_darwin.go testpty/pty_darwin.go
 	rm -f bytealg/compare_amd64.s bytealg/compare_arm64.s bytealg/equal_amd64.s bytealg/equal_arm64.s
@@ -53,6 +73,11 @@ fix/linkname:
 fix/import:
 	grep -rl 'cmd/internal/' ${CURDIR}/** | grep -v Makefile | xargs sed -i 's|cmd/internal/|github.com/go-asm/go/cmd/|g'
 	grep -rl 'internal/' ${CURDIR}/** | grep -v Makefile | xargs sed -i 's|internal/|github.com/go-asm/go/|g'
+	grep -rl 'cmd/.*/github.com/go-asm' ${CURDIR}/** | grep -v -e Makefile | xargs sed -i -E 's|cmd/(.*)/github.com/go-asm/go|github.com/go-asm/go/cmd/\1|g'
+	grep -rl 'github.com/go-asm/go/cmd/go/github.com/go-asm/go' ${CURDIR}/** | grep -v -e Makefile | xargs sed -i -E 's|github.com/go-asm/go/cmd/go/github.com/go-asm/go|github.com/go-asm/go/cmd/go|g'
+	grep -rl 'github.com/go-asm/go/cmd/go/lockedfile/filelock' ${CURDIR}/** | grep -v -e Makefile | xargs sed -i -E 's|github.com/go-asm/go/cmd/go/lockedfile/filelock|github.com/go-asm/go/cmd/go/lockedfile/internal/filelock|g'
+	grep -rl 'github.com/go-asm/go/cmd/go/test/genflags' ${CURDIR}/** | grep -v -e Makefile | xargs sed -i -E 's|github.com/go-asm/go/cmd/go/test/genflags|github.com/go-asm/go/cmd/go/test/internal/genflags|g'
+	grep -rl '"github.com/go-asm/go/cmd/compile/github.com/go-asm/go/pgo/graph"' ${CURDIR}/** | grep -v -e Makefile | xargs sed -i -E 's|"github.com/go-asm/go/cmd/compile/github.com/go-asm/go/pgo/graph"|"github.com/go-asm/go/cmd/compile/pgo/internal/graph"|g'
 	sed -i 's|../../github.com/go-asm/go/cmd/reflectdata/reflect.go|src/cmd/reflectdata/reflect.go|g' reflectlite/type.go
 
 .PHONY: fmt

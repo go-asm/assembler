@@ -23,7 +23,9 @@ package riscv
 import (
 	"fmt"
 	"log"
+	"math/bits"
 
+	"github.com/go-asm/go/abi"
 	"github.com/go-asm/go/cmd/obj"
 	"github.com/go-asm/go/cmd/objabi"
 	"github.com/go-asm/go/cmd/sys"
@@ -141,8 +143,14 @@ func progedit(ctxt *obj.Link, p *obj.Prog, newprog obj.ProgAlloc) {
 		p.As = AEBREAK
 
 	case AMOV:
-		// Put >32-bit constants in memory and load them.
 		if p.From.Type == obj.TYPE_CONST && p.From.Name == obj.NAME_NONE && p.From.Reg == obj.REG_NONE && int64(int32(p.From.Offset)) != p.From.Offset {
+			ctz := bits.TrailingZeros64(uint64(p.From.Offset))
+			val := p.From.Offset >> ctz
+			if int64(int32(val)) == val {
+				// It's ok. We can handle constants with many trailing zeros.
+				break
+			}
+			// Put >32-bit constants in memory and load them.
 			p.From.Type = obj.TYPE_MEM
 			p.From.Sym = ctxt.Int64Sym(p.From.Offset)
 			p.From.Name = obj.NAME_EXTERN
@@ -586,8 +594,8 @@ func preprocess(ctxt *obj.Link, cursym *obj.LSym, newprog obj.ProgAlloc) {
 
 		if p.To.Type == obj.TYPE_REG && p.To.Reg == REGSP && p.Spadj == 0 {
 			f := cursym.Func()
-			if f.FuncFlag&objabi.FuncFlag_SPWRITE == 0 {
-				f.FuncFlag |= objabi.FuncFlag_SPWRITE
+			if f.FuncFlag&abi.FuncFlagSPWrite == 0 {
+				f.FuncFlag |= abi.FuncFlagSPWrite
 				if ctxt.Debugvlog || !ctxt.IsAsm {
 					ctxt.Logf("auto-SPWRITE: %s %v\n", cursym.Name, p)
 					if !ctxt.IsAsm {
@@ -658,7 +666,7 @@ func preprocess(ctxt *obj.Link, cursym *obj.LSym, newprog obj.ProgAlloc) {
 
 					p.As = AAUIPC
 					p.Mark = (p.Mark &^ NEED_CALL_RELOC) | NEED_PCREL_ITYPE_RELOC
-					p.SetFrom3(obj.Addr{Type: obj.TYPE_CONST, Offset: p.To.Offset, Sym: p.To.Sym})
+					p.AddRestSource(obj.Addr{Type: obj.TYPE_CONST, Offset: p.To.Offset, Sym: p.To.Sym})
 					p.From = obj.Addr{Type: obj.TYPE_CONST, Offset: 0}
 					p.Reg = obj.REG_NONE
 					p.To = obj.Addr{Type: obj.TYPE_REG, Reg: REG_TMP}
@@ -822,7 +830,7 @@ func stacksplit(ctxt *obj.Link, p *obj.Prog, cursym *obj.LSym, newprog obj.ProgA
 
 	var to_done, to_more *obj.Prog
 
-	if framesize <= objabi.StackSmall {
+	if framesize <= abi.StackSmall {
 		// small stack
 		//	// if SP > stackguard { goto done }
 		//	BLTU	stackguard, SP, done
@@ -835,8 +843,8 @@ func stacksplit(ctxt *obj.Link, p *obj.Prog, cursym *obj.LSym, newprog obj.ProgA
 		to_done = p
 	} else {
 		// large stack: SP-framesize < stackguard-StackSmall
-		offset := int64(framesize) - objabi.StackSmall
-		if framesize > objabi.StackBig {
+		offset := int64(framesize) - abi.StackSmall
+		if framesize > abi.StackBig {
 			// Such a large stack we need to protect against underflow.
 			// The runtime guarantees SP > objabi.StackBig, but
 			// framesize is large enough that SP-framesize may
@@ -1685,7 +1693,7 @@ func instructionForProg(p *obj.Prog) *instruction {
 	return ins
 }
 
-// instructionsForOpImmediate returns the machine instructions for a immedate
+// instructionsForOpImmediate returns the machine instructions for an immediate
 // operand. The instruction is specified by as and the source register is
 // specified by rs, instead of the obj.Prog.
 func instructionsForOpImmediate(p *obj.Prog, as obj.As, rs int16) []*instruction {
@@ -1839,6 +1847,23 @@ func instructionsForMOV(p *obj.Prog) []*instruction {
 			return nil
 		}
 
+		// For constants larger than 32 bits in size that have trailing zeros,
+		// use the value with the trailing zeros removed and then use a SLLI
+		// instruction to restore the original constant.
+		// For example:
+		// 	MOV $0x8000000000000000, X10
+		// becomes
+		// 	MOV $1, X10
+		// 	SLLI $63, X10, X10
+		var insSLLI *instruction
+		if !immIFits(ins.imm, 32) {
+			ctz := bits.TrailingZeros64(uint64(ins.imm))
+			if immIFits(ins.imm>>ctz, 32) {
+				ins.imm = ins.imm >> ctz
+				insSLLI = &instruction{as: ASLLI, rd: ins.rd, rs1: ins.rd, imm: int64(ctz)}
+			}
+		}
+
 		low, high, err := Split32BitImmediate(ins.imm)
 		if err != nil {
 			p.Ctxt.Diag("%v: constant %d too large: %v", p, ins.imm, err)
@@ -1850,6 +1875,9 @@ func instructionsForMOV(p *obj.Prog) []*instruction {
 
 		// LUI is only necessary if the constant does not fit in 12 bits.
 		if high == 0 {
+			if insSLLI != nil {
+				inss = append(inss, insSLLI)
+			}
 			break
 		}
 
@@ -1860,6 +1888,9 @@ func instructionsForMOV(p *obj.Prog) []*instruction {
 		if low != 0 {
 			ins.as, ins.rs1 = AADDIW, ins.rd
 			inss = append(inss, ins)
+		}
+		if insSLLI != nil {
+			inss = append(inss, insSLLI)
 		}
 
 	case p.From.Type == obj.TYPE_CONST && p.To.Type != obj.TYPE_REG:
@@ -2152,6 +2183,16 @@ func instructionsForProg(p *obj.Prog) []*instruction {
 		// FNEGD rs, rd -> FSGNJND rs, rs, rd
 		ins.as = AFSGNJND
 		ins.rs1 = uint32(p.From.Reg)
+
+	case ASLLI, ASRLI, ASRAI:
+		if ins.imm < 0 || ins.imm > 63 {
+			p.Ctxt.Diag("%v: shift amount out of range 0 to 63", p)
+		}
+
+	case ASLLIW, ASRLIW, ASRAIW:
+		if ins.imm < 0 || ins.imm > 31 {
+			p.Ctxt.Diag("%v: shift amount out of range 0 to 31", p)
+		}
 	}
 	return inss
 }

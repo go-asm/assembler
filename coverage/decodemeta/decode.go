@@ -11,6 +11,7 @@ package decodemeta
 import (
 	"encoding/binary"
 	"fmt"
+	"io"
 	"os"
 
 	"github.com/go-asm/go/coverage"
@@ -56,7 +57,9 @@ func (d *CoverageMetaDataDecoder) readHeader() error {
 func (d *CoverageMetaDataDecoder) readStringTable() error {
 	// Seek to the correct location to read the string table.
 	stringTableLocation := int64(coverage.CovMetaHeaderSize + 4*d.hdr.NumFuncs)
-	d.r.SeekTo(stringTableLocation)
+	if _, err := d.r.Seek(stringTableLocation, io.SeekStart); err != nil {
+		return err
+	}
 
 	// Read the table itself.
 	d.strtab = stringtab.NewReader(d.r)
@@ -89,7 +92,9 @@ func (d *CoverageMetaDataDecoder) ReadFunc(fidx uint32, f *coverage.FuncDesc) er
 
 	// Seek to the correct location to read the function offset and read it.
 	funcOffsetLocation := int64(coverage.CovMetaHeaderSize + 4*fidx)
-	d.r.SeekTo(funcOffsetLocation)
+	if _, err := d.r.Seek(funcOffsetLocation, io.SeekStart); err != nil {
+		return err
+	}
 	foff := d.r.ReadUint32()
 
 	// Check assumptions
@@ -98,7 +103,10 @@ func (d *CoverageMetaDataDecoder) ReadFunc(fidx uint32, f *coverage.FuncDesc) er
 	}
 
 	// Seek to the correct location to read the function.
-	d.r.SeekTo(int64(foff))
+	floc := int64(foff)
+	if _, err := d.r.Seek(floc, io.SeekStart); err != nil {
+		return err
+	}
 
 	// Preamble containing number of units, file, and function.
 	numUnits := uint32(d.r.ReadULEB128())

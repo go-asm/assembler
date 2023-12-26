@@ -9,12 +9,11 @@ import (
 	"sync"
 	"syscall"
 	"unsafe"
+
+	"github.com/go-asm/go/syscall/unix"
 )
 
 const (
-	// spliceNonblock makes calls to splice(2) non-blocking.
-	spliceNonblock = 0x2
-
 	// maxSpliceSize is the maximum amount of data Splice asks
 	// the kernel to move in a single call to splice(2).
 	// We use 1MB as Splice writes data through a pipe, and 1MB is the default maximum pipe buffer size,
@@ -91,15 +90,17 @@ func spliceDrain(pipefd int, sock *FD, max int) (int, error) {
 		return 0, err
 	}
 	for {
-		n, err := splice(pipefd, sock.Sysfd, max, spliceNonblock)
+		n, err := splice(pipefd, sock.Sysfd, max, 0)
 		if err == syscall.EINTR {
 			continue
 		}
 		if err != syscall.EAGAIN {
 			return n, err
 		}
-		if err := sock.pd.waitRead(sock.isFile); err != nil {
-			return n, err
+		if sock.pd.pollable() {
+			if err := sock.pd.waitRead(sock.isFile); err != nil {
+				return n, err
+			}
 		}
 	}
 }
@@ -127,7 +128,7 @@ func splicePump(sock *FD, pipefd int, inPipe int) (int, error) {
 	}
 	written := 0
 	for inPipe > 0 {
-		n, err := splice(sock.Sysfd, pipefd, inPipe, spliceNonblock)
+		n, err := splice(sock.Sysfd, pipefd, inPipe, 0)
 		// Here, the condition n == 0 && err == nil should never be
 		// observed, since Splice controls the write side of the pipe.
 		if n > 0 {
@@ -138,8 +139,10 @@ func splicePump(sock *FD, pipefd int, inPipe int) (int, error) {
 		if err != syscall.EAGAIN {
 			return written, err
 		}
-		if err := sock.pd.waitWrite(sock.isFile); err != nil {
-			return written, err
+		if sock.pd.pollable() {
+			if err := sock.pd.waitWrite(sock.isFile); err != nil {
+				return written, err
+			}
 		}
 	}
 	return written, nil
@@ -219,7 +222,7 @@ func newPipe() *splicePipe {
 	// Set the pipe buffer size to maxSpliceSize to optimize that.
 	// Ignore errors here, as a smaller buffer size will work,
 	// although it will require more system calls.
-	fcntl(fds[0], syscall.F_SETPIPE_SZ, maxSpliceSize)
+	unix.Fcntl(fds[0], syscall.F_SETPIPE_SZ, maxSpliceSize)
 
 	return &splicePipe{splicePipeFields: splicePipeFields{rfd: fds[0], wfd: fds[1]}}
 }

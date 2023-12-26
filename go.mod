@@ -1,9 +1,14 @@
 module github.com/go-asm/go
 
-go 1.20
+go 1.21
 
 require (
-	golang.org/x/arch v0.0.0-20220412001346-fc48f9fe4c15
-	golang.org/x/mod v0.6.0-dev.0.20220419223038-86c51ed26bb4
-	golang.org/x/sys v0.0.0-20211019181941-9d821ace8654
+	github.com/google/pprof v0.0.0-20231212022811-ec68065c825e
+	golang.org/x/arch v0.6.0
+	golang.org/x/mod v0.14.0
+	golang.org/x/sync v0.5.0
+	golang.org/x/sys v0.15.0
+	golang.org/x/term v0.15.0
 )
+
+require github.com/ianlancetaylor/demangle v0.0.0-20230524184225-eabc099b10ab // indirect

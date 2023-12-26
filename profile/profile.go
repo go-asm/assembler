@@ -12,9 +12,10 @@ import (
 	"compress/gzip"
 	"fmt"
 	"io"
-	"regexp"
 	"strings"
 	"time"
+
+	"github.com/go-asm/go/lazyregexp"
 )
 
 // Profile is an in-memory representation of profile.proto.
@@ -192,7 +193,7 @@ func parseUncompressed(data []byte) (*Profile, error) {
 	return p, nil
 }
 
-var libRx = regexp.MustCompile(`([.]so$|[.]so[._][0-9]+)`)
+var libRx = lazyregexp.New(`([.]so$|[.]so[._][0-9]+)`)
 
 // setMain scans Mapping entries and guesses which entry is main
 // because legacy profiles don't obey the convention of putting main

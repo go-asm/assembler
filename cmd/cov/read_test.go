@@ -15,6 +15,7 @@ import (
 	"github.com/go-asm/go/coverage/decodecounter"
 	"github.com/go-asm/go/coverage/decodemeta"
 	"github.com/go-asm/go/coverage/pods"
+	"github.com/go-asm/go/goexperiment"
 	"github.com/go-asm/go/testenv"
 )
 
@@ -45,6 +46,9 @@ func (v *visitor) Finish()                                                      
 
 func TestIssue58411(t *testing.T) {
 	testenv.MustHaveGoBuild(t)
+	if !goexperiment.CoverageRedesign {
+		t.Skipf("skipping since this test requires 'go build -cover'")
+	}
 
 	// Build a tiny test program with -cover. Smallness is important;
 	// it is one of the factors that triggers issue 58411.

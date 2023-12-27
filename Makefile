@@ -1,6 +1,6 @@
 .DEFAULT_GOAL = all
 
-GO_VERSION ?= 1.21.0
+GO_VERSION ?= 1.21.1
 
 .PHONY: all
 all: sync remove fix fmt commit
@@ -35,10 +35,12 @@ sync:
 
 .PHONY: remove
 remove:
-	rm -rf cmd/cgo/internal/test/ cmd/cgo/internal cmd/cgo/internal/testcarchive/
-	rm -f fuzz/trace.go
-	rm -f syscall/unix/getentropy_darwin.go syscall/unix/pty_darwin.go syscall/unix/user_darwin.go syscall/unix/net_darwin.go testpty/pty_darwin.go
-	rm -f bytealg/compare_amd64.s bytealg/compare_arm64.s bytealg/equal_amd64.s bytealg/equal_arm64.s
+	rm -f  abi/abi_test.go abi/abi_test.s abi/export_test.go
+	rm -f  bytealg/compare_amd64.s bytealg/compare_arm64.s bytealg/equal_amd64.s bytealg/equal_arm64.s
+	rm -fr cmd/cgo/internal/test/ cmd/cgo/internal cmd/cgo/internal/testcarchive/
+	rm -f  cmd/covdata/tool_test.go
+	rm -f  fuzz/trace.go
+	rm -f  syscall/unix/getentropy_darwin.go syscall/unix/pty_darwin.go syscall/unix/user_darwin.go syscall/unix/net_darwin.go testpty/pty_darwin.go
 
 define fix_linkname
 sed -i -E ':a;N;$$!ba;s|${1}|${2}|' ${3}
@@ -89,7 +91,6 @@ fmt:
 commit:
 	git add .
 	git commit --gpg-sign --signoff -m "all: sync to go${GO_VERSION}"
-	git tag -a v${GO_VERSION} -m v${GO_VERSION}
 	@rm -rf ${HOME}/sdk/go${GO_VERSION}
 
 .PHONY: check

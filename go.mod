@@ -2,7 +2,7 @@ module github.com/go-asm/go
 
 go 1.22
 
-toolchain go1.22rc1
+toolchain go1.22rc2
 
 require (
 	github.com/google/pprof v0.0.0-20240117000934-35fc243c5815

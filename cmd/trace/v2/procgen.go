@@ -19,6 +19,7 @@ type procGenerator struct {
 	globalMetricGenerator
 	procRangeGenerator
 	stackSampleGenerator[tracev2.ProcID]
+	logEventGenerator[tracev2.ProcID]
 
 	gStates   map[tracev2.GoID]*gState[tracev2.ProcID]
 	inSyscall map[tracev2.ProcID]*gState[tracev2.ProcID]
@@ -27,9 +28,11 @@ type procGenerator struct {
 
 func newProcGenerator() *procGenerator {
 	pg := new(procGenerator)
-	pg.stackSampleGenerator.getResource = func(ev *tracev2.Event) tracev2.ProcID {
+	rg := func(ev *tracev2.Event) tracev2.ProcID {
 		return ev.Proc()
 	}
+	pg.stackSampleGenerator.getResource = rg
+	pg.logEventGenerator.getResource = rg
 	pg.gStates = make(map[tracev2.GoID]*gState[tracev2.ProcID])
 	pg.inSyscall = make(map[tracev2.ProcID]*gState[tracev2.ProcID])
 	return pg

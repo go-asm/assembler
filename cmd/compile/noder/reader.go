@@ -5,6 +5,7 @@
 package noder
 
 import (
+	"encoding/hex"
 	"fmt"
 	"go/constant"
 	"path/filepath"
@@ -23,6 +24,7 @@ import (
 	"github.com/go-asm/go/cmd/compile/staticinit"
 	"github.com/go-asm/go/cmd/compile/typecheck"
 	"github.com/go-asm/go/cmd/compile/types"
+	"github.com/go-asm/go/cmd/notsha256"
 	"github.com/go-asm/go/cmd/obj"
 	"github.com/go-asm/go/cmd/objabi"
 	"github.com/go-asm/go/cmd/src"
@@ -884,7 +886,16 @@ func shapify(targ *types.Type, basic bool) *types.Type {
 		under = types.NewPtr(types.Types[types.TUINT8])
 	}
 
-	sym := types.ShapePkg.Lookup(under.LinkString())
+	// Hash long type names to bound symbol name length seen by users,
+	// particularly for large protobuf structs (#65030).
+	uls := under.LinkString()
+	if base.Debug.MaxShapeLen != 0 &&
+		len(uls) > base.Debug.MaxShapeLen {
+		h := notsha256.Sum256([]byte(uls))
+		uls = hex.EncodeToString(h[:])
+	}
+
+	sym := types.ShapePkg.Lookup(uls)
 	if sym.Def == nil {
 		name := ir.NewDeclNameAt(under.Pos(), ir.OTYPE, sym)
 		typ := types.NewNamed(name)

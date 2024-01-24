@@ -15,6 +15,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/go-asm/go/bisect"
 	"github.com/go-asm/go/buildcfg"
 )
 
@@ -263,8 +264,8 @@ func NewDebugFlag(debug interface{}, debugSSA DebugSSA) *DebugFlag {
 
 		switch ptr.(type) {
 		default:
-			panic(fmt.Sprintf("debug.%s has invalid type %v (must be int or string)", f.Name, f.Type))
-		case *int, *string:
+			panic(fmt.Sprintf("debug.%s has invalid type %v (must be int, string, or *bisect.Matcher)", f.Name, f.Type))
+		case *int, *string, **bisect.Matcher:
 			// ok
 		}
 		flag.tab[name] = debugField{name, help, concurrent == "ok", ptr}
@@ -329,6 +330,12 @@ func (f *DebugFlag) Set(debugstr string) error {
 					log.Fatalf("invalid debug value %v", name)
 				}
 				*vp = val
+			case **bisect.Matcher:
+				var err error
+				*vp, err = bisect.New(valstring)
+				if err != nil {
+					log.Fatalf("debug flag %v: %v", name, err)
+				}
 			default:
 				panic("bad debugtab type")
 			}

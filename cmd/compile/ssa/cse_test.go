@@ -8,7 +8,6 @@ import (
 	"testing"
 
 	"github.com/go-asm/go/cmd/compile/types"
-	"github.com/go-asm/go/cmd/src"
 )
 
 type tstAux struct {
@@ -23,7 +22,7 @@ func TestCSEAuxPartitionBug(t *testing.T) {
 	arg1Aux := &tstAux{"arg1-aux"}
 	arg2Aux := &tstAux{"arg2-aux"}
 	arg3Aux := &tstAux{"arg3-aux"}
-	a := c.Frontend().Auto(src.NoXPos, c.config.Types.Int8.PtrTo())
+	a := c.Temp(c.config.Types.Int8.PtrTo())
 
 	// construct lots of values with args that have aux values and place
 	// them in an order that triggers the bug
@@ -94,7 +93,7 @@ func TestCSEAuxPartitionBug(t *testing.T) {
 // TestZCSE tests the zero arg cse.
 func TestZCSE(t *testing.T) {
 	c := testConfig(t)
-	a := c.Frontend().Auto(src.NoXPos, c.config.Types.Int8.PtrTo())
+	a := c.Temp(c.config.Types.Int8.PtrTo())
 
 	fun := c.Fun("entry",
 		Bloc("entry",

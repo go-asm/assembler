@@ -17,7 +17,6 @@ import (
 	"github.com/go-asm/go/cmd/compile/objw"
 	"github.com/go-asm/go/cmd/compile/ssagen"
 	"github.com/go-asm/go/cmd/compile/staticinit"
-	"github.com/go-asm/go/cmd/compile/typecheck"
 	"github.com/go-asm/go/cmd/compile/types"
 	"github.com/go-asm/go/cmd/compile/walk"
 	"github.com/go-asm/go/cmd/obj"
@@ -40,6 +39,11 @@ func enqueueFunc(fn *ir.Func) {
 		return
 	}
 
+	// Don't try compiling dead hidden closure.
+	if fn.IsDeadcodeClosure() {
+		return
+	}
+
 	if clo := fn.OClosure; clo != nil && !ir.IsTrivialClosure(clo) {
 		return // we'll get this as part of its enclosing function
 	}
@@ -53,7 +57,7 @@ func enqueueFunc(fn *ir.Func) {
 		ir.InitLSym(fn, false)
 		types.CalcSize(fn.Type())
 		a := ssagen.AbiForBodylessFuncStackMap(fn)
-		abiInfo := a.ABIAnalyzeFuncType(fn.Type().FuncType()) // abiInfo has spill/home locations for wrapper
+		abiInfo := a.ABIAnalyzeFuncType(fn.Type()) // abiInfo has spill/home locations for wrapper
 		liveness.WriteFuncMap(fn, abiInfo)
 		if fn.ABI == obj.ABI0 {
 			x := ssagen.EmitArgInfo(fn, abiInfo)
@@ -101,21 +105,15 @@ func prepareFunc(fn *ir.Func) {
 	// Calculate parameter offsets.
 	types.CalcSize(fn.Type())
 
-	typecheck.DeclContext = ir.PAUTO
 	ir.CurFunc = fn
 	walk.Walk(fn)
 	ir.CurFunc = nil // enforce no further uses of CurFunc
-	typecheck.DeclContext = ir.PEXTERN
 }
 
 // compileFunctions compiles all functions in compilequeue.
 // It fans out nBackendWorkers to do the work
 // and waits for them to complete.
 func compileFunctions() {
-	if len(compilequeue) == 0 {
-		return
-	}
-
 	if race.Enabled {
 		// Randomize compilation order to try to shake out races.
 		tmp := make([]*ir.Func, len(compilequeue))

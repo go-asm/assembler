@@ -400,6 +400,8 @@ func rewriteValuegeneric(v *Value) bool {
 		return rewriteValuegeneric_OpSlicemask(v)
 	case OpSqrt:
 		return rewriteValuegeneric_OpSqrt(v)
+	case OpStaticCall:
+		return rewriteValuegeneric_OpStaticCall(v)
 	case OpStaticLECall:
 		return rewriteValuegeneric_OpStaticLECall(v)
 	case OpStore:
@@ -12588,7 +12590,6 @@ func rewriteValuegeneric_OpLoad(v *Value) bool {
 	v_0 := v.Args[0]
 	b := v.Block
 	config := b.Func.Config
-	fe := b.Func.fe
 	// match: (Load <t1> p1 (Store {t2} p2 x _))
 	// cond: isSamePtr(p1, p2) && t1.Compare(x.Type) == types.CMPeq && t1.Size() == t2.Size()
 	// result: x
@@ -12800,7 +12801,7 @@ func rewriteValuegeneric_OpLoad(v *Value) bool {
 		return true
 	}
 	// match: (Load <t1> op:(OffPtr [o1] p1) (Store {t2} p2 _ mem:(Zero [n] p3 _)))
-	// cond: o1 >= 0 && o1+t1.Size() <= n && isSamePtr(p1, p3) && fe.CanSSA(t1) && disjoint(op, t1.Size(), p2, t2.Size())
+	// cond: o1 >= 0 && o1+t1.Size() <= n && isSamePtr(p1, p3) && CanSSA(t1) && disjoint(op, t1.Size(), p2, t2.Size())
 	// result: @mem.Block (Load <t1> (OffPtr <op.Type> [o1] p3) mem)
 	for {
 		t1 := v.Type
@@ -12822,7 +12823,7 @@ func rewriteValuegeneric_OpLoad(v *Value) bool {
 		}
 		n := auxIntToInt64(mem.AuxInt)
 		p3 := mem.Args[0]
-		if !(o1 >= 0 && o1+t1.Size() <= n && isSamePtr(p1, p3) && fe.CanSSA(t1) && disjoint(op, t1.Size(), p2, t2.Size())) {
+		if !(o1 >= 0 && o1+t1.Size() <= n && isSamePtr(p1, p3) && CanSSA(t1) && disjoint(op, t1.Size(), p2, t2.Size())) {
 			break
 		}
 		b = mem.Block
@@ -12835,7 +12836,7 @@ func rewriteValuegeneric_OpLoad(v *Value) bool {
 		return true
 	}
 	// match: (Load <t1> op:(OffPtr [o1] p1) (Store {t2} p2 _ (Store {t3} p3 _ mem:(Zero [n] p4 _))))
-	// cond: o1 >= 0 && o1+t1.Size() <= n && isSamePtr(p1, p4) && fe.CanSSA(t1) && disjoint(op, t1.Size(), p2, t2.Size()) && disjoint(op, t1.Size(), p3, t3.Size())
+	// cond: o1 >= 0 && o1+t1.Size() <= n && isSamePtr(p1, p4) && CanSSA(t1) && disjoint(op, t1.Size(), p2, t2.Size()) && disjoint(op, t1.Size(), p3, t3.Size())
 	// result: @mem.Block (Load <t1> (OffPtr <op.Type> [o1] p4) mem)
 	for {
 		t1 := v.Type
@@ -12864,7 +12865,7 @@ func rewriteValuegeneric_OpLoad(v *Value) bool {
 		}
 		n := auxIntToInt64(mem.AuxInt)
 		p4 := mem.Args[0]
-		if !(o1 >= 0 && o1+t1.Size() <= n && isSamePtr(p1, p4) && fe.CanSSA(t1) && disjoint(op, t1.Size(), p2, t2.Size()) && disjoint(op, t1.Size(), p3, t3.Size())) {
+		if !(o1 >= 0 && o1+t1.Size() <= n && isSamePtr(p1, p4) && CanSSA(t1) && disjoint(op, t1.Size(), p2, t2.Size()) && disjoint(op, t1.Size(), p3, t3.Size())) {
 			break
 		}
 		b = mem.Block
@@ -12877,7 +12878,7 @@ func rewriteValuegeneric_OpLoad(v *Value) bool {
 		return true
 	}
 	// match: (Load <t1> op:(OffPtr [o1] p1) (Store {t2} p2 _ (Store {t3} p3 _ (Store {t4} p4 _ mem:(Zero [n] p5 _)))))
-	// cond: o1 >= 0 && o1+t1.Size() <= n && isSamePtr(p1, p5) && fe.CanSSA(t1) && disjoint(op, t1.Size(), p2, t2.Size()) && disjoint(op, t1.Size(), p3, t3.Size()) && disjoint(op, t1.Size(), p4, t4.Size())
+	// cond: o1 >= 0 && o1+t1.Size() <= n && isSamePtr(p1, p5) && CanSSA(t1) && disjoint(op, t1.Size(), p2, t2.Size()) && disjoint(op, t1.Size(), p3, t3.Size()) && disjoint(op, t1.Size(), p4, t4.Size())
 	// result: @mem.Block (Load <t1> (OffPtr <op.Type> [o1] p5) mem)
 	for {
 		t1 := v.Type
@@ -12913,7 +12914,7 @@ func rewriteValuegeneric_OpLoad(v *Value) bool {
 		}
 		n := auxIntToInt64(mem.AuxInt)
 		p5 := mem.Args[0]
-		if !(o1 >= 0 && o1+t1.Size() <= n && isSamePtr(p1, p5) && fe.CanSSA(t1) && disjoint(op, t1.Size(), p2, t2.Size()) && disjoint(op, t1.Size(), p3, t3.Size()) && disjoint(op, t1.Size(), p4, t4.Size())) {
+		if !(o1 >= 0 && o1+t1.Size() <= n && isSamePtr(p1, p5) && CanSSA(t1) && disjoint(op, t1.Size(), p2, t2.Size()) && disjoint(op, t1.Size(), p3, t3.Size()) && disjoint(op, t1.Size(), p4, t4.Size())) {
 			break
 		}
 		b = mem.Block
@@ -12926,7 +12927,7 @@ func rewriteValuegeneric_OpLoad(v *Value) bool {
 		return true
 	}
 	// match: (Load <t1> op:(OffPtr [o1] p1) (Store {t2} p2 _ (Store {t3} p3 _ (Store {t4} p4 _ (Store {t5} p5 _ mem:(Zero [n] p6 _))))))
-	// cond: o1 >= 0 && o1+t1.Size() <= n && isSamePtr(p1, p6) && fe.CanSSA(t1) && disjoint(op, t1.Size(), p2, t2.Size()) && disjoint(op, t1.Size(), p3, t3.Size()) && disjoint(op, t1.Size(), p4, t4.Size()) && disjoint(op, t1.Size(), p5, t5.Size())
+	// cond: o1 >= 0 && o1+t1.Size() <= n && isSamePtr(p1, p6) && CanSSA(t1) && disjoint(op, t1.Size(), p2, t2.Size()) && disjoint(op, t1.Size(), p3, t3.Size()) && disjoint(op, t1.Size(), p4, t4.Size()) && disjoint(op, t1.Size(), p5, t5.Size())
 	// result: @mem.Block (Load <t1> (OffPtr <op.Type> [o1] p6) mem)
 	for {
 		t1 := v.Type
@@ -12969,7 +12970,7 @@ func rewriteValuegeneric_OpLoad(v *Value) bool {
 		}
 		n := auxIntToInt64(mem.AuxInt)
 		p6 := mem.Args[0]
-		if !(o1 >= 0 && o1+t1.Size() <= n && isSamePtr(p1, p6) && fe.CanSSA(t1) && disjoint(op, t1.Size(), p2, t2.Size()) && disjoint(op, t1.Size(), p3, t3.Size()) && disjoint(op, t1.Size(), p4, t4.Size()) && disjoint(op, t1.Size(), p5, t5.Size())) {
+		if !(o1 >= 0 && o1+t1.Size() <= n && isSamePtr(p1, p6) && CanSSA(t1) && disjoint(op, t1.Size(), p2, t2.Size()) && disjoint(op, t1.Size(), p3, t3.Size()) && disjoint(op, t1.Size(), p4, t4.Size()) && disjoint(op, t1.Size(), p5, t5.Size())) {
 			break
 		}
 		b = mem.Block
@@ -13136,24 +13137,24 @@ func rewriteValuegeneric_OpLoad(v *Value) bool {
 		return true
 	}
 	// match: (Load <t> _ _)
-	// cond: t.IsStruct() && t.NumFields() == 0 && fe.CanSSA(t)
+	// cond: t.IsStruct() && t.NumFields() == 0 && CanSSA(t)
 	// result: (StructMake0)
 	for {
 		t := v.Type
-		if !(t.IsStruct() && t.NumFields() == 0 && fe.CanSSA(t)) {
+		if !(t.IsStruct() && t.NumFields() == 0 && CanSSA(t)) {
 			break
 		}
 		v.reset(OpStructMake0)
 		return true
 	}
 	// match: (Load <t> ptr mem)
-	// cond: t.IsStruct() && t.NumFields() == 1 && fe.CanSSA(t)
+	// cond: t.IsStruct() && t.NumFields() == 1 && CanSSA(t)
 	// result: (StructMake1 (Load <t.FieldType(0)> (OffPtr <t.FieldType(0).PtrTo()> [0] ptr) mem))
 	for {
 		t := v.Type
 		ptr := v_0
 		mem := v_1
-		if !(t.IsStruct() && t.NumFields() == 1 && fe.CanSSA(t)) {
+		if !(t.IsStruct() && t.NumFields() == 1 && CanSSA(t)) {
 			break
 		}
 		v.reset(OpStructMake1)
@@ -13166,13 +13167,13 @@ func rewriteValuegeneric_OpLoad(v *Value) bool {
 		return true
 	}
 	// match: (Load <t> ptr mem)
-	// cond: t.IsStruct() && t.NumFields() == 2 && fe.CanSSA(t)
+	// cond: t.IsStruct() && t.NumFields() == 2 && CanSSA(t)
 	// result: (StructMake2 (Load <t.FieldType(0)> (OffPtr <t.FieldType(0).PtrTo()> [0] ptr) mem) (Load <t.FieldType(1)> (OffPtr <t.FieldType(1).PtrTo()> [t.FieldOff(1)] ptr) mem))
 	for {
 		t := v.Type
 		ptr := v_0
 		mem := v_1
-		if !(t.IsStruct() && t.NumFields() == 2 && fe.CanSSA(t)) {
+		if !(t.IsStruct() && t.NumFields() == 2 && CanSSA(t)) {
 			break
 		}
 		v.reset(OpStructMake2)
@@ -13190,13 +13191,13 @@ func rewriteValuegeneric_OpLoad(v *Value) bool {
 		return true
 	}
 	// match: (Load <t> ptr mem)
-	// cond: t.IsStruct() && t.NumFields() == 3 && fe.CanSSA(t)
+	// cond: t.IsStruct() && t.NumFields() == 3 && CanSSA(t)
 	// result: (StructMake3 (Load <t.FieldType(0)> (OffPtr <t.FieldType(0).PtrTo()> [0] ptr) mem) (Load <t.FieldType(1)> (OffPtr <t.FieldType(1).PtrTo()> [t.FieldOff(1)] ptr) mem) (Load <t.FieldType(2)> (OffPtr <t.FieldType(2).PtrTo()> [t.FieldOff(2)] ptr) mem))
 	for {
 		t := v.Type
 		ptr := v_0
 		mem := v_1
-		if !(t.IsStruct() && t.NumFields() == 3 && fe.CanSSA(t)) {
+		if !(t.IsStruct() && t.NumFields() == 3 && CanSSA(t)) {
 			break
 		}
 		v.reset(OpStructMake3)
@@ -13219,13 +13220,13 @@ func rewriteValuegeneric_OpLoad(v *Value) bool {
 		return true
 	}
 	// match: (Load <t> ptr mem)
-	// cond: t.IsStruct() && t.NumFields() == 4 && fe.CanSSA(t)
+	// cond: t.IsStruct() && t.NumFields() == 4 && CanSSA(t)
 	// result: (StructMake4 (Load <t.FieldType(0)> (OffPtr <t.FieldType(0).PtrTo()> [0] ptr) mem) (Load <t.FieldType(1)> (OffPtr <t.FieldType(1).PtrTo()> [t.FieldOff(1)] ptr) mem) (Load <t.FieldType(2)> (OffPtr <t.FieldType(2).PtrTo()> [t.FieldOff(2)] ptr) mem) (Load <t.FieldType(3)> (OffPtr <t.FieldType(3).PtrTo()> [t.FieldOff(3)] ptr) mem))
 	for {
 		t := v.Type
 		ptr := v_0
 		mem := v_1
-		if !(t.IsStruct() && t.NumFields() == 4 && fe.CanSSA(t)) {
+		if !(t.IsStruct() && t.NumFields() == 4 && CanSSA(t)) {
 			break
 		}
 		v.reset(OpStructMake4)
@@ -13264,13 +13265,13 @@ func rewriteValuegeneric_OpLoad(v *Value) bool {
 		return true
 	}
 	// match: (Load <t> ptr mem)
-	// cond: t.IsArray() && t.NumElem() == 1 && fe.CanSSA(t)
+	// cond: t.IsArray() && t.NumElem() == 1 && CanSSA(t)
 	// result: (ArrayMake1 (Load <t.Elem()> ptr mem))
 	for {
 		t := v.Type
 		ptr := v_0
 		mem := v_1
-		if !(t.IsArray() && t.NumElem() == 1 && fe.CanSSA(t)) {
+		if !(t.IsArray() && t.NumElem() == 1 && CanSSA(t)) {
 			break
 		}
 		v.reset(OpArrayMake1)
@@ -28227,6 +28228,31 @@ func rewriteValuegeneric_OpSqrt(v *Value) bool {
 	}
 	return false
 }
+func rewriteValuegeneric_OpStaticCall(v *Value) bool {
+	b := v.Block
+	typ := &b.Func.Config.Types
+	// match: (StaticCall {callAux} p q _ mem)
+	// cond: isSameCall(callAux, "runtime.memequal") && isSamePtr(p, q)
+	// result: (MakeResult (ConstBool <typ.Bool> [true]) mem)
+	for {
+		if len(v.Args) != 4 {
+			break
+		}
+		callAux := auxToCall(v.Aux)
+		mem := v.Args[3]
+		p := v.Args[0]
+		q := v.Args[1]
+		if !(isSameCall(callAux, "runtime.memequal") && isSamePtr(p, q)) {
+			break
+		}
+		v.reset(OpMakeResult)
+		v0 := b.NewValue0(v.Pos, OpConstBool, typ.Bool)
+		v0.AuxInt = boolToAuxInt(true)
+		v.AddArg2(v0, mem)
+		return true
+	}
+	return false
+}
 func rewriteValuegeneric_OpStaticLECall(v *Value) bool {
 	b := v.Block
 	config := b.Func.Config
@@ -28514,6 +28540,26 @@ func rewriteValuegeneric_OpStaticLECall(v *Value) bool {
 		v.AddArg2(v0, mem)
 		return true
 	}
+	// match: (StaticLECall {callAux} p q _ mem)
+	// cond: isSameCall(callAux, "runtime.memequal") && isSamePtr(p, q)
+	// result: (MakeResult (ConstBool <typ.Bool> [true]) mem)
+	for {
+		if len(v.Args) != 4 {
+			break
+		}
+		callAux := auxToCall(v.Aux)
+		mem := v.Args[3]
+		p := v.Args[0]
+		q := v.Args[1]
+		if !(isSameCall(callAux, "runtime.memequal") && isSamePtr(p, q)) {
+			break
+		}
+		v.reset(OpMakeResult)
+		v0 := b.NewValue0(v.Pos, OpConstBool, typ.Bool)
+		v0.AuxInt = boolToAuxInt(true)
+		v.AddArg2(v0, mem)
+		return true
+	}
 	// match: (StaticLECall {callAux} _ (Const64 [0]) (Const64 [0]) mem)
 	// cond: isSameCall(callAux, "runtime.makeslice")
 	// result: (MakeResult (Addr <v.Type.FieldType(0)> {ir.Syms.Zerobase} (SB)) mem)
@@ -28571,7 +28617,6 @@ func rewriteValuegeneric_OpStore(v *Value) bool {
 	v_1 := v.Args[1]
 	v_0 := v.Args[0]
 	b := v.Block
-	fe := b.Func.fe
 	// match: (Store {t1} p1 (Load <t2> p2 mem) mem)
 	// cond: isSamePtr(p1, p2) && t2.Size() == t1.Size()
 	// result: mem
@@ -28948,7 +28993,7 @@ func rewriteValuegeneric_OpStore(v *Value) bool {
 		return true
 	}
 	// match: (Store {t} dst (Load src mem) mem)
-	// cond: !fe.CanSSA(t)
+	// cond: !CanSSA(t)
 	// result: (Move {t} [t.Size()] dst src mem)
 	for {
 		t := auxToType(v.Aux)
@@ -28958,7 +29003,7 @@ func rewriteValuegeneric_OpStore(v *Value) bool {
 		}
 		mem := v_1.Args[1]
 		src := v_1.Args[0]
-		if mem != v_2 || !(!fe.CanSSA(t)) {
+		if mem != v_2 || !(!CanSSA(t)) {
 			break
 		}
 		v.reset(OpMove)
@@ -28968,7 +29013,7 @@ func rewriteValuegeneric_OpStore(v *Value) bool {
 		return true
 	}
 	// match: (Store {t} dst (Load src mem) (VarDef {x} mem))
-	// cond: !fe.CanSSA(t)
+	// cond: !CanSSA(t)
 	// result: (Move {t} [t.Size()] dst src (VarDef {x} mem))
 	for {
 		t := auxToType(v.Aux)
@@ -28982,7 +29027,7 @@ func rewriteValuegeneric_OpStore(v *Value) bool {
 			break
 		}
 		x := auxToSym(v_2.Aux)
-		if mem != v_2.Args[0] || !(!fe.CanSSA(t)) {
+		if mem != v_2.Args[0] || !(!CanSSA(t)) {
 			break
 		}
 		v.reset(OpMove)
@@ -29458,7 +29503,6 @@ func rewriteValuegeneric_OpStringPtr(v *Value) bool {
 func rewriteValuegeneric_OpStructSelect(v *Value) bool {
 	v_0 := v.Args[0]
 	b := v.Block
-	fe := b.Func.fe
 	// match: (StructSelect (StructMake1 x))
 	// result: x
 	for {
@@ -29560,7 +29604,7 @@ func rewriteValuegeneric_OpStructSelect(v *Value) bool {
 		return true
 	}
 	// match: (StructSelect [i] x:(Load <t> ptr mem))
-	// cond: !fe.CanSSA(t)
+	// cond: !CanSSA(t)
 	// result: @x.Block (Load <v.Type> (OffPtr <v.Type.PtrTo()> [t.FieldOff(int(i))] ptr) mem)
 	for {
 		i := auxIntToInt64(v.AuxInt)
@@ -29571,7 +29615,7 @@ func rewriteValuegeneric_OpStructSelect(v *Value) bool {
 		t := x.Type
 		mem := x.Args[1]
 		ptr := x.Args[0]
-		if !(!fe.CanSSA(t)) {
+		if !(!CanSSA(t)) {
 			break
 		}
 		b = x.Block

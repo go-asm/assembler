@@ -31,6 +31,7 @@ import (
 // include all packages within subdirectories as well.
 // These will be imported during bootstrap as bootstrap/name, like bootstrap/math/big.
 var bootstrapDirs = []string{
+	"cmp",
 	"cmd/asm",
 	"github.com/go-asm/go/cmd/asm/...",
 	"cmd/cgo",
@@ -61,14 +62,17 @@ var bootstrapDirs = []string{
 	"debug/pe",
 	"go/build/constraint",
 	"go/constant",
+	"go/version",
 	"github.com/go-asm/go/abi",
 	"github.com/go-asm/go/coverage",
+	"github.com/go-asm/go/cmd/cov/covcmd",
 	"github.com/go-asm/go/bisect",
 	"github.com/go-asm/go/buildcfg",
 	"github.com/go-asm/go/goarch",
 	"github.com/go-asm/go/godebugs",
 	"github.com/go-asm/go/goexperiment",
 	"github.com/go-asm/go/goroot",
+	"github.com/go-asm/go/gover",
 	"github.com/go-asm/go/goversion",
 	// github.com/go-asm/go/lazyregexp is provided by Go 1.17, which permits it to
 	// be imported by other packages in this list, but is not provided
@@ -85,10 +89,8 @@ var bootstrapDirs = []string{
 	"github.com/go-asm/go/unsafeheader",
 	"github.com/go-asm/go/xcoff",
 	"github.com/go-asm/go/zstd",
-	"math/big",
 	"math/bits",
 	"sort",
-	"strconv",
 }
 
 // File prefixes that are ignored by go/build anyway, and cause

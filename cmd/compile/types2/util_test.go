@@ -7,6 +7,11 @@
 
 package types2
 
-import "github.com/go-asm/go/cmd/compile/syntax"
+import (
+	"github.com/go-asm/go/cmd/compile/syntax"
+)
 
 func CmpPos(p, q syntax.Pos) int { return cmpPos(p, q) }
+
+func ScopeComment(s *Scope) string         { return s.comment }
+func ObjectScopePos(obj Object) syntax.Pos { return obj.scopePos() }

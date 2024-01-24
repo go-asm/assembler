@@ -49,6 +49,7 @@ var rtPkgs = [...]string{
 	"github.com/go-asm/go/goarch",
 	"runtime/github.com/go-asm/go/atomic",
 	"github.com/go-asm/go/goos",
+	"github.com/go-asm/go/chacha8rand",
 	"runtime/github.com/go-asm/go/sys",
 	"github.com/go-asm/go/abi",
 	"runtime/github.com/go-asm/go/math",

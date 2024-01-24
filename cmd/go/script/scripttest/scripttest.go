@@ -9,10 +9,10 @@ import (
 	"bufio"
 	"errors"
 	"io"
-	"os/exec"
 	"strings"
 	"testing"
 
+	"github.com/go-asm/go/cmd/go/cfg"
 	"github.com/go-asm/go/cmd/go/script"
 )
 
@@ -138,7 +138,7 @@ func CachedExec() script.Cond {
 	return script.CachedCondition(
 		"<suffix> names an executable in the test binary's PATH",
 		func(name string) (bool, error) {
-			_, err := exec.LookPath(name)
+			_, err := cfg.LookPath(name)
 			return err == nil, nil
 		})
 }

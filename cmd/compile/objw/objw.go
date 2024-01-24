@@ -5,6 +5,8 @@
 package objw
 
 import (
+	"encoding/binary"
+
 	"github.com/go-asm/go/cmd/compile/base"
 	"github.com/go-asm/go/cmd/compile/bitvec"
 	"github.com/go-asm/go/cmd/compile/types"
@@ -27,6 +29,22 @@ func Uint32(s *obj.LSym, off int, v uint32) int {
 
 func Uintptr(s *obj.LSym, off int, v uint64) int {
 	return UintN(s, off, v, types.PtrSize)
+}
+
+// Uvarint writes a varint v into s at offset off,
+// and returns the next unused offset.
+func Uvarint(s *obj.LSym, off int, v uint64) int {
+	var buf [binary.MaxVarintLen64]byte
+	n := binary.PutUvarint(buf[:], v)
+	return int(s.WriteBytes(base.Ctxt, int64(off), buf[:n]))
+}
+
+func Bool(s *obj.LSym, off int, v bool) int {
+	w := 0
+	if v {
+		w = 1
+	}
+	return UintN(s, off, uint64(w), 1)
 }
 
 // UintN writes an unsigned integer v of size wid bytes into s at offset off,

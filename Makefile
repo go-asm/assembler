@@ -1,6 +1,6 @@
 .DEFAULT_GOAL = all
 
-GO_VERSION ?= 1.21.6
+GO_VERSION ?= 1.22rc1
 
 .PHONY: all
 all: sync remove fix fmt commit
@@ -70,6 +70,7 @@ fix/linkname:
 	sed -i -E ':a;N;$$!ba;s|// implemented in package runtime\nfunc unsafe_New\(\*rtype\) unsafe.Pointer|// implemented in package runtime\n//go:linkname unsafe_New internal/reflectlite.unsafe_New\nfunc unsafe_New\(\*rtype\) unsafe.Pointer|' reflectlite/value.go
 	sed -i -E ':a;N;$$!ba;s|func ifaceE2I\(t \*rtype, src any, dst unsafe.Pointer\)|//go:linkname ifaceE2I internal/reflectlite.ifaceE2I\nfunc ifaceE2I\(t \*rtype, src any, dst unsafe.Pointer\)|' reflectlite/value.go
 	sed -i -E ':a;N;$$!ba;s|func typedmemmove\(t \*rtype, dst, src unsafe.Pointer\)|//go:linkname typedmemmove internal/reflectlite.typedmemmove\nfunc typedmemmove\(t \*rtype, dst, src unsafe.Pointer\)|' reflectlite/value.go
+	sed -i -E 's|block<ABIInternal>|block|g' chacha8rand/chacha8_amd64.s
 
 .PHONY: fix/import
 fix/import:

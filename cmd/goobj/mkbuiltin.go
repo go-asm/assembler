@@ -3,7 +3,6 @@
 // license that can be found in the LICENSE file.
 
 //go:build ignore
-// +build ignore
 
 // Generate builtinlist.go from github.com/go-asm/go/cmd/compile/typecheck/builtin/runtime.go.
 

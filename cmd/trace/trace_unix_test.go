@@ -16,14 +16,19 @@ import (
 	"testing"
 	"time"
 
-	"github.com/go-asm/go/cmd/traceviewer"
+	"github.com/go-asm/go/goexperiment"
 	traceparser "github.com/go-asm/go/trace"
+	"github.com/go-asm/go/trace/traceviewer"
+	"github.com/go-asm/go/trace/traceviewer/format"
 )
 
 // TestGoroutineInSyscall tests threads for timer goroutines
 // that preexisted when the tracing started were not counted
 // as threads in syscall. See golang.org/issues/22574.
 func TestGoroutineInSyscall(t *testing.T) {
+	if goexperiment.ExecTracer2 {
+		t.Skip("skipping because this test is obsolete and incompatible with the new tracer")
+	}
 	// Start one goroutine blocked in syscall.
 	//
 	// TODO: syscall.Pipe used to cause the goroutine to
@@ -84,10 +89,10 @@ func TestGoroutineInSyscall(t *testing.T) {
 
 	// Check only one thread for the pipe read goroutine is
 	// considered in-syscall.
-	c := viewerDataTraceConsumer(io.Discard, 0, 1<<63-1)
-	c.consumeViewerEvent = func(ev *traceviewer.Event, _ bool) {
+	c := traceviewer.ViewerDataTraceConsumer(io.Discard, 0, 1<<63-1)
+	c.ConsumeViewerEvent = func(ev *format.Event, _ bool) {
 		if ev.Name == "Threads" {
-			arg := ev.Arg.(*threadCountersArg)
+			arg := ev.Arg.(*format.ThreadCountersArg)
 			if arg.InSyscall > 1 {
 				t.Errorf("%d threads in syscall at time %v; want less than 1 thread in syscall", arg.InSyscall, ev.Time)
 			}

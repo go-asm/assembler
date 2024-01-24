@@ -20,6 +20,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/go-asm/go/goexperiment"
 	traceparser "github.com/go-asm/go/trace"
 )
 
@@ -331,6 +332,9 @@ func TestAnalyzeAnnotationGC(t *testing.T) {
 // If savetraces flag is set, the captured trace will be saved in the named file.
 func traceProgram(t *testing.T, f func(), name string) error {
 	t.Helper()
+	if goexperiment.ExecTracer2 {
+		t.Skip("skipping because test programs are covered elsewhere for the new tracer")
+	}
 	buf := new(bytes.Buffer)
 	if err := trace.Start(buf); err != nil {
 		return err

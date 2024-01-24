@@ -15,8 +15,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/go-asm/go/cmd/traceviewer"
 	"github.com/go-asm/go/trace"
+	"github.com/go-asm/go/trace/traceviewer"
+	"github.com/go-asm/go/trace/traceviewer/format"
 )
 
 // stacks is a fake stack map populated for test.
@@ -79,10 +80,10 @@ func TestGoroutineCount(t *testing.T) {
 
 	// Use the default viewerDataTraceConsumer but replace
 	// consumeViewerEvent to intercept the ViewerEvents for testing.
-	c := viewerDataTraceConsumer(io.Discard, 0, 1<<63-1)
-	c.consumeViewerEvent = func(ev *traceviewer.Event, _ bool) {
+	c := traceviewer.ViewerDataTraceConsumer(io.Discard, 0, 1<<63-1)
+	c.ConsumeViewerEvent = func(ev *format.Event, _ bool) {
 		if ev.Name == "Goroutines" {
-			cnt := ev.Arg.(*goroutineCountersArg)
+			cnt := ev.Arg.(*format.GoroutineCountersArg)
 			if cnt.Runnable+cnt.Running > 2 {
 				t.Errorf("goroutine count=%+v; want no more than 2 goroutines in runnable/running state", cnt)
 			}
@@ -132,7 +133,7 @@ func TestGoroutineFilter(t *testing.T) {
 		gs:      map[uint64]bool{10: true},
 	}
 
-	c := viewerDataTraceConsumer(io.Discard, 0, 1<<63-1)
+	c := traceviewer.ViewerDataTraceConsumer(io.Discard, 0, 1<<63-1)
 	if err := generateTrace(params, c); err != nil {
 		t.Fatalf("generateTrace failed: %v", err)
 	}
@@ -164,10 +165,10 @@ func TestPreemptedMarkAssist(t *testing.T) {
 		endTime: int64(1<<63 - 1),
 	}
 
-	c := viewerDataTraceConsumer(io.Discard, 0, 1<<63-1)
+	c := traceviewer.ViewerDataTraceConsumer(io.Discard, 0, 1<<63-1)
 
 	marks := 0
-	c.consumeViewerEvent = func(ev *traceviewer.Event, _ bool) {
+	c.ConsumeViewerEvent = func(ev *format.Event, _ bool) {
 		if strings.Contains(ev.Name, "MARK ASSIST") {
 			marks++
 		}
@@ -209,16 +210,16 @@ func TestFoo(t *testing.T) {
 
 	params := &traceParams{
 		parsed:    res,
-		mode:      modeTaskOriented,
+		mode:      traceviewer.ModeTaskOriented,
 		startTime: task.firstTimestamp() - 1,
 		endTime:   task.lastTimestamp() + 1,
 		tasks:     []*taskDesc{task},
 	}
 
-	c := viewerDataTraceConsumer(io.Discard, 0, 1<<63-1)
+	c := traceviewer.ViewerDataTraceConsumer(io.Discard, 0, 1<<63-1)
 
 	var logBeforeTaskEnd, logAfterTaskEnd bool
-	c.consumeViewerEvent = func(ev *traceviewer.Event, _ bool) {
+	c.ConsumeViewerEvent = func(ev *format.Event, _ bool) {
 		if ev.Name == "log before task ends" {
 			logBeforeTaskEnd = true
 		}

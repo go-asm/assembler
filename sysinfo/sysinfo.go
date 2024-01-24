@@ -9,24 +9,28 @@ package sysinfo
 import (
 	"sync"
 
-	internalcpu "github.com/go-asm/go/cpu"
+	"github.com/go-asm/go/cpu"
 )
 
-type cpuInfo struct {
+var cpuInfo struct {
 	once sync.Once
 	name string
 }
 
-var CPU cpuInfo
-
-func (cpu *cpuInfo) Name() string {
-	cpu.once.Do(func() {
+func CPUName() string {
+	cpuInfo.once.Do(func() {
 		// Try to get the information from github.com/go-asm/go/cpu.
-		if name := internalcpu.Name(); name != "" {
-			cpu.name = name
+		if name := cpu.Name(); name != "" {
+			cpuInfo.name = name
 			return
 		}
+
 		// TODO(martisch): use /proc/cpuinfo and /sys/devices/system/cpu/ on Linux as fallback.
+		if name := osCpuInfoName(); name != "" {
+			cpuInfo.name = name
+			return
+		}
 	})
-	return cpu.name
+
+	return cpuInfo.name
 }

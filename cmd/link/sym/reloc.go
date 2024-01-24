@@ -6,6 +6,7 @@ package sym
 
 import (
 	"debug/elf"
+	"debug/macho"
 
 	"github.com/go-asm/go/cmd/objabi"
 	"github.com/go-asm/go/cmd/sys"
@@ -31,24 +32,17 @@ const (
 )
 
 func RelocName(arch *sys.Arch, r objabi.RelocType) string {
-	// We didn't have some relocation types at Go1.4.
-	// Uncomment code when we include those in bootstrap code.
-
 	switch {
 	case r >= objabi.MachoRelocOffset: // Mach-O
-		// nr := (r - objabi.MachoRelocOffset)>>1
-		// switch ctxt.Arch.Family {
-		// case sys.AMD64:
-		// 	return macho.RelocTypeX86_64(nr).String()
-		// case sys.ARM:
-		// 	return macho.RelocTypeARM(nr).String()
-		// case sys.ARM64:
-		// 	return macho.RelocTypeARM64(nr).String()
-		// case sys.I386:
-		// 	return macho.RelocTypeGeneric(nr).String()
-		// default:
-		// 	panic("unreachable")
-		// }
+		nr := (r - objabi.MachoRelocOffset) >> 1
+		switch arch.Family {
+		case sys.AMD64:
+			return macho.RelocTypeX86_64(nr).String()
+		case sys.ARM64:
+			return macho.RelocTypeARM64(nr).String()
+		default:
+			panic("unreachable")
+		}
 	case r >= objabi.ElfRelocOffset: // ELF
 		nr := r - objabi.ElfRelocOffset
 		switch arch.Family {
@@ -68,6 +62,8 @@ func RelocName(arch *sys.Arch, r objabi.RelocType) string {
 			return elf.R_PPC64(nr).String()
 		case sys.S390X:
 			return elf.R_390(nr).String()
+		case sys.RISCV64:
+			return elf.R_RISCV(nr).String()
 		default:
 			panic("unreachable")
 		}

@@ -9,8 +9,6 @@ import (
 	"github.com/go-asm/go/cmd/compile/types2"
 )
 
-var universeAny = types2.Universe.Lookup("any").Type()
-
 var basics = [...]**types.Type{
 	types2.Invalid:        new(*types.Type),
 	types2.Bool:           &types.Types[types.TBOOL],

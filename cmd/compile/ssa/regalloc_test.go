@@ -8,7 +8,6 @@ import (
 	"testing"
 
 	"github.com/go-asm/go/cmd/compile/types"
-	"github.com/go-asm/go/cmd/src"
 )
 
 func TestLiveControlOps(t *testing.T) {
@@ -54,7 +53,7 @@ func TestNoGetgLoadReg(t *testing.T) {
 	f := c.Fun("b1",
 		Bloc("b1",
 			Valu("v1", OpInitMem, types.TypeMem, 0, nil),
-			Valu("v6", OpArg, c.config.Types.Int64, 0, c.Frontend().Auto(src.NoXPos, c.config.Types.Int64)),
+			Valu("v6", OpArg, c.config.Types.Int64, 0, c.Temp(c.config.Types.Int64)),
 			Valu("v8", OpGetG, c.config.Types.Int64.PtrTo(), 0, nil, "v1"),
 			Valu("v11", OpARM64CMPconst, types.TypeFlags, 0, nil, "v6"),
 			Eq("v11", "b2", "b4"),
@@ -93,8 +92,8 @@ func TestSpillWithLoop(t *testing.T) {
 	f := c.Fun("entry",
 		Bloc("entry",
 			Valu("mem", OpInitMem, types.TypeMem, 0, nil),
-			Valu("ptr", OpArg, c.config.Types.Int64.PtrTo(), 0, c.Frontend().Auto(src.NoXPos, c.config.Types.Int64)),
-			Valu("cond", OpArg, c.config.Types.Bool, 0, c.Frontend().Auto(src.NoXPos, c.config.Types.Bool)),
+			Valu("ptr", OpArg, c.config.Types.Int64.PtrTo(), 0, c.Temp(c.config.Types.Int64)),
+			Valu("cond", OpArg, c.config.Types.Bool, 0, c.Temp(c.config.Types.Bool)),
 			Valu("ld", OpAMD64MOVQload, c.config.Types.Int64, 0, nil, "ptr", "mem"), // this value needs a spill
 			Goto("loop"),
 		),
@@ -126,8 +125,8 @@ func TestSpillMove1(t *testing.T) {
 	f := c.Fun("entry",
 		Bloc("entry",
 			Valu("mem", OpInitMem, types.TypeMem, 0, nil),
-			Valu("x", OpArg, c.config.Types.Int64, 0, c.Frontend().Auto(src.NoXPos, c.config.Types.Int64)),
-			Valu("p", OpArg, c.config.Types.Int64.PtrTo(), 0, c.Frontend().Auto(src.NoXPos, c.config.Types.Int64.PtrTo())),
+			Valu("x", OpArg, c.config.Types.Int64, 0, c.Temp(c.config.Types.Int64)),
+			Valu("p", OpArg, c.config.Types.Int64.PtrTo(), 0, c.Temp(c.config.Types.Int64.PtrTo())),
 			Valu("a", OpAMD64TESTQ, types.TypeFlags, 0, nil, "x", "x"),
 			Goto("loop1"),
 		),
@@ -175,8 +174,8 @@ func TestSpillMove2(t *testing.T) {
 	f := c.Fun("entry",
 		Bloc("entry",
 			Valu("mem", OpInitMem, types.TypeMem, 0, nil),
-			Valu("x", OpArg, c.config.Types.Int64, 0, c.Frontend().Auto(src.NoXPos, c.config.Types.Int64)),
-			Valu("p", OpArg, c.config.Types.Int64.PtrTo(), 0, c.Frontend().Auto(src.NoXPos, c.config.Types.Int64.PtrTo())),
+			Valu("x", OpArg, c.config.Types.Int64, 0, c.Temp(c.config.Types.Int64)),
+			Valu("p", OpArg, c.config.Types.Int64.PtrTo(), 0, c.Temp(c.config.Types.Int64.PtrTo())),
 			Valu("a", OpAMD64TESTQ, types.TypeFlags, 0, nil, "x", "x"),
 			Goto("loop1"),
 		),

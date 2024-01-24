@@ -45,15 +45,16 @@ func TestIntendedInlining(t *testing.T) {
 			"chanbuf",
 			"evacuated",
 			"fastlog2",
-			"fastrand",
 			"float64bits",
 			"funcspdelta",
 			"getm",
 			"getMCache",
 			"isDirectIface",
 			"itabHashFunc",
+			"nextslicecap",
 			"noescape",
 			"pcvalueCacheKey",
+			"rand32",
 			"readUnaligned32",
 			"readUnaligned64",
 			"releasem",
@@ -73,11 +74,13 @@ func TestIntendedInlining(t *testing.T) {
 			"gclinkptr.ptr",
 			"guintptr.ptr",
 			"writeHeapBitsForAddr",
+			"heapBitsSlice",
 			"markBits.isMarked",
 			"muintptr.ptr",
 			"puintptr.ptr",
 			"spanOf",
 			"spanOfUnchecked",
+			"typePointers.nextFast",
 			"(*gcWork).putFast",
 			"(*gcWork).tryGetFast",
 			"(*guintptr).set",
@@ -86,10 +89,15 @@ func TestIntendedInlining(t *testing.T) {
 			"(*mspan).base",
 			"(*mspan).markBitsForBase",
 			"(*mspan).markBitsForIndex",
+			"(*mspan).writeUserArenaHeapBits",
 			"(*muintptr).set",
 			"(*puintptr).set",
 			"(*wbBuf).get1",
 			"(*wbBuf).get2",
+
+			// Trace-related ones.
+			"traceLocker.ok",
+			"traceEnabled",
 		},
 		"runtime/github.com/go-asm/go/sys": {},
 		"runtime/github.com/go-asm/go/math": {
@@ -107,6 +115,9 @@ func TestIntendedInlining(t *testing.T) {
 			"(*Buffer).String",
 			"(*Buffer).UnreadByte",
 			"(*Buffer).tryGrowByReslice",
+		},
+		"github.com/go-asm/go/abi": {
+			"UseInterfaceSwitchCache",
 		},
 		"compress/flate": {
 			"byLiteral.Len",
@@ -242,6 +253,10 @@ func TestIntendedInlining(t *testing.T) {
 		want["runtime/github.com/go-asm/go/sys"] = append(want["runtime/github.com/go-asm/go/sys"], "TrailingZeros64")
 		want["runtime/github.com/go-asm/go/sys"] = append(want["runtime/github.com/go-asm/go/sys"], "TrailingZeros32")
 		want["runtime/github.com/go-asm/go/sys"] = append(want["runtime/github.com/go-asm/go/sys"], "Bswap32")
+	}
+	if runtime.GOARCH == "amd64" || runtime.GOARCH == "arm64" || runtime.GOARCH == "loong64" || runtime.GOARCH == "mips" || runtime.GOARCH == "mips64" || runtime.GOARCH == "ppc64" || runtime.GOARCH == "riscv64" || runtime.GOARCH == "s390x" {
+		// runtime/github.com/go-asm/go/atomic.Loaduintptr is only intrinsified on these platforms.
+		want["runtime"] = append(want["runtime"], "traceAcquire")
 	}
 	if bits.UintSize == 64 {
 		// mix is only defined on 64-bit architectures

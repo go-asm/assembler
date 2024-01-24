@@ -10,7 +10,6 @@ import (
 
 	"github.com/go-asm/go/cmd/compile/base"
 	"github.com/go-asm/go/cmd/compile/types"
-	"github.com/go-asm/go/cmd/src"
 )
 
 const (
@@ -66,10 +65,6 @@ func (h ValHeap) Less(i, j int) bool {
 	}
 
 	if x.Pos != y.Pos { // Favor in-order line stepping
-		if x.Block == x.Block.Func.Entry && x.Pos.IsStmt() != y.Pos.IsStmt() {
-			// In the entry block, put statement-marked instructions earlier.
-			return x.Pos.IsStmt() == src.PosIsStmt && y.Pos.IsStmt() != src.PosIsStmt
-		}
 		return x.Pos.Before(y.Pos)
 	}
 	if x.Op != OpPhi {

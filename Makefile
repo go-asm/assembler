@@ -1,9 +1,9 @@
 .DEFAULT_GOAL = all
 
-GO_VERSION ?= 1.22.1
+GO_VERSION ?= 1.22.2
 
 .PHONY: all
-all: sync remove fix fmt commit check
+all: sync remove fix fmt tidy commit check
 
 define ditto
 ditto ${GO_SRC}/${1} ${2}
@@ -87,6 +87,12 @@ fix/import:
 fmt:
 	@gofmt -w -s $(shell find . -type f -iwholename '*.go' -not -iwholename '*.git*' -not -iwholename '*testdata*')
 	@goimports -w -local=github.com/go-asm/go $(shell find . -type f -iwholename '*.go' -not -iwholename '*.git*' -not -iwholename '*testdata*')
+
+.PHONY: tidy
+tidy:
+	@rm -f go.sum 
+	go mod download 
+	go mod tidy
 
 .PHONY: commit
 commit:

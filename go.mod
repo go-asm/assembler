@@ -1,11 +1,9 @@
 module github.com/go-asm/go
 
-go 1.22
-
-toolchain go1.22rc2
+go 1.22.1
 
 require (
-	github.com/google/pprof v0.0.0-20240117000934-35fc243c5815
+	github.com/google/pprof v0.0.0-20230811205829-9131a7e9cc17
 	golang.org/x/arch v0.7.0
 	golang.org/x/mod v0.14.0
 	golang.org/x/sync v0.6.0

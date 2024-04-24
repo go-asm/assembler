@@ -1,9 +1,9 @@
 .DEFAULT_GOAL = all
 
-GO_VERSION ?= 1.22.0
+GO_VERSION ?= 1.22.1
 
 .PHONY: all
-all: sync remove fix fmt commit
+all: sync remove fix fmt commit check
 
 define ditto
 ditto ${GO_SRC}/${1} ${2}

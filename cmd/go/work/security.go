@@ -146,6 +146,12 @@ var validCompilerFlagsWithNextArg = []string{
 	"-x",
 }
 
+var invalidLinkerFlags = []*lazyregexp.Regexp{
+	// On macOS this means the linker loads and executes the next argument.
+	// Have to exclude separately because -lfoo is allowed in general.
+	re(`-lto_library`),
+}
+
 var validLinkerFlags = []*lazyregexp.Regexp{
 	re(`-F([^@\-].*)`),
 	re(`-l([^@\-].*)`),
@@ -236,12 +242,12 @@ var validLinkerFlagsWithNextArg = []string{
 
 func checkCompilerFlags(name, source string, list []string) error {
 	checkOverrides := true
-	return checkFlags(name, source, list, validCompilerFlags, validCompilerFlagsWithNextArg, checkOverrides)
+	return checkFlags(name, source, list, nil, validCompilerFlags, validCompilerFlagsWithNextArg, checkOverrides)
 }
 
 func checkLinkerFlags(name, source string, list []string) error {
 	checkOverrides := true
-	return checkFlags(name, source, list, validLinkerFlags, validLinkerFlagsWithNextArg, checkOverrides)
+	return checkFlags(name, source, list, invalidLinkerFlags, validLinkerFlags, validLinkerFlagsWithNextArg, checkOverrides)
 }
 
 // checkCompilerFlagsForInternalLink returns an error if 'list'
@@ -250,7 +256,7 @@ func checkLinkerFlags(name, source string, list []string) error {
 // external linker).
 func checkCompilerFlagsForInternalLink(name, source string, list []string) error {
 	checkOverrides := false
-	if err := checkFlags(name, source, list, validCompilerFlags, validCompilerFlagsWithNextArg, checkOverrides); err != nil {
+	if err := checkFlags(name, source, list, nil, validCompilerFlags, validCompilerFlagsWithNextArg, checkOverrides); err != nil {
 		return err
 	}
 	// Currently the only flag on the allow list that causes problems
@@ -263,7 +269,7 @@ func checkCompilerFlagsForInternalLink(name, source string, list []string) error
 	return nil
 }
 
-func checkFlags(name, source string, list []string, valid []*lazyregexp.Regexp, validNext []string, checkOverrides bool) error {
+func checkFlags(name, source string, list []string, invalid, valid []*lazyregexp.Regexp, validNext []string, checkOverrides bool) error {
 	// Let users override rules with $CGO_CFLAGS_ALLOW, $CGO_CFLAGS_DISALLOW, etc.
 	var (
 		allow    *regexp.Regexp
@@ -294,6 +300,11 @@ Args:
 		}
 		if allow != nil && allow.FindString(arg) == arg {
 			continue Args
+		}
+		for _, re := range invalid {
+			if re.FindString(arg) == arg { // must be complete match
+				goto Bad
+			}
 		}
 		for _, re := range valid {
 			if re.FindString(arg) == arg { // must be complete match

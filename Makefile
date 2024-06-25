@@ -1,6 +1,6 @@
 .DEFAULT_GOAL = all
 
-GO_VERSION ?= 1.22.3
+GO_VERSION ?= 1.22.4
 
 .PHONY: all
 all: sync remove fix fmt tidy check commit
@@ -102,6 +102,6 @@ commit:
 
 .PHONY: check
 check:
-	@go${GO_VERSION} download
-	@go build -o /dev/null ./...
-	@if go vet ./... 2>&1 | grep -E -v -e '#.*' -e 'missing Go declaration' -e 'possible misuse of unsafe.Pointer'; then exit 1; fi
+	@go${GO_VERSION} download || true
+	go build -o /dev/null ./...
+	if go vet ./... 2>&1 | grep -E -v -e '#.*' -e 'missing Go declaration' -e 'possible misuse of unsafe.Pointer'; then exit 1; fi
